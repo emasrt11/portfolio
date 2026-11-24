@@ -1,48 +1,189 @@
 @import "tailwindcss";
 
 /*
-  TOKEN DEL DESIGN SYSTEM (valori PROVVISORI, da sostituire dopo la direzione visiva).
-  Questi nomi sono la fonte unica: in Figma diventano Variables con lo stesso nome.
+  TOKEN DEL DESIGN SYSTEM, due livelli come in Figma (collection Primitives e Semantic).
+  Direzione visiva: lavagna chiara con griglia a punti (ispirata a FigJam). Un solo tema, chiaro.
+  Valori campionati dal riferimento dell'utente e verificati sui contrasti (vedi DESIGN-SYSTEM.md).
+  1. Primitivi: valori grezzi nel tema Tailwind (utility tipo bg-neutral-50).
+  2. Semantici: variabili CSS con il ruolo (--bg-canvas, --text-primary...), alias dei primitivi.
+  3. Ruoli per i componenti shadcn (--background, --foreground...), alias dei semantici.
 */
+@theme {
+  --color-white: #ffffff;
+  --color-neutral-50: #f5f5f5;
+  --color-neutral-100: #ededed;
+  --color-neutral-200: #e3e3e3;
+  --color-neutral-300: #b6b6b6;
+  --color-neutral-400: #8f8f8f;
+  --color-neutral-600: #6b6b6b;
+  --color-neutral-900: #1e1e1e;
+  --color-blue-50: #e5f4ff;
+  --color-blue-500: #0d99ff;
+  --color-blue-700: #0b6bc2;
+  --color-purple-600: #7b4dd8;
+  --color-yellow-400: #ffcd29;
+  --color-green-500: #14ae5c;
+  --color-red-500: #f24822;
+  --color-sticky-yellow: #ffe066;
+  --color-sticky-purple: #cdb4ff;
+  --color-sticky-blue: #a8daff;
+  --color-sticky-green: #a8f0c6;
+  --radius-4: 0.25rem;
+  --radius-8: 0.5rem;
+
+  /* ombre a due strati (stessi valori degli stili Elevation/1-4 in Figma): utility shadow-e1 … shadow-e4 */
+  --shadow-e1: 0 1px 2px var(--shadow-color-ambient), 0 1px 3px var(--shadow-color-e1);
+  --shadow-e2: 0 1px 2px var(--shadow-color-ambient), 0 4px 12px var(--shadow-color-e2);
+  --shadow-e3: 0 2px 4px var(--shadow-color-ambient), 0 8px 24px var(--shadow-color-e3);
+  --shadow-e4: 0 4px 8px var(--shadow-color-ambient), 0 16px 48px var(--shadow-color-e4);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
-  --primary: #171717;
-  --primary-foreground: #fafafa;
-  --accent: #f5f5f5;
-  --accent-foreground: #171717;
-  --ring: #a3a3a3;
-  --radius: 0.5rem;
+  --bg-canvas: var(--color-neutral-50);
+  --bg-panel: var(--color-white);
+  --bg-raised: var(--color-neutral-100);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-600);
+  --border-default: var(--color-neutral-200);
+  --border-strong: var(--color-neutral-400);
+  --accent: var(--color-blue-500);          /* selezione, focus: mai testo */
+  --accent-text: var(--color-neutral-900);  /* testo su --accent */
+  --accent-strong: var(--color-blue-700);   /* azione principale */
+  --accent-on-strong: var(--color-white);
+  --accent-subtle: var(--color-blue-50);    /* voce selezionata */
+  --accent-link: var(--color-blue-700);
+  --accent-purple: var(--color-purple-600);
+  --highlight: var(--color-yellow-400);
+  --highlight-text: var(--color-neutral-900);
+  --status-success: var(--color-green-500);
+  --status-danger: var(--color-red-500);
+  --canvas-dot: var(--color-neutral-300);
+  --sticky-blue: var(--color-sticky-blue);
+  --sticky-purple: var(--color-sticky-purple);
+  --sticky-yellow: var(--color-sticky-yellow);
+  --sticky-green: var(--color-sticky-green);
+  --radius: var(--radius-8);
+  --radius-sm: var(--radius-4);
+
+  /* colori delle ombre (variabili shadow/… in Figma) */
+  --shadow-color-ambient: rgb(30 30 30 / 0.06);
+  --shadow-color-e1: rgb(30 30 30 / 0.08);
+  --shadow-color-e2: rgb(30 30 30 / 0.12);
+  --shadow-color-e3: rgb(30 30 30 / 0.16);
+  --shadow-color-e4: rgb(30 30 30 / 0.20);
+
+  /* spaziature (variabili space/… in Figma). In Tailwind: p-1=4, p-2=8, p-3=12, p-4=16, p-5=20, p-6=24, p-8=32, p-12=48 */
+  --space-4: 0.25rem; --space-8: 0.5rem; --space-12: 0.75rem; --space-16: 1rem;
+  --space-20: 1.25rem; --space-24: 1.5rem; --space-32: 2rem; --space-48: 3rem;
+  --space-xs: var(--space-4); --space-sm: var(--space-8); --space-md: var(--space-12); --space-lg: var(--space-16);
+  --space-xl: var(--space-20); --space-2xl: var(--space-24); --space-3xl: var(--space-32); --space-4xl: var(--space-48);
+
+  /* tipografia (collection Typography in Figma) */
+  --font-body: var(--font-sans);
+  --weight-regular: 400; --weight-medium: 500; --weight-semibold: 600; --weight-bold: 700; --weight-black: 900;
+  --size-14: 0.875rem; --size-16: 1rem; --size-20: 1.25rem; --size-22: 1.375rem; --size-24: 1.5rem;
+  --size-28: 1.75rem; --size-40: 2.5rem; --size-56: 3.5rem; --size-80: 5rem; --size-112: 7rem;
+
+  /* dimensioni (collection Sizing in Figma) */
+  --control-sm: 2rem;      /* 32 */
+  --control-md: 2.5rem;    /* 40 */
+  --control-lg: 3rem;      /* 48 */
+  --icon-sm: 1rem;         /* 16 */
+  --icon-md: 1.25rem;      /* 20 */
+  --icon-lg: 1.5rem;       /* 24 */
+  --icon-xl: 2rem;         /* 32 */
+  --stroke-thin: 1px;
+  --stroke-icon: 2px;
+  --hit-min: 2.75rem;      /* 44, area di tocco minima */
+
+  /* livelli sovrapposti */
+  --z-canvas: 0;
+  --z-frame: 10;
+  --z-dragging: 20;
+  --z-panel: 30;
+  --z-menu: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  /* ruoli usati dai componenti */
+  --color-background: var(--bg-canvas);
+  --color-surface: var(--bg-panel);
+  --color-raised: var(--bg-raised);
+  --color-foreground: var(--text-primary);
+  --color-muted-foreground: var(--text-secondary);
+  --color-border: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-brand: var(--accent-strong);
+  --color-link: var(--accent-link);
+  --color-action: var(--accent-strong);
+  --color-action-foreground: var(--accent-on-strong);
+  --color-subtle: var(--accent-subtle);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-text);
+  --color-sticky-blue: var(--sticky-blue);
+  --color-sticky-purple: var(--sticky-purple);
+  --color-sticky-yellow: var(--sticky-yellow);
+  --color-sticky-green: var(--sticky-green);
+
+  /* alias usati dai componenti shadcn */
+  --color-primary: var(--accent-strong);
+  --color-primary-foreground: var(--accent-on-strong);
+  --color-muted: var(--bg-raised);
+  --color-accent: var(--bg-raised);
+  --color-accent-foreground: var(--text-primary);
+  --color-ring: var(--accent);
+
+  --radius-md: calc(var(--radius-sm) + 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Fraunces", ui-serif, Georgia, serif;
+
+  /* scala tipografica (stessi valori degli stili Text/... in Figma) */
+  --text-display: 7rem;    --text-display--line-height: 1;
+  --text-h1: 5rem;         --text-h1--line-height: 1.03;
+  --text-h2: 3.5rem;       --text-h2--line-height: 1.08;
+  --text-h3: 2.5rem;       --text-h3--line-height: 1.12;
+  --text-h4: 1.75rem;      --text-h4--line-height: 1.18;
+  --text-h5: 1.375rem;     --text-h5--line-height: 1.25;
+  --text-lead: 1.5rem;     --text-lead--line-height: 1.4;
+  --text-body: 1.25rem;    --text-body--line-height: 1.6;
+  --text-small: 1rem;      --text-small--line-height: 1.5;
+  --text-label: 0.875rem;  --text-label--line-height: 1.4;
 }
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: var(--border-default);
   }
   body {
-    background: var(--background);
-    color: var(--foreground);
+    background-color: var(--bg-canvas);
+    /* griglia a punti del canvas: un punto ogni 16px */
+    background-image: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1.3px);
+    background-size: 16px 16px;
+    color: var(--text-primary);
     font-family: var(--font-sans);
   }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-heading);
+  }
 }
+
+/* Stili di testo: famiglia, peso, misura, interlinea e spaziatura come in Figma.
+   Il peso dei titoli scende con la misura (Black, Bold, SemiBold). */
+@utility type-display { font-family: var(--font-heading); font-weight: 900; font-size: var(--text-display); line-height: var(--text-display--line-height); letter-spacing: -0.02em; }
+@utility type-h1 { font-family: var(--font-heading); font-weight: 900; font-size: var(--text-h1); line-height: var(--text-h1--line-height); letter-spacing: -0.02em; }
+@utility type-h2 { font-family: var(--font-heading); font-weight: 700; font-size: var(--text-h2); line-height: var(--text-h2--line-height); letter-spacing: -0.015em; }
+@utility type-h3 { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-h3); line-height: var(--text-h3--line-height); letter-spacing: -0.01em; }
+@utility type-h4 { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-h4); line-height: var(--text-h4--line-height); letter-spacing: -0.005em; }
+@utility type-h5 { font-family: var(--font-heading); font-weight: 600; font-size: var(--text-h5); line-height: var(--text-h5--line-height); }
+@utility type-lead { font-family: var(--font-sans); font-weight: 400; font-size: var(--text-lead); line-height: var(--text-lead--line-height); }
+@utility type-body { font-family: var(--font-sans); font-weight: 400; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+@utility type-small { font-family: var(--font-sans); font-weight: 400; font-size: var(--text-small); line-height: var(--text-small--line-height); }
+@utility type-small-medium { font-family: var(--font-sans); font-weight: 500; font-size: var(--text-small); line-height: var(--text-small--line-height); }
+@utility type-label { font-family: var(--font-sans); font-weight: 500; font-size: var(--text-label); line-height: var(--text-label--line-height); letter-spacing: 0.08em; text-transform: uppercase; }
