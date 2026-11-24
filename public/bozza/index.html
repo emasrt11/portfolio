@@ -8,13 +8,14 @@
   --bg-canvas:#f5f5f5; --bg-panel:#ffffff; --bg-raised:#ededed;
   --text-primary:#1e1e1e; --text-secondary:#6b6b6b;
   --border-default:#e3e3e3; --border-strong:#8f8f8f;
-  --accent:#0d99ff; --accent-strong:#0b6bc2; --accent-on-strong:#ffffff; --accent-subtle:#e5f4ff; --accent-link:#0b6bc2;
+  --accent:#0b8fe8; --accent-strong:#0b6bc2; --accent-on-strong:#ffffff; --accent-subtle:#e5f4ff; --accent-link:#0b6bc2;
   --canvas-dot:#b6b6b6;
   --sticky-blue:#a8daff; --sticky-purple:#cdb4ff; --sticky-yellow:#ffe066; --sticky-green:#a8f0c6;
   --shadow-color-ambient:rgb(30 30 30 / .06); --shadow-color-e2:rgb(30 30 30 / .12); --shadow-color-e3:rgb(30 30 30 / .16); --shadow-color-e4:rgb(30 30 30 / .20);
   --shadow-e2:0 1px 2px var(--shadow-color-ambient),0 4px 12px var(--shadow-color-e2);
   --shadow-e3:0 2px 4px var(--shadow-color-ambient),0 8px 24px var(--shadow-color-e3);
-  --radius-sm:4px; --radius:8px;
+  --shadow-e4:0 4px 8px var(--shadow-color-ambient),0 16px 48px var(--shadow-color-e4);
+  --radius-sm:4px; --radius-md:8px; --radius-lg:12px;
   --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
   --font-heading:"Fraunces",Georgia,serif; --font-sans:"Inter",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.7,.2,1);
@@ -38,7 +39,6 @@ button{font:inherit;color:inherit}
 .vp.pan{cursor:grabbing}
 .world{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
 .fr{position:absolute;box-sizing:border-box;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-sm);cursor:default;touch-action:none;user-select:none;-webkit-user-select:none}
-.fr.proj{cursor:pointer}
 .fr.sel{box-shadow:0 0 0 2px var(--accent);border-color:transparent}
 .fr.drag{box-shadow:var(--shadow-e3),0 0 0 2px var(--accent);cursor:grabbing;z-index:20}
 .fr:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
@@ -51,7 +51,13 @@ button{font:inherit;color:inherit}
 .card .th{height:140px;border-radius:var(--radius-sm)}
 .card:hover{box-shadow:var(--shadow-e2)}
 .card.sel:hover{box-shadow:0 0 0 2px var(--accent)}
-.me{width:252px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.card .btn{align-self:flex-start;margin-top:4px}
+.me{width:270px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.me h2 em,.ov em{font-style:normal;color:var(--accent-link)}
+.me .btn{align-self:flex-start;margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;background:var(--bg-panel);border:1px solid var(--border-strong);border-radius:var(--radius-sm);font:500 14px/1 var(--font-sans);cursor:pointer;text-decoration:none;color:var(--text-primary);transition:background .15s}
+.btn:hover{background:var(--bg-raised)}
+.btn svg{width:20px;height:20px;flex:none}
 .contact{width:380px;padding:24px;display:flex;flex-direction:column;gap:12px}
 .links{display:flex;flex-wrap:wrap}
 .links a{color:var(--accent-link);font:500 16px/1.5 var(--font-sans);text-decoration:none;padding:12px 8px;border-radius:var(--radius-sm)}
@@ -59,19 +65,24 @@ button{font:inherit;color:inherit}
 
 /* interfaccia fissa */
 .ui{position:fixed;z-index:30}
-.layers{left:max(16px,env(safe-area-inset-left,0px));top:max(16px,env(safe-area-inset-top,0px));width:200px;box-sizing:border-box;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius);box-shadow:var(--shadow-e2);padding:8px}
+.layers{left:max(16px,env(safe-area-inset-left,0px));top:max(16px,env(safe-area-inset-top,0px));width:200px;box-sizing:border-box;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:var(--shadow-e2);padding:8px}
 .layers h2{margin:2px 8px 6px;font:500 12px/1.4 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
 .layers button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:var(--radius-sm);padding:7px 8px;font:400 15px/1.3 var(--font-sans);cursor:pointer}
 .layers button:hover{background:var(--bg-raised)}
 .layers button[aria-current="true"]{background:var(--accent-subtle)}
 .layers .sq{width:10px;height:10px;border:1px solid var(--text-secondary);flex:none}
 .layers button[aria-current="true"] .sq{border-color:var(--accent-strong)}
-.toolbar{left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius);box-shadow:var(--shadow-e2)}
+.toolbar{left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:var(--shadow-e2)}
 .tb{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:40px;height:36px;padding:0 10px;background:none;border:0;border-radius:var(--radius-sm);font:500 15px/1 var(--font-sans);cursor:pointer;white-space:nowrap}
 .tb:hover{background:var(--bg-raised)}
 .tb svg{width:18px;height:18px;flex:none}
 .zoomv{min-width:48px;text-align:center;font:400 15px var(--font-sans);color:var(--text-secondary)}
 .sep{width:1px;height:20px;background:var(--border-default);margin:0 2px}
+/* "Riordina": compare solo quando un riquadro e' stato spostato */
+.tb[hidden],.sep[hidden]{display:none}
+#reset:not([hidden]){animation:pop .35s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+.world.back .fr{transition:left .55s var(--ease),top .55s var(--ease)}
 .hint{left:50%;top:max(16px,env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--bg-panel);border:1px solid var(--border-default);border-radius:999px;box-shadow:var(--shadow-e2);padding:8px 16px;font:400 14px/1.4 var(--font-sans);color:var(--text-secondary);transition:opacity .6s;white-space:nowrap;max-width:calc(100vw - 280px);overflow:hidden;text-overflow:ellipsis}
 .hint.off{opacity:0;pointer-events:none}
 
@@ -92,11 +103,88 @@ button{font:inherit;color:inherit}
 .close:hover{background:var(--border-default)}
 .close svg{width:20px;height:20px}
 
+/* pagina "Chi sono" in overlay: pannello al 90% della larghezza, sopra la lavagna con velo chiaro e blur.
+   Apertura: il velo sfuma, il pannello cresce partendo dal riquadro, le sezioni entrano una dopo l'altra.
+   Chiusura: stessa cosa al contrario, ma piu' rapida. */
+.ov{position:fixed;inset:0;z-index:60;overflow:auto;overscroll-behavior:contain;visibility:hidden;
+  background:rgb(245 245 245 / 0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+  transition:background .3s ease-in,backdrop-filter .3s ease-in,-webkit-backdrop-filter .3s ease-in,visibility 0s linear .3s}
+.ov.on{visibility:visible;background:rgb(245 245 245 / .6);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  transition:background .5s var(--ease),backdrop-filter .5s var(--ease),-webkit-backdrop-filter .5s var(--ease),visibility 0s}
+.ov-panel{box-sizing:border-box;width:90vw;max-width:1600px;margin:48px auto;background:var(--bg-panel);border-radius:var(--radius-md);box-shadow:var(--shadow-e4);
+  padding:0 48px 48px;display:flex;flex-direction:column;gap:48px;
+  opacity:0;transform:translateY(24px) scale(.9);transform-origin:var(--ox,50%) var(--oy,0);
+  transition:opacity .25s ease-in,transform .3s ease-in}
+.ov.on .ov-panel{opacity:1;transform:none;transition:opacity .4s var(--ease),transform .55s var(--ease)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .2s ease-in,transform .2s ease-in}
+.ov.on .rv{opacity:1;transform:none;transition:opacity .45s var(--ease),transform .55s var(--ease);transition-delay:calc(200ms + var(--i,0) * 70ms)}
+.ov-head{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;margin:0 -48px -16px;padding:12px 28px 0;background:var(--bg-panel);border-radius:var(--radius-md) var(--radius-md) 0 0}
+.ibtn{display:grid;place-items:center;width:40px;height:40px;background:none;border:0;border-radius:var(--radius-sm);cursor:pointer}
+.ibtn:hover{background:var(--bg-raised)}
+.ibtn svg{width:24px;height:24px}
+.t-h2{font:700 56px/1.08 var(--font-heading);letter-spacing:-.015em;margin:0}
+.ov-intro{display:grid;grid-template-columns:1fr 480px;gap:48px;align-items:start}
+.ov-intro .t-h2{font-size:clamp(2.4rem,4.4vw,3.5rem)}
+.ov-intro div{display:flex;flex-direction:column;gap:24px}
+.ov-intro p,.ov-exp p{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0}
+.ov-method{display:flex;flex-direction:column;gap:24px}
+.ov-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{display:flex;flex-direction:column;gap:12px;padding:24px;border:1px solid var(--border-default);border-top:3px solid var(--border-strong);border-radius:var(--radius-sm)}
+.step h3{font:700 clamp(2rem,4vw,3.5rem)/1.08 var(--font-heading);letter-spacing:-.015em;margin:0}
+.step p{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0}
+.step.dev{background:var(--accent-subtle);border-color:transparent;border-top:3px solid var(--accent-strong)}
+.ov-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sk{display:flex;flex-direction:column;gap:16px;padding:32px;border:1px solid var(--border-default);border-radius:var(--radius-md)}
+.sk h3{font:600 28px/1.18 var(--font-heading);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{padding:4px 12px;background:var(--bg-raised);border-radius:var(--radius-sm);font:400 16px/1.5 var(--font-sans)}
+.tok{display:flex;flex-direction:column;gap:4px;padding:16px;background:var(--bg-raised);border-radius:var(--radius-sm)}
+.tok b{font:500 16px/1.5 var(--font-sans)}
+.ov-exp{display:grid;grid-template-columns:300px 1fr;gap:48px}
+.ov-exp h2{font:600 40px/1.12 var(--font-heading);letter-spacing:-.01em;margin:0}
+.ov-exp ul{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--border-default)}
+.ov-exp li{display:grid;grid-template-columns:200px 1fr;gap:32px;padding:24px 0;border-top:1px solid var(--border-default)}
+.ov-exp li h3{font:600 22px/1.25 var(--font-heading);margin:0 0 4px}
+.ov-end{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.ov-end h2{font:600 28px/1.18 var(--font-heading);margin:0 0 4px}
+.ov-end p{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0}
+.ov-end div{display:flex;gap:12px}
+@media (max-width:900px){
+  .ov-panel{padding:0 24px 32px;gap:32px}
+  .ov-head{margin:0 -24px -8px;padding:8px 12px 0}
+  .ov-intro,.ov-exp,.ov-3,.ov-2{grid-template-columns:1fr}
+  .ov-exp li{grid-template-columns:1fr;gap:8px}
+}
+
+/* riquadro Esperienze (proposta C: fascia post-it) e la sua pagina a linea del tempo (proposta 1) */
+.exp{width:560px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.exp .band{display:flex;flex-direction:column;gap:4px;padding:24px;background:var(--sticky-blue);border-radius:var(--radius-sm)}
+.exp .band .t-label{color:var(--text-primary)}
+.exp .co{font:500 16px/1.5 var(--font-sans);margin:0;color:var(--text-primary)}
+.exp .btn{align-self:flex-start;margin-top:4px}
+.tl{display:flex;flex-direction:column;gap:32px}
+.tl-row{display:grid;grid-template-columns:240px 12px 1fr;gap:32px;align-items:stretch}
+.tl-when{display:flex;flex-direction:column;gap:4px}
+.tl-when p{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0}
+.tl-row.cur .tl-when .t-label{color:var(--accent-link)}
+.tl-mark{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tl-mark i{flex:none;width:12px;height:12px;margin-top:6px;border-radius:50%;background:var(--border-strong)}
+.tl-mark b{flex:1;width:2px;min-height:20px;background:var(--border-default)}
+.tl-row.cur .tl-mark i{background:var(--accent-strong)}
+.tl-row:last-child .tl-mark b{display:none}
+.tl-body{display:flex;flex-direction:column;gap:12px}
+.tl-row.cur .tl-body{padding:24px;background:var(--accent-subtle);border-radius:var(--radius-sm)}
+.tl-body h2{font:600 40px/1.12 var(--font-heading);letter-spacing:-.01em;margin:0}
+.tl-body h3{font:500 16px/1.5 var(--font-sans);margin:0}
+.tl-row.cur .tl-body h3{color:var(--accent-link)}
+.tl-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font:400 16px/1.5 var(--font-sans);color:var(--text-secondary)}
+@media (max-width:900px){ .tl-row{grid-template-columns:1fr;gap:8px} .tl-mark{display:none} .exp{width:100%} }
+
 /* vista lista (telefono e chi preferisce scorrere) */
 body.list{overflow:auto}
 body.list .vp{position:static;overflow:visible;touch-action:pan-y;cursor:auto;background-size:16px 16px!important;background-position:0 0!important;min-height:100vh}
 body.list .world{position:static;transform:none!important;width:auto;height:auto;display:flex;flex-direction:column;gap:56px;padding:72px 16px 120px;max-width:760px;margin:0 auto}
-body.list .fr{position:relative;left:auto!important;top:auto!important;width:100%!important;cursor:pointer}
+body.list .fr{position:relative;left:auto!important;top:auto!important;width:100%!important}
 body.list .fh{cursor:default}
 body.list .layers,body.list .hint,body.list .zoomonly{display:none}
 body.list .hero{padding:24px}
@@ -115,35 +203,47 @@ body.list .hero .fh i{display:none}
       <p class="t-lead">Progetto esperienze digitali con le esigenze degli utenti al centro, dal design system al codice.</p>
     </section>
 
-    <section class="fr card proj" data-id="p1" data-name="Opyn Pay Later" data-meta="Case study" data-x="1090" data-y="92" tabindex="0" aria-label="Opyn Pay Later, case study. Premi Invio per aprire">
+    <section class="fr card proj" data-id="p1" data-name="Opyn Pay Later" data-meta="Case study" data-x="1090" data-y="92" tabindex="0" aria-label="Opyn Pay Later, case study">
       <span class="fh">Opyn Pay Later<i>Case study</i></span>
       <div class="th" style="background:var(--sticky-blue)"></div>
       <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">Opyn Pay Later</h2><p class="t-small">BNPL pensato per le aziende.</p>
     </section>
 
-    <section class="fr card proj" data-id="p3" data-name="Emporium" data-meta="Case study" data-x="1090" data-y="440" tabindex="0" aria-label="Emporium, case study. Premi Invio per aprire">
+    <section class="fr card proj" data-id="p3" data-name="Emporium" data-meta="Case study" data-x="1090" data-y="456" tabindex="0" aria-label="Emporium, case study">
       <span class="fh">Emporium<i>Case study</i></span>
       <div class="th" style="background:var(--sticky-yellow)"></div>
       <span class="t-label">UX Design · 2024</span><h2 class="t-h4">Emporium</h2><p class="t-small">Il Lending as a Service.</p>
     </section>
 
-    <section class="fr card proj" data-id="p2" data-name="Design System" data-meta="Case study" data-x="300" data-y="690" tabindex="0" aria-label="Design System, case study. Premi Invio per aprire">
+    <section class="fr card proj" data-id="p2" data-name="Design System" data-meta="Case study" data-x="300" data-y="690" tabindex="0" aria-label="Design System, case study">
       <span class="fh">Design System<i>Case study</i></span>
       <div class="th" style="background:var(--sticky-purple)"></div>
       <span class="t-label">DesignOps · 2024</span><h2 class="t-h4">Design System</h2><p class="t-small">Nuova vita al design system di Opyn.</p>
     </section>
 
-    <section class="fr card proj" data-id="p4" data-name="TrainWithMe" data-meta="Case study" data-x="1090" data-y="770" tabindex="0" aria-label="TrainWithMe, case study. Premi Invio per aprire">
+    <section class="fr card proj" data-id="p4" data-name="TrainWithMe" data-meta="Case study" data-x="1090" data-y="830" tabindex="0" aria-label="TrainWithMe, case study">
       <span class="fh">TrainWithMe<i>Case study</i></span>
       <div class="th" style="background:var(--sticky-green)"></div>
       <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">TrainWithMe</h2><p class="t-small">Allenati insieme a un amico.</p>
     </section>
 
-    <section class="fr me" data-id="me" data-name="Chi sono" data-meta="Pagina" data-x="24" data-y="380" tabindex="0" aria-label="Chi sono">
+    <section class="fr me" data-id="me" data-name="Chi sono" data-meta="Pagina" data-x="0" data-y="380" tabindex="0" aria-label="Chi sono">
       <span class="fh">Chi sono<i>Pagina</i></span>
       <span class="t-label">Chi sono</span>
-      <h2 class="t-h4">Un designer appassionato di tutto ciò che è digitale.</h2>
-      <p class="t-small">Dall'impaginazione editoriale a HTML, CSS e CMS, fino al design di prodotto: oggi metto le esigenze delle persone al centro.</p>
+      <h2 class="t-h4">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI Designer</em>.</h2>
+      <p class="t-small">Progetto interfacce e design system che si capiscono al primo sguardo e restano coerenti nel tempo, dal disegno in Figma al codice.</p>
+      <p class="t-small">Parto dalle persone, non dagli schermi: se qualcosa non è chiaro per chi lo usa, lo ridisegno.</p>
+      <button class="btn" type="button" data-open-ov="me" aria-haspopup="dialog">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button>
+    </section>
+
+    <!-- Esperienze: contenuti dal curriculum (bozza, da rivedere). Posizione provvisoria: la disposizione della lavagna si decide a lavoro concluso -->
+    <section class="fr exp" data-id="es" data-name="Esperienze" data-meta="Pagina" data-x="1450" data-y="92" tabindex="0" aria-label="Esperienze">
+      <span class="fh">Esperienze<i>Pagina</i></span>
+      <div class="band"><span class="t-label">Da marzo 2025</span><h2 class="t-h4">UX/UI Designer</h2></div>
+      <p class="co">Moltiply Group · Milano</p>
+      <p class="t-small">Riprogettazione UX e UI di una piattaforma SaaS per fondi d’investimento, con user research e collaborazione con il team di sviluppo.</p>
+      <span class="t-label">+ 3 esperienze precedenti</span>
+      <button class="btn" type="button" data-open-ov="es" aria-haspopup="dialog">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button>
     </section>
 
     <section class="fr contact" data-id="ct" data-name="Contatti" data-meta="Pagina" data-x="640" data-y="640" tabindex="0" aria-label="Contatti">
@@ -156,16 +256,92 @@ body.list .hero .fh i{display:none}
 </div>
 
 <nav class="ui layers" id="layers" aria-label="Livelli: riquadri della lavagna"><h2>Livelli</h2><div id="layerList"></div></nav>
-<div class="ui hint" id="hint">Trascina per spostarti · Ctrl + rotella per lo zoom · Clicca un progetto per aprirlo</div>
+<div class="ui hint" id="hint">Trascina per spostarti · Ctrl + rotella per lo zoom · Premi Espandi per aprire un progetto</div>
 <div class="ui toolbar" id="toolbar" role="toolbar" aria-label="Strumenti">
   <button class="tb zoomonly" id="zo" aria-label="Riduci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
   <span class="zoomv zoomonly" id="zv" aria-live="polite">100%</span>
   <button class="tb zoomonly" id="zi" aria-label="Ingrandisci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
   <button class="tb zoomonly" id="zf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Adatta</button>
   <span class="sep zoomonly"></span>
+  <button class="tb zoomonly" id="reset" type="button" hidden title="Riporta i riquadri nella disposizione originale" aria-label="Riordina: riporta i riquadri nella disposizione originale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Riordina</button>
+  <span class="sep zoomonly" id="resetSep" hidden></span>
   <button class="tb" id="mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg><span id="modeL">Vista lista</span></button>
 </div>
 <div class="detail" id="detail" role="dialog" aria-modal="true" aria-label="Dettaglio del progetto" aria-hidden="true"></div>
+
+<div class="ov" data-frame="me" role="dialog" aria-modal="true" aria-labelledby="ovT" aria-hidden="true">
+  <div class="ov-panel">
+    <header class="ov-head">
+      <button class="ibtn ov-close" type="button" aria-label="Chiudi la pagina Chi sono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </header>
+    <section class="ov-intro rv" style="--i:0">
+      <h1 class="t-h2" id="ovT">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI Designer</em>.</h1>
+      <div>
+        <p>Progetto interfacce e design system che si capiscono al primo sguardo e restano coerenti nel tempo, dal disegno in Figma al codice.</p>
+        <p>Parto dalle persone, non dagli schermi: se qualcosa non è chiaro per chi lo usa, lo ridisegno.</p>
+      </div>
+    </section>
+    <section class="ov-method rv" style="--i:1">
+      <span class="t-label">Come lavoro</span>
+      <div class="ov-3">
+        <div class="step"><h3>Capire</h3><p>Persone, contesto, obiettivi: prima di disegnare cerco il problema vero.</p></div>
+        <div class="step"><h3>Disegnare</h3><p>Flussi, interfacce e design system che si capiscono al primo sguardo.</p></div>
+        <div class="step dev"><h3>Costruire</h3><p>Dal file di Figma al codice: stessi nomi, stessi token, stesso risultato.</p></div>
+      </div>
+    </section>
+    <section class="ov-2 rv" style="--i:2">
+      <div class="sk"><h3>Strumenti del design</h3><div class="chips"><span>Design System</span><span>Product Design</span><span>UI Design</span><span>UX Design</span><span>Visual Design</span><span>Web Design</span><span>Prototyping</span><span>Wireframing</span><span>Branding</span><span>Illustration</span><span>Motion Design</span></div></div>
+      <div class="sk"><h3>Strumenti dello sviluppo</h3><div class="chips"><span>HTML/CSS</span><span>CMS</span><span>React</span><span>TypeScript</span><span>Tailwind</span></div>
+        <div class="tok"><span class="t-label">Stesso nome in Figma e nel codice</span><b>accent/strong → var(--accent-strong)</b></div></div>
+    </section>
+    <section class="ov-exp rv" style="--i:3">
+      <h2>Esperienze</h2>
+      <ul>
+        <li><div><h3>Carta</h3><span class="t-label">Scuola</span></div><p>Tutto parte da tipografia, colore, impaginazione e tavole da disegno.</p></li>
+        <li><div><h3>Redazioni</h3><span class="t-label">Milano</span></div><p>Anni nelle grandi case editrici, su quotidiani e riviste: impaginazione e intera filiera, dal progetto alla stampa.</p></li>
+        <li><div><h3>Digitale</h3><span class="t-label">Oggi</span></div><p>La curiosità mi porta a HTML, CSS e CMS, poi a UI e UX design: soluzioni intuitive e su misura.</p></li>
+        <li><div><h3>Formazione</h3><span class="t-label">Master</span></div><p>UI design, specializzazione in progettazione web.</p></li>
+      </ul>
+    </section>
+    <footer class="ov-end rv" style="--i:4">
+      <div><h2>Parliamone</h2><p>Alcuni progetti sono riservati: te li racconto volentieri a voce.</p></div>
+      <div><a class="btn" href="#" data-todo>Curriculum</a><a class="btn" href="https://www.linkedin.com/in/sirtoriemanuele/" target="_blank" rel="noopener">LinkedIn</a></div>
+    </footer>
+  </div>
+</div>
+
+<div class="ov" data-frame="es" role="dialog" aria-modal="true" aria-labelledby="ovTes" aria-hidden="true">
+  <div class="ov-panel">
+    <header class="ov-head">
+      <button class="ibtn ov-close" type="button" aria-label="Chiudi la pagina Esperienze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </header>
+    <section class="ov-intro rv" style="--i:0">
+      <h1 class="t-h2" id="ovTes">Esperienze</h1>
+      <div><p>Dall’impaginazione editoriale al design di prodotto: il percorso che mi ha portato a progettare piattaforme fintech e design system.</p></div>
+    </section>
+    <section class="tl rv" style="--i:1">
+      <article class="tl-row cur"><div class="tl-when"><span class="t-label">Marzo 2025 – In corso</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
+        <div class="tl-body"><h2>Moltiply Group</h2><h3>UX/UI Designer</h3><ul>
+          <li>Riprogettazione della UX e UI di una piattaforma SaaS per la gestione di fondi d’investimento</li>
+          <li>Conduzione di user interview e usability test per identificare criticità e opportunità di miglioramento</li>
+          <li>Ottimizzazione dei flussi utente e semplificazione della navigazione in contesti ad alta complessità</li>
+          <li>Collaborazione con team di prodotto e sviluppo per l’implementazione delle soluzioni</li>
+          <li>Sperimentazione e integrazione di AI agents a supporto del processo di discovery, per accelerare la fase di generazione di concepts e la validazione dei user flows progettati</li></ul></div></article>
+      <article class="tl-row"><div class="tl-when"><span class="t-label">Maggio 2022 – Dicembre 2024</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
+        <div class="tl-body"><h2>Opyn</h2><h3>UX/UI Designer</h3><ul>
+          <li>Progettazione e sviluppo del design system utilizzato su più prodotti digitali</li>
+          <li>Partecipazione alla definizione della strategia di lancio di un nuovo prodotto fintech</li>
+          <li>Conduzione di attività di user research (interviste, usability test, session monitoring)</li>
+          <li>Progettazione di esperienze utente per web app, mobile e SaaS</li>
+          <li>Applicazione di metodologie di atomic design per garantire coerenza e scalabilità</li>
+          <li>Collaborazione cross-team con product manager e sviluppatori</li></ul></div></article>
+      <article class="tl-row"><div class="tl-when"><span class="t-label">Ottobre 2021 – Aprile 2022</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
+        <div class="tl-body"><h2>LC Publishing Group</h2><h3>Graphic Designer</h3></div></article>
+      <article class="tl-row"><div class="tl-when"><span class="t-label">Luglio 2014 – Settembre 2021</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
+        <div class="tl-body"><h2>Forbes - Gruppo BFC Media</h2><h3>Web &amp; Graphic Designer</h3></div></article>
+    </section>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -193,8 +369,17 @@ body.list .hero .fh i{display:none}
   /* ---- riquadri ---- */
   var frames={}, order=[];
   Array.prototype.forEach.call(world.querySelectorAll('.fr'),function(el){
-    var f={id:el.dataset.id,name:el.dataset.name,el:el,x:+el.dataset.x,y:+el.dataset.y};
+    var f={id:el.dataset.id,name:el.dataset.name,el:el,x:+el.dataset.x,y:+el.dataset.y,ox:+el.dataset.x,oy:+el.dataset.y};
     el.style.left=f.x+'px'; el.style.top=f.y+'px'; frames[f.id]=f; order.push(f);
+  });
+  /* bottone Espandi nei riquadri dei progetti (lo stesso di "Chi sono") */
+  var EXPAND_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg>';
+  order.forEach(function(f){
+    if(!PROJ[f.id]) return;
+    var b=document.createElement('button'); b.type='button'; b.className='btn'; b.innerHTML='Espandi'+EXPAND_SVG;
+    b.setAttribute('aria-haspopup','dialog'); b.setAttribute('aria-label','Espandi: apri il case study '+f.name);
+    b.addEventListener('click',function(e){ e.stopPropagation(); select(f.id); openProject(f.id); });
+    f.el.appendChild(b);
   });
   var layerList=$('layerList');
   order.forEach(function(f){
@@ -212,7 +397,10 @@ body.list .hero .fh i{display:none}
   /* ---- vista ---- */
   function apply(){
     world.style.transform='translate('+st.x+'px,'+st.y+'px) scale('+st.s+')';
-    var d=16*st.s; vp.style.backgroundSize=d+'px '+d+'px'; vp.style.backgroundPosition=st.x+'px '+st.y+'px';
+    /* griglia adattiva: il passo raddoppia (o si dimezza) finche' sullo schermo i punti restano tra 12 e 24 px.
+       Ogni livello e' un multiplo del precedente, quindi i punti restano allineati al punto 0 della lavagna. */
+    var d=16*st.s; while(d<12) d*=2; while(d>=24) d/=2;
+    vp.style.backgroundSize=d+'px '+d+'px'; vp.style.backgroundPosition=st.x+'px '+st.y+'px';
     zv.textContent=Math.round(st.s*100)+'%';
   }
   function animateTo(t,ms){
@@ -252,7 +440,7 @@ body.list .hero .fh i{display:none}
   var ptrs={}, pinch=null, panning=null;
   function hideHint(){ $('hint').classList.add('off'); }
   vp.addEventListener('pointerdown',function(e){
-    if(listMode) return; hideHint(); cancelAnimationFrame(anim);
+    if(listMode||e.target.closest('a,button')) return; hideHint(); cancelAnimationFrame(anim);
     ptrs[e.pointerId]={x:e.clientX,y:e.clientY}; vp.setPointerCapture(e.pointerId);
     var ids=Object.keys(ptrs);
     if(ids.length===2){ var a=ptrs[ids[0]],b=ptrs[ids[1]]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:st.s}; panning=null; }
@@ -274,12 +462,25 @@ body.list .hero .fh i{display:none}
     else { st.x-=e.deltaX; st.y-=e.deltaY; apply(); }
   },{passive:false});
 
+  /* ---- Riordina: il bottone compare solo se un riquadro non e' al suo posto ---- */
+  function updateReset(){
+    var moved=order.some(function(f){ return f.x!==f.ox||f.y!==f.oy; });
+    $('reset').hidden=!moved; $('resetSep').hidden=!moved;
+  }
+  $('reset').addEventListener('click',function(){
+    world.classList.add('back');
+    order.forEach(function(f){ f.x=f.ox; f.y=f.oy; f.el.style.left=f.x+'px'; f.el.style.top=f.y+'px'; });
+    updateReset();
+    setTimeout(function(){ world.classList.remove('back'); },650);
+    var s=frames[selId]; if(s) s.el.focus({preventScroll:true});
+  });
+
   /* ---- trascinare e aprire i riquadri ---- */
   var zTop=10;
   order.forEach(function(f){
     var el=f.el, down=null, moved=false;
     el.addEventListener('pointerdown',function(e){
-      if(e.target.closest('a')) return;
+      if(e.target.closest('a,button')) return;
       if(listMode) return;
       e.stopPropagation(); hideHint(); cancelAnimationFrame(anim);
       el.setPointerCapture(e.pointerId); down={x:e.clientX,y:e.clientY,ox:f.x,oy:f.y}; moved=false;
@@ -287,7 +488,7 @@ body.list .hero .fh i{display:none}
     el.addEventListener('pointermove',function(e){
       if(!down) return; var dx=e.clientX-down.x, dy=e.clientY-down.y;
       if(!moved&&Math.hypot(dx,dy)>5){ moved=true; el.classList.add('drag'); el.style.zIndex=++zTop; select(f.id); }
-      if(moved){ f.x=down.ox+dx/st.s; f.y=down.oy+dy/st.s; el.style.left=f.x+'px'; el.style.top=f.y+'px'; }
+      if(moved){ f.x=down.ox+dx/st.s; f.y=down.oy+dy/st.s; el.style.left=f.x+'px'; el.style.top=f.y+'px'; updateReset(); }
     });
     function up(){ if(!down) return; var was=moved; down=null; el.classList.remove('drag'); if(!was) activate(f); }
     el.addEventListener('pointerup',up);
@@ -297,7 +498,7 @@ body.list .hero .fh i{display:none}
       if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(f); }
       if(e.shiftKey&&e.key.indexOf('Arrow')===0&&!listMode){
         e.preventDefault(); var d=16;
-        if(e.key==='ArrowLeft') f.x-=d; if(e.key==='ArrowRight') f.x+=d; if(e.key==='ArrowUp') f.y-=d; if(e.key==='ArrowDown') f.y+=d;
+        if(e.key==='ArrowLeft') f.x-=d; if(e.key==='ArrowRight') f.x+=d; if(e.key==='ArrowUp') f.y-=d; if(e.key==='ArrowDown') f.y+=d; updateReset();
         el.style.left=f.x+'px'; el.style.top=f.y+'px';
       }
     });
@@ -305,8 +506,8 @@ body.list .hero .fh i{display:none}
   });
   function activate(f){
     select(f.id);
-    if(PROJ[f.id]) openProject(f.id);
-    else if(!listMode) animateTo(fitRect(rectOf(f),72,232));
+    /* il clic su un riquadro lo seleziona e ci avvicina lo zoom (come dai Livelli); il contenuto si apre solo con il bottone Espandi */
+    if(!listMode) animateTo(fitRect(rectOf(f),72,232));
   }
 
   /* ---- zoom sul riquadro e pagina di dettaglio ---- */
@@ -328,10 +529,39 @@ body.list .hero .fh i{display:none}
     if(!listMode&&prevView) animateTo(prevView,550);
     if(f) f.el.focus({preventScroll:true});
   }
+  /* ---- pagine in overlay ("Chi sono", "Esperienze"): un overlay per riquadro, collegato da data-frame ---- */
+  var openOvEl=null, lastFocus=null, inertEls=[vp].concat(Array.prototype.slice.call(document.querySelectorAll('.ui')));
+  function openOv(fid){
+    if(openOvEl) return;
+    var el=document.querySelector('.ov[data-frame="'+fid+'"]'), panel=el.querySelector('.ov-panel');
+    openOvEl=el; lastFocus=document.activeElement;
+    /* il pannello cresce a partire dal centro del riquadro da cui si apre */
+    var r=frames[fid].el.getBoundingClientRect(), pw=Math.min(innerWidth*.9,1600), pl=(innerWidth-pw)/2;
+    panel.style.setProperty('--ox',((r.left+r.width/2-pl)/pw*100)+'%');
+    panel.style.setProperty('--oy',(r.top+r.height/2-48)+'px');
+    el.scrollTop=0; document.body.style.overflow='hidden';
+    inertEls.forEach(function(e){ e.inert=true; });
+    el.setAttribute('aria-hidden','false');
+    requestAnimationFrame(function(){ el.classList.add('on'); el.querySelector('.ov-close').focus({preventScroll:true}); });
+  }
+  function closeOv(){
+    if(!openOvEl) return; var el=openOvEl; openOvEl=null;
+    el.classList.remove('on'); el.setAttribute('aria-hidden','true');
+    inertEls.forEach(function(e){ e.inert=false; });
+    document.body.style.overflow=listMode?'auto':'';
+    if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-open-ov]'),function(b){
+    b.addEventListener('click',function(e){ e.stopPropagation(); openOv(b.dataset.openOv); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.ov'),function(el){
+    el.querySelector('.ov-close').addEventListener('click',closeOv);
+    el.addEventListener('click',function(e){ if(e.target===el) closeOv(); });
+  });
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape') closeProject();
-    if(!openId&&!listMode&&(e.key==='+'||e.key==='=')) zoomBy(1.2);
-    if(!openId&&!listMode&&e.key==='-') zoomBy(1/1.2);
+    if(e.key==='Escape'){ closeOv(); closeProject(); }
+    if(!openId&&!openOvEl&&!listMode&&(e.key==='+'||e.key==='=')) zoomBy(1.2);
+    if(!openId&&!openOvEl&&!listMode&&e.key==='-') zoomBy(1/1.2);
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-todo]'),function(a){ a.addEventListener('click',function(e){ e.preventDefault(); a.textContent=a.textContent.replace(' ↗','')+' (da collegare)'; }); });
 

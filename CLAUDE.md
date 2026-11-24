@@ -41,6 +41,13 @@ eseguire la build o provare una modifica, **dillo chiaramente**: non dire che fu
 - Il sito è pubblico: **non inserire** email o altri dati personali nel codice, né contenuti di clienti o datori di lavoro
   (per esempio i case study di Opyn ed Emporium) senza conferma esplicita del designer.
 
+## Figma: nomi dei livelli (regola del designer, 2026-11-24)
+**Nessun nome generico** in Figma: mai "Frame 1", "Group", "Rectangle", "Vector", "Auto layout" o "… copy". Dopo ogni lavoro,
+e dopo ogni modifica manuale del designer, cerca questi nomi in tutte le pagine (escluso l'interno delle istanze) e
+rinominali con nomi di ruolo coerenti: `Intestazione`, `Nome e ruolo`, `Gruppo · Progetti`, `Tracciato 1`, `Icona · <nome>`,
+`Componenti · <nome>` per i riquadri. Segnala i falsi positivi e rifai il controllo. Se non puoi rinominare qualcosa (interno
+di una istanza), dillo.
+
 ## Come lavorare con il designer
 - Procedi un passo alla volta e **mostra il risultato visivo** (screenshot, anteprima) a ogni passo.
 - Spiega in modo semplice, senza dare per scontato che conosca Git, npm o il terminale: indica i passi da fare.

@@ -13,23 +13,27 @@
   --color-neutral-50: #f5f5f5;
   --color-neutral-100: #ededed;
   --color-neutral-200: #e3e3e3;
+  --color-neutral-250: #cdcdcd;
   --color-neutral-300: #b6b6b6;
   --color-neutral-400: #8f8f8f;
   --color-neutral-600: #6b6b6b;
   --color-neutral-900: #1e1e1e;
   --color-blue-50: #e5f4ff;
-  --color-blue-500: #0d99ff;
+  --color-blue-600: #0b8fe8;
   --color-blue-700: #0b6bc2;
+  --color-blue-800: #0a5aa3;
+  --color-blue-900: #084a85;
+  --color-blue-200: #a8daff;
+  --color-purple-200: #cdb4ff;
   --color-purple-600: #7b4dd8;
+  --color-yellow-200: #ffe066;
   --color-yellow-400: #ffcd29;
+  --color-green-200: #a8f0c6;
   --color-green-500: #14ae5c;
   --color-red-500: #f24822;
-  --color-sticky-yellow: #ffe066;
-  --color-sticky-purple: #cdb4ff;
-  --color-sticky-blue: #a8daff;
-  --color-sticky-green: #a8f0c6;
   --radius-4: 0.25rem;
   --radius-8: 0.5rem;
+  --radius-12: 0.75rem;
 
   /* ombre a due strati (stessi valori degli stili Elevation/1-4 in Figma): utility shadow-e1 … shadow-e4 */
   --shadow-e1: 0 1px 2px var(--shadow-color-ambient), 0 1px 3px var(--shadow-color-e1);
@@ -46,24 +50,33 @@
   --text-secondary: var(--color-neutral-600);
   --border-default: var(--color-neutral-200);
   --border-strong: var(--color-neutral-400);
-  --accent: var(--color-blue-500);          /* selezione, focus: mai testo */
+  --accent: var(--color-blue-600);          /* selezione e focus (3,2:1 sul canvas, 3,4:1 sul bianco): mai testo */
   --accent-text: var(--color-neutral-900);  /* testo su --accent */
   --accent-strong: var(--color-blue-700);   /* azione principale */
   --accent-on-strong: var(--color-white);
   --accent-subtle: var(--color-blue-50);    /* voce selezionata */
   --accent-link: var(--color-blue-700);
-  --accent-purple: var(--color-purple-600);
+  /* stati dei controlli: hover, pressed, disabled */
+  --accent-strong-hover: var(--color-blue-800);
+  --accent-strong-pressed: var(--color-blue-900);
+  --bg-raised-hover: var(--color-neutral-200);
+  --bg-raised-pressed: var(--color-neutral-250);
+  --bg-disabled: var(--color-neutral-200);
+  --text-disabled: var(--color-neutral-400);
+  --icon-color: currentColor;   /* in Figma: variabile icon/color con modalità (Default, On strong, Link, Disabled) */
   --highlight: var(--color-yellow-400);
   --highlight-text: var(--color-neutral-900);
   --status-success: var(--color-green-500);
   --status-danger: var(--color-red-500);
   --canvas-dot: var(--color-neutral-300);
-  --sticky-blue: var(--color-sticky-blue);
-  --sticky-purple: var(--color-sticky-purple);
-  --sticky-yellow: var(--color-sticky-yellow);
-  --sticky-green: var(--color-sticky-green);
-  --radius: var(--radius-8);
-  --radius-sm: var(--radius-4);
+  --sticky-blue: var(--color-blue-200);
+  --sticky-purple: var(--color-purple-200);
+  --sticky-yellow: var(--color-yellow-200);
+  --sticky-green: var(--color-green-200);
+  /* raggi (radius/sm · md · lg in Figma) */
+  --radius-sm: var(--radius-4);   /* 4: riquadri, bottoni, card */
+  --radius-md: var(--radius-8);   /* 8: pannelli e contenitori grandi */
+  --radius-lg: var(--radius-12);  /* 12: finestre in primo piano (per ora non usato) */
 
   /* colori delle ombre (variabili shadow/… in Figma) */
   --shadow-color-ambient: rgb(30 30 30 / 0.06);
@@ -93,7 +106,12 @@
   --icon-lg: 1.5rem;       /* 24 */
   --icon-xl: 2rem;         /* 32 */
   --stroke-thin: 1px;
-  --stroke-icon: 2px;
+  /* spessore del tratto delle icone per taglia (variabile icon/stroke-width, collection Icon size) */
+  --icon-stroke-sm: 1.5;   /* icona 16 px */
+  --icon-stroke-md: 1.75;  /* icona 20 px */
+  --icon-stroke-lg: 2;     /* icona 24 px */
+  --icon-stroke-xl: 2.5;   /* icona 32 px */
+  --icon-stroke-width: var(--icon-stroke-lg); /* valore predefinito, come la modalità lg · 24 in Figma */
   --hit-min: 2.75rem;      /* 44, area di tocco minima */
 
   /* livelli sovrapposti */
@@ -137,9 +155,10 @@
   --color-accent-foreground: var(--text-primary);
   --color-ring: var(--accent);
 
-  --radius-md: calc(var(--radius-sm) + 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* utility rounded-sm, rounded-md, rounded-lg = radius/sm, md, lg (stessi valori dei raggi in :root) */
+  --radius-sm: var(--radius-4);
+  --radius-md: var(--radius-8);
+  --radius-lg: var(--radius-12);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Fraunces", ui-serif, Georgia, serif;
