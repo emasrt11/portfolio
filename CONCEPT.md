@@ -16,6 +16,12 @@ un pannello **Livelli** come menu, una barra strumenti con zoom e "Adatta". Chi 
 | Stile componenti | Angoli netti (4px), come l'editor di design |
 | Colori e font | Cambiati il 2026-11-23 (terza versione): lavagna chiara con griglia a punti, ispirata a FigJam (un solo tema, chiaro), titoli in Anek Bangla. Vedi DESIGN-SYSTEM.md |
 
+## Bozza navigabile
+`public/bozza/index.html` è una bozza della home a canvas in un solo file (HTML, CSS e JavaScript), con la grafica del design
+in Figma: lavagna con griglia a punti, riquadri trascinabili, pan e zoom, pannello Livelli, barra strumenti, zoom sul
+progetto che apre il dettaglio, vista lista per il telefono. Dopo la pubblicazione è su `…/portfolio/bozza/`. Serve a
+raccogliere pareri; non è ancora il sito in React. Email e curriculum sono segnaposto ("da collegare").
+
 ## Da tenere d'occhio
 - **Accessibilità:** il canvas deve avere un'alternativa navigabile da tastiera e da screen reader (il pannello Livelli
   fa da indice; ogni riquadro raggiungibile con Tab; riquadri spostabili anche da tastiera).

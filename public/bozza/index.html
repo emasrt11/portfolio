@@ -1,0 +1,352 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Portfolio Emanuele Sirtori</title>
+<meta name="description" content="Bozza del portfolio di Emanuele Sirtori, UX/UI Designer: una lavagna da esplorare.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@400;500&display=swap">
+<style>
+/* Home a canvas: lavagna con griglia a punti, riquadri trascinabili, pannello Livelli e barra strumenti.
+   Token con gli stessi nomi del design system (DESIGN-SYSTEM.md). Un solo tema, chiaro, per scelta. */
+:root{
+  --bg-canvas:#f5f5f5; --bg-panel:#ffffff; --bg-raised:#ededed;
+  --text-primary:#1e1e1e; --text-secondary:#6b6b6b;
+  --border-default:#e3e3e3; --border-strong:#8f8f8f;
+  --accent:#0d99ff; --accent-strong:#0b6bc2; --accent-on-strong:#ffffff; --accent-subtle:#e5f4ff; --accent-link:#0b6bc2;
+  --canvas-dot:#b6b6b6;
+  --sticky-blue:#a8daff; --sticky-purple:#cdb4ff; --sticky-yellow:#ffe066; --sticky-green:#a8f0c6;
+  --shadow-color-ambient:rgb(30 30 30 / .06); --shadow-color-e2:rgb(30 30 30 / .12); --shadow-color-e3:rgb(30 30 30 / .16); --shadow-color-e4:rgb(30 30 30 / .20);
+  --shadow-e2:0 1px 2px var(--shadow-color-ambient),0 4px 12px var(--shadow-color-e2);
+  --shadow-e3:0 2px 4px var(--shadow-color-ambient),0 8px 24px var(--shadow-color-e3);
+  --radius-sm:4px; --radius:8px;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --font-heading:"Fraunces",Georgia,serif; --font-sans:"Inter",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+html,body{height:100%;margin:0}
+body{overflow:hidden;background:var(--bg-canvas);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* stili di testo (scala del design system) */
+.t-label{font:500 14px/1.4 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
+.t-h1{font:900 80px/1.03 var(--font-heading);letter-spacing:-.02em;margin:0}
+.t-h3{font:600 40px/1.12 var(--font-heading);letter-spacing:-.01em;margin:0}
+.t-h4{font:600 28px/1.18 var(--font-heading);letter-spacing:-.005em;margin:0}
+.t-lead{font:400 24px/1.4 var(--font-sans);margin:0;color:var(--text-secondary)}
+.t-small{font:400 16px/1.5 var(--font-sans);margin:0;color:var(--text-secondary)}
+
+/* lavagna */
+.vp{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;background-color:var(--bg-canvas);
+  background-image:radial-gradient(circle,var(--canvas-dot) 1px,transparent 1.3px);background-size:16px 16px}
+.vp.pan{cursor:grabbing}
+.world{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
+.fr{position:absolute;box-sizing:border-box;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-sm);cursor:default;touch-action:none;user-select:none;-webkit-user-select:none}
+.fr.proj{cursor:pointer}
+.fr.sel{box-shadow:0 0 0 2px var(--accent);border-color:transparent}
+.fr.drag{box-shadow:var(--shadow-e3),0 0 0 2px var(--accent);cursor:grabbing;z-index:20}
+.fr:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.fh{position:absolute;left:0;bottom:100%;margin-bottom:6px;font:500 14px/1.4 var(--font-sans);color:var(--text-secondary);white-space:nowrap;cursor:grab}
+.fh i{font-style:normal;opacity:.6;margin-left:8px}
+
+.hero{width:720px;padding:48px;display:flex;flex-direction:column;gap:16px}
+.hero .t-h1 em{font-style:normal;color:var(--accent-strong)}
+.card{width:300px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.card .th{height:140px;border-radius:var(--radius-sm)}
+.card:hover{box-shadow:var(--shadow-e2)}
+.card.sel:hover{box-shadow:0 0 0 2px var(--accent)}
+.me{width:252px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.contact{width:380px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.links{display:flex;flex-wrap:wrap}
+.links a{color:var(--accent-link);font:500 16px/1.5 var(--font-sans);text-decoration:none;padding:12px 8px;border-radius:var(--radius-sm)}
+.links a:hover{background:var(--bg-raised)}
+
+/* interfaccia fissa */
+.ui{position:fixed;z-index:30}
+.layers{left:max(16px,env(safe-area-inset-left,0px));top:max(16px,env(safe-area-inset-top,0px));width:200px;box-sizing:border-box;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius);box-shadow:var(--shadow-e2);padding:8px}
+.layers h2{margin:2px 8px 6px;font:500 12px/1.4 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
+.layers button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:var(--radius-sm);padding:7px 8px;font:400 15px/1.3 var(--font-sans);cursor:pointer}
+.layers button:hover{background:var(--bg-raised)}
+.layers button[aria-current="true"]{background:var(--accent-subtle)}
+.layers .sq{width:10px;height:10px;border:1px solid var(--text-secondary);flex:none}
+.layers button[aria-current="true"] .sq{border-color:var(--accent-strong)}
+.toolbar{left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:4px;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius);box-shadow:var(--shadow-e2)}
+.tb{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:40px;height:36px;padding:0 10px;background:none;border:0;border-radius:var(--radius-sm);font:500 15px/1 var(--font-sans);cursor:pointer;white-space:nowrap}
+.tb:hover{background:var(--bg-raised)}
+.tb svg{width:18px;height:18px;flex:none}
+.zoomv{min-width:48px;text-align:center;font:400 15px var(--font-sans);color:var(--text-secondary)}
+.sep{width:1px;height:20px;background:var(--border-default);margin:0 2px}
+.hint{left:50%;top:max(16px,env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--bg-panel);border:1px solid var(--border-default);border-radius:999px;box-shadow:var(--shadow-e2);padding:8px 16px;font:400 14px/1.4 var(--font-sans);color:var(--text-secondary);transition:opacity .6s;white-space:nowrap;max-width:calc(100vw - 280px);overflow:hidden;text-overflow:ellipsis}
+.hint.off{opacity:0;pointer-events:none}
+
+/* pagina di dettaglio (zoom sul riquadro) */
+.detail{position:fixed;inset:0;z-index:50;background:var(--bg-panel);overflow:auto;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.detail.on{opacity:1;pointer-events:auto}
+.detail article{max-width:760px;margin:0 auto;padding:96px 24px 120px;display:flex;flex-direction:column;gap:24px}
+.detail h1{font:900 clamp(2.6rem,8vw,5rem)/1.03 var(--font-heading);letter-spacing:-.02em;margin:0}
+.detail .th{height:160px;border-radius:var(--radius-sm)}
+.detail .meta{display:flex;gap:24px;flex-wrap:wrap}
+.detail .meta div{display:flex;flex-direction:column;gap:2px}
+.detail .meta b{font:500 18px/1.4 var(--font-sans)}
+.detail p{font:400 20px/1.6 var(--font-sans);margin:0;max-width:60ch}
+.detail h2{font:600 28px/1.18 var(--font-heading);margin:8px 0 0}
+.detail ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;font:400 18px/1.55 var(--font-sans);max-width:62ch}
+.detail .note{font:400 14px/1.5 var(--font-sans);color:var(--text-secondary);border-top:1px solid var(--border-default);padding-top:16px}
+.close{position:fixed;top:max(16px,env(safe-area-inset-top,0px));right:16px;z-index:2;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;background:var(--bg-raised);border:0;border-radius:var(--radius-sm);font:500 16px/1 var(--font-sans);cursor:pointer}
+.close:hover{background:var(--border-default)}
+.close svg{width:20px;height:20px}
+
+/* vista lista (telefono e chi preferisce scorrere) */
+body.list{overflow:auto}
+body.list .vp{position:static;overflow:visible;touch-action:pan-y;cursor:auto;background-size:16px 16px!important;background-position:0 0!important;min-height:100vh}
+body.list .world{position:static;transform:none!important;width:auto;height:auto;display:flex;flex-direction:column;gap:56px;padding:72px 16px 120px;max-width:760px;margin:0 auto}
+body.list .fr{position:relative;left:auto!important;top:auto!important;width:100%!important;cursor:pointer}
+body.list .fh{cursor:default}
+body.list .layers,body.list .hint,body.list .zoomonly{display:none}
+body.list .hero{padding:24px}
+body.list .t-h1{font-size:clamp(2rem,9vw,4.5rem);overflow-wrap:break-word}
+body.list .fr{min-width:0}
+body.list .hero .fh i{display:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+
+<div class="vp" id="vp">
+  <div class="world" id="world">
+    <section class="fr hero" data-id="home" data-name="Home" data-meta="1440 × 900" data-x="300" data-y="120" tabindex="0" aria-label="Home">
+      <span class="fh">Home<i>1440 × 900</i></span>
+      <span class="t-label">UX/UI Designer</span>
+      <h1 class="t-h1">Curioso, empatico, <em>appassionato.</em></h1>
+      <p class="t-lead">Progetto esperienze digitali con le esigenze degli utenti al centro, dal design system al codice.</p>
+    </section>
+
+    <section class="fr card proj" data-id="p1" data-name="Opyn Pay Later" data-meta="Case study" data-x="1090" data-y="92" tabindex="0" aria-label="Opyn Pay Later, case study. Premi Invio per aprire">
+      <span class="fh">Opyn Pay Later<i>Case study</i></span>
+      <div class="th" style="background:var(--sticky-blue)"></div>
+      <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">Opyn Pay Later</h2><p class="t-small">BNPL pensato per le aziende.</p>
+    </section>
+
+    <section class="fr card proj" data-id="p3" data-name="Emporium" data-meta="Case study" data-x="1090" data-y="440" tabindex="0" aria-label="Emporium, case study. Premi Invio per aprire">
+      <span class="fh">Emporium<i>Case study</i></span>
+      <div class="th" style="background:var(--sticky-yellow)"></div>
+      <span class="t-label">UX Design · 2024</span><h2 class="t-h4">Emporium</h2><p class="t-small">Il Lending as a Service.</p>
+    </section>
+
+    <section class="fr card proj" data-id="p2" data-name="Design System" data-meta="Case study" data-x="300" data-y="690" tabindex="0" aria-label="Design System, case study. Premi Invio per aprire">
+      <span class="fh">Design System<i>Case study</i></span>
+      <div class="th" style="background:var(--sticky-purple)"></div>
+      <span class="t-label">DesignOps · 2024</span><h2 class="t-h4">Design System</h2><p class="t-small">Nuova vita al design system di Opyn.</p>
+    </section>
+
+    <section class="fr card proj" data-id="p4" data-name="TrainWithMe" data-meta="Case study" data-x="1090" data-y="770" tabindex="0" aria-label="TrainWithMe, case study. Premi Invio per aprire">
+      <span class="fh">TrainWithMe<i>Case study</i></span>
+      <div class="th" style="background:var(--sticky-green)"></div>
+      <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">TrainWithMe</h2><p class="t-small">Allenati insieme a un amico.</p>
+    </section>
+
+    <section class="fr me" data-id="me" data-name="Chi sono" data-meta="Pagina" data-x="24" data-y="380" tabindex="0" aria-label="Chi sono">
+      <span class="fh">Chi sono<i>Pagina</i></span>
+      <span class="t-label">Chi sono</span>
+      <h2 class="t-h4">Un designer appassionato di tutto ciò che è digitale.</h2>
+      <p class="t-small">Dall'impaginazione editoriale a HTML, CSS e CMS, fino al design di prodotto: oggi metto le esigenze delle persone al centro.</p>
+    </section>
+
+    <section class="fr contact" data-id="ct" data-name="Contatti" data-meta="Pagina" data-x="640" data-y="640" tabindex="0" aria-label="Contatti">
+      <span class="fh">Contatti<i>Pagina</i></span>
+      <span class="t-label">Contatti</span>
+      <h2 class="t-h4">Scrivimi, parliamone.</h2>
+      <div class="links"><a href="https://www.linkedin.com/in/sirtoriemanuele/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="#" data-todo>Email ↗</a><a href="#" data-todo>Curriculum ↗</a></div>
+    </section>
+  </div>
+</div>
+
+<nav class="ui layers" id="layers" aria-label="Livelli: riquadri della lavagna"><h2>Livelli</h2><div id="layerList"></div></nav>
+<div class="ui hint" id="hint">Trascina per spostarti · Ctrl + rotella per lo zoom · Clicca un progetto per aprirlo</div>
+<div class="ui toolbar" id="toolbar" role="toolbar" aria-label="Strumenti">
+  <button class="tb zoomonly" id="zo" aria-label="Riduci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+  <span class="zoomv zoomonly" id="zv" aria-live="polite">100%</span>
+  <button class="tb zoomonly" id="zi" aria-label="Ingrandisci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+  <button class="tb zoomonly" id="zf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Adatta</button>
+  <span class="sep zoomonly"></span>
+  <button class="tb" id="mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg><span id="modeL">Vista lista</span></button>
+</div>
+<div class="detail" id="detail" role="dialog" aria-modal="true" aria-label="Dettaglio del progetto" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var vp=$('vp'), world=$('world'), detail=$('detail'), zv=$('zv');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var st={x:0,y:0,s:1}, anim=null, listMode=false, selId='home', prevView=null, openId=null;
+
+  /* ---- contenuti dei case study (sintesi dal sito attuale: da rivedere) ---- */
+  var PROJ={
+    p1:{t:'Opyn Pay Later',cat:'UX/UI Design',role:'UX/UI Designer',year:'2022',c:'var(--sticky-blue)',
+      lead:'Una nuova soluzione di BNPL (Buy Now Pay Later) per le aziende: pagamenti dilazionati flessibili, facili e sicuri in ambito B2B.',
+      h:'Cosa ho fatto',li:['Ricerca: 12 interviste e un\'indagine quantitativa con 294 aziende merchant e 317 buyer.','Ideazione: workshop con il core team; funzionalità come Pay by Link, aree personali e notifiche.','Wireframe a bassa fedeltà, test e versione ad alta fedeltà.','Dopo il lancio: i link di pagamento scadevano troppo spesso, quindi la validità è passata da 24 a 48 ore; aggiunta una sezione per monitorare rate e insoluti.']},
+    p2:{t:'Design System',cat:'DesignOps',role:'UX/UI Designer',year:'2024',c:'var(--sticky-purple)',
+      lead:'Ricostruire e dare nuova vita al design system di Opyn, per renderlo accessibile e scalabile.',
+      h:'Cosa ho fatto',li:['Punto di partenza: un sistema pensato da un\'agenzia esterna per un solo prodotto, senza documentazione né parte di sviluppo, con componenti non coerenti e revisioni lunghe.','Nomi orientati allo sviluppo, tipografia e palette unificate, sistema di spaziature e ombre.','Libreria di componenti con auto-layout e documentazione con breakpoint, icone, uso dei componenti e cosa fare e non fare.','Prossimi passi: handoff in Figma con gli sviluppatori, Storybook e una guida ai contenuti per il marketing.']},
+    p3:{t:'Emporium',cat:'UX Design',role:'UX/UI Designer',year:'2024',c:'var(--sticky-yellow)',
+      lead:'Il Lending as a Service per il tuo business: operazioni contabili su più conti correnti in modo usabile e veloce.',
+      h:'Cosa ho fatto',li:['Riprogettazione della sezione contabilità di un SaaS per la gestione del credito, da un solo conto a 15 conti correnti.','Ricerca con interviste e shadowing: lentezza, difficoltà a collegare registrazione e movimento, impossibilità di fare più operazioni insieme.','Dashboard a card per conto, tab per passare da un conto all\'altro, alert con colori e icone, registrazioni legate al movimento e operazioni massive con checkbox.','Test con utenti finali con feedback positivi; sviluppo in due sprint.']},
+    p4:{t:'TrainWithMe',cat:'UX/UI Design',role:'UX/UI Designer',year:'2022',c:'var(--sticky-green)',
+      lead:'Unisci le forze attraverso il tuo telefono: allenati insieme a un amico spronandovi a vicenda.',
+      h:'Cosa ho fatto',li:['Un\'app per seguire una sessione di allenamento con un amico o con un altro utente scelto a caso; a fine allenamento il partner dà una valutazione che genera un "Motivation Score".','Benchmark su cinque app di fitness e tre personas.','System map, user journey, wireframe, style tile e UI kit, fino al prototipo.']}
+  };
+
+  /* ---- riquadri ---- */
+  var frames={}, order=[];
+  Array.prototype.forEach.call(world.querySelectorAll('.fr'),function(el){
+    var f={id:el.dataset.id,name:el.dataset.name,el:el,x:+el.dataset.x,y:+el.dataset.y};
+    el.style.left=f.x+'px'; el.style.top=f.y+'px'; frames[f.id]=f; order.push(f);
+  });
+  var layerList=$('layerList');
+  order.forEach(function(f){
+    var b=document.createElement('button'); b.type='button'; b.dataset.id=f.id;
+    b.innerHTML='<span class="sq"></span><span></span>'; b.lastChild.textContent=f.name;
+    b.addEventListener('click',function(){ select(f.id); if(!listMode) animateTo(fitRect(rectOf(f),72,232)); });
+    layerList.appendChild(b); f.btn=b;
+  });
+  function select(id){
+    selId=id;
+    order.forEach(function(f){ f.el.classList.toggle('sel',f.id===id); if(f.btn) f.btn.setAttribute('aria-current',String(f.id===id)); });
+  }
+  function rectOf(f){ return {x:f.x,y:f.y,w:f.el.offsetWidth,h:f.el.offsetHeight}; }
+
+  /* ---- vista ---- */
+  function apply(){
+    world.style.transform='translate('+st.x+'px,'+st.y+'px) scale('+st.s+')';
+    var d=16*st.s; vp.style.backgroundSize=d+'px '+d+'px'; vp.style.backgroundPosition=st.x+'px '+st.y+'px';
+    zv.textContent=Math.round(st.s*100)+'%';
+  }
+  function animateTo(t,ms){
+    ms=ms==null?650:ms; cancelAnimationFrame(anim);
+    if(reduce||ms===0){st={x:t.x,y:t.y,s:t.s};apply();return Promise.resolve();}
+    var a={x:st.x,y:st.y,s:st.s}, t0=performance.now();
+    return new Promise(function(res){
+      (function step(now){
+        var k=Math.min(1,(now-t0)/ms), e=1-Math.pow(1-k,3);
+        st.x=a.x+(t.x-a.x)*e; st.y=a.y+(t.y-a.y)*e; st.s=a.s+(t.s-a.s)*e; apply();
+        if(k<1) anim=requestAnimationFrame(step); else res();
+      })(t0);
+    });
+  }
+  function fitRect(r,pad,left){
+    var W=vp.clientWidth,H=vp.clientHeight, aw=W-left-pad*2, ah=H-pad*2-40;
+    var s=Math.min(2,Math.max(.25,Math.min(aw/r.w,ah/r.h)));
+    return {s:s,x:left+pad+(aw-r.w*s)/2-r.x*s,y:pad+20+(ah-r.h*s)/2-r.y*s};
+  }
+  function bbox(){
+    var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    order.forEach(function(f){ var r=rectOf(f); x0=Math.min(x0,r.x);y0=Math.min(y0,r.y-24);x1=Math.max(x1,r.x+r.w);y1=Math.max(y1,r.y+r.h); });
+    return {x:x0,y:y0,w:x1-x0,h:y1-y0};
+  }
+  function initialView(){
+    var W=vp.clientWidth, s=Math.min(1,W/1440);
+    return {s:s,x:(W-1440*s)/2,y:0};
+  }
+  function zoomAt(cx,cy,ns){
+    ns=Math.max(.25,Math.min(2,ns)); st.x=cx-(cx-st.x)*ns/st.s; st.y=cy-(cy-st.y)*ns/st.s; st.s=ns; apply();
+  }
+  function zoomBy(k){ cancelAnimationFrame(anim); var W=vp.clientWidth,H=vp.clientHeight; zoomAt(W/2,H/2,st.s*k); }
+  $('zi').onclick=function(){zoomBy(1.2)}; $('zo').onclick=function(){zoomBy(1/1.2)};
+  $('zf').onclick=function(){ animateTo(fitRect(bbox(),48,vp.clientWidth>900?232:0)); };
+
+  /* ---- pan, zoom con rotella e pizzico ---- */
+  var ptrs={}, pinch=null, panning=null;
+  function hideHint(){ $('hint').classList.add('off'); }
+  vp.addEventListener('pointerdown',function(e){
+    if(listMode) return; hideHint(); cancelAnimationFrame(anim);
+    ptrs[e.pointerId]={x:e.clientX,y:e.clientY}; vp.setPointerCapture(e.pointerId);
+    var ids=Object.keys(ptrs);
+    if(ids.length===2){ var a=ptrs[ids[0]],b=ptrs[ids[1]]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:st.s}; panning=null; }
+    else { panning={x:e.clientX,y:e.clientY,ox:st.x,oy:st.y}; vp.classList.add('pan'); }
+  });
+  vp.addEventListener('pointermove',function(e){
+    if(!ptrs[e.pointerId]) return; ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
+    var ids=Object.keys(ptrs);
+    if(pinch&&ids.length===2){
+      var a=ptrs[ids[0]],b=ptrs[ids[1]], d=Math.hypot(a.x-b.x,a.y-b.y);
+      zoomAt((a.x+b.x)/2,(a.y+b.y)/2,pinch.s*d/pinch.d);
+    } else if(panning){ st.x=panning.ox+e.clientX-panning.x; st.y=panning.oy+e.clientY-panning.y; apply(); }
+  });
+  function endPtr(e){ delete ptrs[e.pointerId]; if(Object.keys(ptrs).length<2) pinch=null; if(!Object.keys(ptrs).length){ panning=null; vp.classList.remove('pan'); } }
+  vp.addEventListener('pointerup',endPtr); vp.addEventListener('pointercancel',endPtr);
+  vp.addEventListener('wheel',function(e){
+    if(listMode) return; e.preventDefault(); hideHint(); cancelAnimationFrame(anim);
+    if(e.ctrlKey||e.metaKey) zoomAt(e.clientX,e.clientY,st.s*Math.exp(-e.deltaY*.01));
+    else { st.x-=e.deltaX; st.y-=e.deltaY; apply(); }
+  },{passive:false});
+
+  /* ---- trascinare e aprire i riquadri ---- */
+  var zTop=10;
+  order.forEach(function(f){
+    var el=f.el, down=null, moved=false;
+    el.addEventListener('pointerdown',function(e){
+      if(e.target.closest('a')) return;
+      if(listMode) return;
+      e.stopPropagation(); hideHint(); cancelAnimationFrame(anim);
+      el.setPointerCapture(e.pointerId); down={x:e.clientX,y:e.clientY,ox:f.x,oy:f.y}; moved=false;
+    });
+    el.addEventListener('pointermove',function(e){
+      if(!down) return; var dx=e.clientX-down.x, dy=e.clientY-down.y;
+      if(!moved&&Math.hypot(dx,dy)>5){ moved=true; el.classList.add('drag'); el.style.zIndex=++zTop; select(f.id); }
+      if(moved){ f.x=down.ox+dx/st.s; f.y=down.oy+dy/st.s; el.style.left=f.x+'px'; el.style.top=f.y+'px'; }
+    });
+    function up(){ if(!down) return; var was=moved; down=null; el.classList.remove('drag'); if(!was) activate(f); }
+    el.addEventListener('pointerup',up);
+    el.addEventListener('pointercancel',function(){ down=null; el.classList.remove('drag'); });
+    el.addEventListener('keydown',function(e){
+      if(e.target!==el) return;
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(f); }
+      if(e.shiftKey&&e.key.indexOf('Arrow')===0&&!listMode){
+        e.preventDefault(); var d=16;
+        if(e.key==='ArrowLeft') f.x-=d; if(e.key==='ArrowRight') f.x+=d; if(e.key==='ArrowUp') f.y-=d; if(e.key==='ArrowDown') f.y+=d;
+        el.style.left=f.x+'px'; el.style.top=f.y+'px';
+      }
+    });
+    el.addEventListener('click',function(){ if(listMode) activate(f); });
+  });
+  function activate(f){
+    select(f.id);
+    if(PROJ[f.id]) openProject(f.id);
+    else if(!listMode) animateTo(fitRect(rectOf(f),72,232));
+  }
+
+  /* ---- zoom sul riquadro e pagina di dettaglio ---- */
+  function openProject(id){
+    var p=PROJ[id], f=frames[id]; openId=id; prevView={x:st.x,y:st.y,s:st.s};
+    detail.innerHTML='<button class="close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Torna alla lavagna</button>'+
+      '<article><span class="t-label">'+p.cat+'</span><h1></h1><div class="th" style="background:'+p.c+'"></div>'+
+      '<div class="meta"><div><span class="t-label">Ruolo</span><b>'+p.role+'</b></div><div><span class="t-label">Anno</span><b>'+p.year+'</b></div></div>'+
+      '<p></p><h2>'+p.h+'</h2><ul></ul><p class="note">Bozza: testo riassunto dal sito attuale, da rivedere. Le immagini del progetto verranno aggiunte.</p></article>';
+    detail.querySelector('h1').textContent=p.t; detail.querySelector('p').textContent=p.lead;
+    var ul=detail.querySelector('ul'); p.li.forEach(function(t){ var li=document.createElement('li'); li.textContent=t; ul.appendChild(li); });
+    detail.querySelector('.close').onclick=closeProject;
+    var show=function(){ detail.classList.add('on'); detail.setAttribute('aria-hidden','false'); detail.scrollTop=0; detail.querySelector('.close').focus(); };
+    if(listMode) show(); else animateTo(fitRect(rectOf(f),24,0),550).then(show);
+  }
+  function closeProject(){
+    if(!openId) return; var f=frames[openId]; openId=null;
+    detail.classList.remove('on'); detail.setAttribute('aria-hidden','true');
+    if(!listMode&&prevView) animateTo(prevView,550);
+    if(f) f.el.focus({preventScroll:true});
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') closeProject();
+    if(!openId&&!listMode&&(e.key==='+'||e.key==='=')) zoomBy(1.2);
+    if(!openId&&!listMode&&e.key==='-') zoomBy(1/1.2);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-todo]'),function(a){ a.addEventListener('click',function(e){ e.preventDefault(); a.textContent=a.textContent.replace(' ↗','')+' (da collegare)'; }); });
+
+  /* ---- vista lista o lavagna ---- */
+  function setMode(list){
+    listMode=list; document.body.classList.toggle('list',list); $('modeL').textContent=list?'Vista lavagna':'Vista lista';
+    if(!list) apply();
+  }
+  $('mode').onclick=function(){ closeProject(); setMode(!listMode); };
+
+  /* ---- avvio ---- */
+  st=initialView(); apply(); select('home');
+  if(innerWidth<800) setMode(true);
+  setTimeout(hideHint,9000);
+  window.__bozza={frames:order.length,mode:function(){return listMode?'lista':'lavagna'}};
+})();
+</script>
+</html>
