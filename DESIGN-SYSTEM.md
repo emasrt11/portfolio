@@ -52,6 +52,9 @@ Stesso contenuto del riquadro Figma "Come usare i token" (27:91):
 | bg/canvas · bg/panel · bg/raised | `--bg-canvas` · `--bg-panel` · `--bg-raised` | `bg-background` · `bg-surface` · `bg-raised` |
 | text/primary · text/secondary | `--text-primary` · `--text-secondary` | `text-foreground` · `text-muted-foreground` |
 | border/default · border/strong | `--border-default` · `--border-strong` | `border-border` · `border-border-strong` |
+| accent/strong-hover · accent/strong-pressed | `--accent-strong-hover` · `--accent-strong-pressed` | `bg-action-hover` · `bg-action-pressed` |
+| bg/raised-hover · bg/raised-pressed | `--bg-raised-hover` · `--bg-raised-pressed` | `bg-raised-hover` · `bg-raised-pressed` |
+| bg/disabled · text/disabled | `--bg-disabled` · `--text-disabled` | `bg-disabled` · `text-disabled-foreground` |
 | accent/strong · accent/on-strong | `--accent-strong` · `--accent-on-strong` | `bg-primary` / `text-brand` · `text-primary-foreground` |
 | accent/default · accent/link · accent/subtle | `--accent` · `--accent-link` · `--accent-subtle` | `ring-ring` · `text-link` · `bg-subtle` |
 | sticky/blue … | `--sticky-blue` … | `bg-sticky-blue` … |
@@ -231,12 +234,42 @@ nello stile (in percentuale). Nel codice: `--font-heading`, `--font-sans`, `--te
 
 Le versioni mobile si definiscono con le pagine.
 
+## Stato di sviluppo dei componenti
+
+Ogni riquadro `Componenti · …` di Figma ha in alto un **tag** (componente `Stato sviluppo`, proprietà `Stato`; la legenda è nel riquadro
+`Componenti · Stato sviluppo`) e la Description del componente riporta la riga "Stato sviluppo: …". Il tag e questa tabella vanno
+**sempre tenuti uguali**.
+
+| Stato | Significato |
+|---|---|
+| Da sviluppare | Solo disegnato in Figma, nessun codice |
+| In verifica | Codice scritto, ma build (`npm run build` in Codespaces) e resa sul web ancora da controllare |
+| Sviluppato | Verificato dal designer: build ok e resa uguale a Figma |
+| Da aggiornare | Modificato in Figma (o nel design system) **dopo** lo sviluppo: il codice va allineato |
+
+**Regole.** (1) Chi scrive o aggiorna il codice di un componente lo porta a *In verifica*; solo il designer, dopo il controllo,
+lo porta a *Sviluppato*. (2) Qualunque modifica a un componente *In verifica* o *Sviluppato* in Figma lo riporta a *Da
+aggiornare*, nel tag e qui. (3) Un componente con stato *Da aggiornare* torna a *In verifica* quando il codice è allineato.
+
+| Componente | Figma | Bozza HTML | React (`src/components/ui/`) | Stato | Note |
+|---|---|---|---|---|---|
+| Button | sì | sì | `button.tsx` | In verifica | allineato a Figma il 2026-11-24: 4 varianti, 3 taglie, stati; pagina `App.tsx` per il confronto |
+| Icon Button | sì | sì | `icon-button.tsx` | In verifica | nuovo; `aria-label` obbligatorio |
+| Icone | sì (34) | sì | `lucide-react` | In verifica | nel codice si importano da lucide-react 0.460; nomi da verificare con la build |
+| Toolbar | sì (con Riordina) | sì | — | Da sviluppare | |
+| Layer Item, Layers Panel, Section Header | sì | in parte | — | Da sviluppare | la bozza non ha ancora le sezioni comprimibili |
+| Frame Label, Board Frame | sì | sì | — | Da sviluppare | un solo stato governa etichetta e riquadro |
+| Project Frame | sì (con Espandi) | sì | — | Da sviluppare | |
+| Hero Frame, About Frame, Contact Frame | sì | sì | — | Da sviluppare | |
+| Esperienze (riquadro e pagina) | sì (frame) | sì | — | Da sviluppare | non ancora un componente Figma |
+| Overlay delle pagine, zoom al clic, griglia adattiva, Riordina | descritti | sì | — | Da sviluppare | comportamenti della lavagna, vedi sopra |
+
 ## Mappatura Figma ↔ codice
 
 | Componente Figma | File nel repo | Varianti | Link Figma |
 |---|---|---|---|
-| Button | `src/components/ui/button.tsx` | Figma (60 varianti): Variant=Primary\|Secondary\|Outline\|Ghost × Size=sm\|md\|lg × State=Default\|Hover\|Focus\|Pressed\|Disabled; proprietà Label, Show left icon / Left icon, Show right icon / Right icon. Codice: default/outline/ghost/link × sm/md/lg, **da allineare** (manca Secondary; stati via `hover:`, `focus-visible:`, `active:`, `disabled:`) | https://www.figma.com/design/sEAyeY8KRpkKppW9lgUCK7/?node-id=6-50 |
-| Icon Button | da creare (`size="icon"` di shadcn) | Figma (60 varianti): Variant × Size × State come il Button, quadrato 32/40/48; proprietà Icon (sostituibile). Serve sempre un'etichetta accessibile (`aria-label`) | nodo "Componenti · Icon Button" |
+| Button | `src/components/ui/button.tsx` | Figma (60 varianti): Variant=Primary\|Secondary\|Outline\|Ghost × Size=sm\|md\|lg × State=Default\|Hover\|Focus\|Pressed\|Disabled; proprietà Label, Show left icon / Left icon, Show right icon / Right icon. Codice (allineato il 2026-11-24): `variant` primary (predefinita) \| secondary \| outline \| ghost × `size` sm \| md \| lg; stati via `hover:`, `active:`, `focus-visible:`, `disabled:`; padding 12/16/20 px (Ghost 8/12/16); icone 16/20/24 con il loro spessore. La variante `link` di shadcn è stata tolta (in Figma non c'è) | https://www.figma.com/design/sEAyeY8KRpkKppW9lgUCK7/?node-id=6-50 |
+| Icon Button | `src/components/ui/icon-button.tsx` (stesse varianti e taglie del Button, riuso di `controlVariant`) | Figma (60 varianti): Variant × Size × State come il Button, quadrato 32/40/48; proprietà Icon (sostituibile). Serve sempre un'etichetta accessibile (`aria-label`) | nodo "Componenti · Icon Button" |
 | Badge | `src/components/ui/badge.tsx` | variant: default, secondary, outline | da aggiungere |
 | Card | `src/components/ui/card.tsx` | Header, Title, Description, Content | da aggiungere |
 | Project Frame (riquadro progetto) | da creare | Accent=Blue\|Purple\|Yellow\|Green; proprietà Meta, Title, Description. In fondo il bottone **Espandi** (istanza di Button Outline md, icona `expand`): è l'unico modo per aprire il progetto; il clic sul riquadro lo seleziona e porta lo zoom su di lui | https://www.figma.com/design/sEAyeY8KRpkKppW9lgUCK7/?node-id=8-76 |

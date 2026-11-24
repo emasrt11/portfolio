@@ -48,6 +48,17 @@ rinominali con nomi di ruolo coerenti: `Intestazione`, `Nome e ruolo`, `Gruppo �
 `Componenti · <nome>` per i riquadri. Segnala i falsi positivi e rifai il controllo. Se non puoi rinominare qualcosa (interno
 di una istanza), dillo.
 
+## Stato di sviluppo dei componenti (regola del designer, 2026-11-24)
+Ogni componente ha uno stato: **Da sviluppare · In verifica · Sviluppato · Da aggiornare**. Sta in tre posti che devono restare
+uguali: il tag `Stato sviluppo` nell'intestazione del riquadro `Componenti · …` in Figma (proprietà `Stato`, e riga nella
+Description), la tabella "Stato di sviluppo dei componenti" di DESIGN-SYSTEM.md. Regole:
+- Se scrivi o aggiorni il codice di un componente, portalo a **In verifica**. **Sviluppato** solo dopo che il designer ha
+  controllato build e resa sul web.
+- Se modifichi in Figma (o cambi un token usato) un componente che è **In verifica** o **Sviluppato**, portalo subito a
+  **Da aggiornare**, nel tag e nella tabella, e dillo al designer.
+- Torna a **In verifica** quando il codice è stato allineato.
+- Non dire che un componente "funziona" se non è stato verificato: la build non si può lanciare sul PC del designer.
+
 ## Come lavorare con il designer
 - Procedi un passo alla volta e **mostra il risultato visivo** (screenshot, anteprima) a ogni passo.
 - Spiega in modo semplice, senza dare per scontato che conosca Git, npm o il terminale: indica i passi da fare.

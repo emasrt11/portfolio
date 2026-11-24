@@ -140,6 +140,13 @@
   --color-action: var(--accent-strong);
   --color-action-foreground: var(--accent-on-strong);
   --color-subtle: var(--accent-subtle);
+  /* stati dei controlli (Hover, Pressed, Disabled in Figma): bg-action-hover, bg-raised-pressed, bg-disabled… */
+  --color-action-hover: var(--accent-strong-hover);
+  --color-action-pressed: var(--accent-strong-pressed);
+  --color-raised-hover: var(--bg-raised-hover);
+  --color-raised-pressed: var(--bg-raised-pressed);
+  --color-disabled: var(--bg-disabled);
+  --color-disabled-foreground: var(--text-disabled);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-text);
   --color-sticky-blue: var(--sticky-blue);
