@@ -253,9 +253,9 @@ aggiornare*, nel tag e qui. (3) Un componente con stato *Da aggiornare* torna a 
 
 | Componente | Figma | Bozza HTML | React (`src/components/ui/`) | Stato | Note |
 |---|---|---|---|---|---|
-| Button | sì | sì | `button.tsx` | In verifica | allineato a Figma il 2026-11-24: 4 varianti, 3 taglie, stati; pagina `App.tsx` per il confronto |
-| Icon Button | sì | sì | `icon-button.tsx` | In verifica | nuovo; `aria-label` obbligatorio |
-| Icone | sì (34) | sì | `lucide-react` | In verifica | nel codice si importano da lucide-react 0.460; nomi da verificare con la build |
+| Button | sì | sì | `button.tsx` | Sviluppato | allineato a Figma il 2026-11-24; build verde e misure verificate sul sito pubblicato (altezze, padding, raggio, font, colori di Default/Hover/Pressed/Disabled, anello di focus, icone 16/20/24 con il loro spessore); pagina `App.tsx` per il confronto |
+| Icon Button | sì | sì | `icon-button.tsx` | Sviluppato | nuovo, stesse verifiche del Button; `aria-label` obbligatorio |
+| Icone | sì (34) | sì | `lucide-react` | In verifica | build verde; usate nel sito `ArrowRight`, `Expand`, `Plus`, `X`; `LayoutDashboard` e le altre non ancora usate da nessuna pagina |
 | Toolbar | sì (con Riordina) | sì | — | Da sviluppare | |
 | Layer Item, Layers Panel, Section Header | sì | in parte | — | Da sviluppare | la bozza non ha ancora le sezioni comprimibili |
 | Frame Label, Board Frame | sì | sì | — | Da sviluppare | un solo stato governa etichetta e riquadro |
