@@ -21,8 +21,8 @@ un pannello **Livelli** come menu, una barra strumenti con zoom e "Adatta". Chi 
 | Griglia a punti | Adattiva: il passo sullo schermo resta tra 12 e 24 px (raddoppia quando si rimpicciolisce) |
 | Riordina | Bottone nella barra strumenti, visibile solo se un riquadro è stato spostato; riporta tutto alla disposizione originale |
 | Riquadri | Larghezze diverse tra loro (Home 720, Esperienze 560, ecc.); la disposizione definitiva si decide a lavoro concluso |
-| Chi sono | Introduzione "Ciao, mi chiamo Emanuele e sono un UX/UI Designer." (nome e ruolo in blu), un principio ("Parto dalle persone, non dagli schermi…"), poi nella pagina: Come lavoro (Capire, Disegnare, Costruire), strumenti del design e dello sviluppo, formazione, contatti. Deve trasmettere competenze di design **e** di sviluppo (proposta D, scelta il 2026-11-24, provvisoria) |
-| Esperienze | Riquadro con la sola esperienza attuale (proposta C: fascia blu) e pagina a linea del tempo (proposta 1) con le altre. Contenuti dal curriculum |
+| Chi sono | **Approvato dal designer il 2026-11-25** (riquadro nella lavagna 480 × 677, nodo Figma 187:5449, e pagina in overlay). Riquadro: etichetta, titolo "Ciao, mi chiamo Emanuele e sono un UX/UI Designer." (nome e ruolo in blu), due paragrafi scritti dal designer con le parole chiave in grassetto (oltre 10 anni, soluzioni semplici, prodotti digitali complessi, incentrate sulle persone, L'AI, prototipi utili alla validazione) e il bottone Espandi. Pagina: introduzione con tre bottoni (LinkedIn, Email, Curriculum) e animazione del cursore "Scorri per conoscermi meglio", percorso (Dalla carta al digitale) con gli studi, skill ("Cosa so fare") e bento (passione per il design, strumenti, basket, tempo libero a schede) |
+| Esperienze | Riquadro con la sola esperienza attuale: titolo "Esperienza attuale" e tag "In corso" (scelta del 2026-11-25). Pagina a linea del tempo con le quattro esperienze tutte uguali, 64 px tra una e l'altra, linea continua, bottone Curriculum e animazione d'ingresso. Contenuti dal curriculum |
 
 ## Bozza navigabile
 `public/bozza/index.html` è una bozza della home a canvas in un solo file (HTML, CSS e JavaScript), con la grafica del design
@@ -32,7 +32,11 @@ raccogliere pareri; non è ancora il sito in React. Email e curriculum sono segn
 Aggiornata il 2026-11-24 con: pagine **Chi sono** ed **Esperienze** in overlay (bottone Espandi), bottone Espandi anche nei
 progetti, zoom al clic sul riquadro, griglia a punti adattiva, bottone Riordina, riquadro Esperienze (posizione provvisoria).
 I contenuti di Esperienze vengono dal curriculum: da rivedere prima di pubblicare (aziende, date e attività).
-
+Aggiornata il 2026-11-25 con: bento "Cosa faccio" a incastro (Passione per il design, strumenti, basket, tempo libero a schede) con
+una palette sobria (un solo fondo colorato), sezione "Cosa so fare", bottoni LinkedIn, Email e Curriculum in Chi sono e in
+Esperienze, animazioni dentro le pagine (cursore, orbite, chip, editor con i livelli, lavagna del basket, tessera a schede,
+linea del tempo), zoom nitido (senza `will-change` sul contenitore della lavagna). La pagina **Chi sono è approvata**.
+Le altre prove (cartella `public/bozza/`, file diversi da `index.html` e `loghi.js`) sono esperimenti da non pubblicare.
 ## Da tenere d'occhio
 - **Accessibilità:** il canvas deve avere un'alternativa navigabile da tastiera e da screen reader (il pannello Livelli
   fa da indice; ogni riquadro raggiungibile con Tab; riquadri spostabili anche da tastiera).
@@ -42,13 +46,14 @@ I contenuti di Esperienze vengono dal curriculum: da rivedere prima di pubblicar
 - **Riduci animazioni:** con la preferenza attiva, niente zoom animato né movimenti (cambio istantaneo).
 - Figma non può mostrare le animazioni: si disegnano le schermate e gli stati, il movimento si descrive nelle note.
 
-## Cose ancora aperte (2026-11-24)
-- Disposizione e larghezze definitive dei riquadri sulla lavagna (a lavoro concluso).
-- Pagina Chi sono: togliere la sezione "Esperienze" ora che ha il suo riquadro, e allinearne l'intestazione in Figma (solo X).
-- Contenuti di Esperienze e di Chi sono da rivedere; React, TypeScript e Tailwind tra le competenze sono un'aggiunta da confermare.
-- Portare in React: overlay, zoom al clic, griglia adattiva e Riordina (finora solo nella bozza HTML).
-- Mobile per ultimo.
-
+## Cose ancora aperte (2026-11-25)
+- Disposizione e larghezze definitive dei riquadri sulla lavagna (a lavoro concluso). Nella bozza Chi sono sta ora in basso a sinistra.
+- **Mobile e ottimizzazione delle prestazioni: solo a fine lavori** (font ospitati sul sito, mappa e chip più leggere, animazioni in pausa fuori schermo, immagini leggere; misura con Lighthouse sul sito pubblicato).
+- **Lavori (case study):** da riprendere. La tessera "AI nel mio flusso" (cursori di io e agent AI, prova `ai.html`) non va in Chi sono: da provare nei lavori come approccio alla progettazione.
+- Segnaposto da riempire: città dei viaggi, titoli di giochi e film, immagini delle tessere UX/UI e Graphic design (non usare contenuti di clienti senza conferma), collegamenti di Email e Curriculum.
+- Token da proporre: ruolo per il viola degli agent (oggi primitivo `purple/600`). Aggiunti il 2026-11-25: `radius/full`, `bg/inverse`, `text/inverse`.
+- Contenuti di Esperienze da rivedere (vengono dal curriculum); React, TypeScript e Tailwind tra le competenze sono un'aggiunta da confermare.
+- Portare in React: overlay, zoom al clic, griglia adattiva, Riordina, Tab e le animazioni (finora solo nella bozza HTML).
 ## Contenuti
 Presi dal vecchio sito (emanuelesirtori.it): Opyn Pay Later (2022), Design System (2024), Emporium (2024),
 TrainWithMe (2022), Chi sono, approccio in 4 fasi, contatti (LinkedIn, email, CV). Da aggiornare con lavori più recenti
