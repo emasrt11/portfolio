@@ -34,6 +34,7 @@
   --radius-4: 0.25rem;
   --radius-8: 0.5rem;
   --radius-12: 0.75rem;
+  --radius-999: 999px;
 
   /* ombre a due strati (stessi valori degli stili Elevation/1-4 in Figma): utility shadow-e1 … shadow-e4 */
   --shadow-e1: 0 1px 2px var(--shadow-color-ambient), 0 1px 3px var(--shadow-color-e1);
@@ -47,6 +48,8 @@
   --bg-panel: var(--color-white);
   --bg-raised: var(--color-neutral-100);
   --text-primary: var(--color-neutral-900);
+  --bg-inverse: var(--color-neutral-900);   /* fondo scuro (schede a tema scuro, carosello, pellicola) */
+  --text-inverse: var(--color-white);       /* testo e icone su bg-inverse */
   --text-secondary: var(--color-neutral-600);
   --border-default: var(--color-neutral-200);
   --border-strong: var(--color-neutral-400);
@@ -73,10 +76,11 @@
   --sticky-purple: var(--color-purple-200);
   --sticky-yellow: var(--color-yellow-200);
   --sticky-green: var(--color-green-200);
-  /* raggi (radius/sm · md · lg in Figma) */
+  /* raggi (radius/sm · md · lg · full in Figma) */
   --radius-sm: var(--radius-4);   /* 4: riquadri, bottoni, card */
   --radius-md: var(--radius-8);   /* 8: pannelli e contenitori grandi */
   --radius-lg: var(--radius-12);  /* 12: finestre in primo piano (per ora non usato) */
+  --radius-full: var(--radius-999); /* pillola: chip delle skill */
 
   /* colori delle ombre (variabili shadow/… in Figma) */
   --shadow-color-ambient: rgb(30 30 30 / 0.06);
@@ -132,6 +136,8 @@
   --color-surface: var(--bg-panel);
   --color-raised: var(--bg-raised);
   --color-foreground: var(--text-primary);
+  --color-inverse: var(--bg-inverse);
+  --color-inverse-foreground: var(--text-inverse);
   --color-muted-foreground: var(--text-secondary);
   --color-border: var(--border-default);
   --color-border-strong: var(--border-strong);
@@ -166,6 +172,7 @@
   --radius-sm: var(--radius-4);
   --radius-md: var(--radius-8);
   --radius-lg: var(--radius-12);
+  --radius-full: var(--radius-999);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Fraunces", ui-serif, Georgia, serif;
