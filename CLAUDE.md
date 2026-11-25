@@ -37,6 +37,10 @@ eseguire la build o provare una modifica, **dillo chiaramente**: non dire che fu
 - Accessibilità: navigazione da tastiera (anche per spostare i riquadri del canvas), focus visibile, etichette sui controlli,
   alternativa alla vista canvas (lista), e rispetto di `prefers-reduced-motion` (niente zoom animato né movimenti).
 - Animazioni sobrie e con uno scopo; solo CSS e un po' di JavaScript. Niente librerie pesanti senza chiedere.
+- Zoom della lavagna: **mai `will-change: transform` sul contenitore che viene ingrandito** (il testo si sgrana a 200%, trovato il 2026-11-25).
+- Le animazioni a ciclo continuo partono solo quando il loro contenitore è aperto/visibile e si fermano alla chiusura.
+- Mobile e ottimizzazione delle prestazioni si fanno **a fine lavori** (decisione del designer): non anticiparli.
+- In `public/bozza/` solo `index.html` e `loghi.js` sono la bozza da pubblicare; gli altri file sono prove (cursore, ghiera, skill, basket, ai, box-*, tempo-libero*) e non vanno pubblicati.
 - Il mobile si decide per ultimo (orientamento: canvas con gesti). Non progettarlo prima.
 - Il sito è pubblico: **non inserire** email o altri dati personali nel codice, né contenuti di clienti o datori di lavoro
   (per esempio i case study di Opyn ed Emporium) senza conferma esplicita del designer.
