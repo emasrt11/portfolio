@@ -178,7 +178,7 @@ dialog 50 · notifiche 60.
 ## Icone e dimensioni
 
 Icone **Lucide** (`lucide-react`, la libreria usata da shadcn/ui; licenza ISC): linea su griglia 24, estremi arrotondati.
-40 icone nella pagina `Icons` (aggiunte il 2026-11-25 `plane`, `gamepad-2`, `clapperboard` per le schede del Tempo libero e `pencil-ruler`, `code-xml` per i livelli della tessera Passione per il design); colore e spessore dal tratto (`icon/color` e `icon/stroke-width`).
+41 icone nella pagina `Icons` (aggiunte il 2026-11-25 `plane`, `gamepad-2`, `clapperboard` per le schede del Tempo libero e `pencil-ruler`, `code-xml` per i livelli della tessera Passione per il design; il 2026-11-26 `route-arrow-right` per la voce Intro del pannello Livelli, da `lucide-static` 1.81.0); colore e spessore dal tratto (`icon/color` e `icon/stroke-width`).
 
 **Spessore del tratto per taglia (2026-11-24, scelto dal designer).** Con il tratto fisso da 2 px le icone dettagliate (mano,
 livelli, LinkedIn, mappa) si impastavano a 16 e 20 px, e in Figma risultavano più pesanti di come lucide-react le disegna
@@ -197,7 +197,7 @@ le variabili CSS sono `--icon-stroke-sm`, `-md`, `-lg`, `-xl`, e `--icon-stroke-
 
 Icone previste: arrow-right, arrow-up-right, external-link, plus, minus, x, check, menu, search, mail, file-text, copy,
 link, layers, frame, maximize, expand, layout-dashboard, brain-circuit, zoom-in, zoom-out, map, user, house, hand, mouse-pointer-2, linkedin, chevron-down,
-chevron-right, info, grip-vertical, panel-left-close, panel-left-open, list-chevrons-up-down, list-chevrons-down-up, plane, gamepad-2, clapperboard, pencil-ruler, code-xml (uso di
+chevron-right, info, grip-vertical, panel-left-close, panel-left-open, list-chevrons-up-down, list-chevrons-down-up, plane, gamepad-2, clapperboard, pencil-ruler, code-xml, route-arrow-right (uso di
 ciascuna nel riquadro Figma). Le ultime quattro (scelte dall'utente) servono al pannello Livelli: `panel-left-close` chiude
 il pannello aperto, `panel-left-open` apre quello chiuso; `list-chevrons-down-up` comprime una sezione espansa,
 `list-chevrons-up-down` espande una sezione compressa. Le prime 31 (comprese `expand`, `layout-dashboard`, `brain-circuit`) vengono da `lucide-static` 0.460.0; queste quattro dalla
@@ -216,17 +216,23 @@ desktop; nel codice le utility `type-display`, `type-h1`… in `src/index.css`:
 
 | Stile | Font | Misura / interlinea / spaziatura | Uso |
 |---|---|---|---|
-| Display | Fraunces Black 900 | 112 / 100% / -2% | titolo della home |
-| H1 | Fraunces Black 900 | 80 / 103% / -2% | titoli di pagina |
-| H2 | Fraunces Bold 700 | 56 / 108% / -1,5% | titoli di sezione |
-| H3 | Fraunces SemiBold 600 | 40 / 112% / -1% | sottosezioni |
-| H4 | Fraunces SemiBold 600 | 28 / 118% / -0,5% | titolo di card |
-| H5 | Fraunces SemiBold 600 | 22 / 125% | titolo di card piccola |
-| Lead | Inter Regular 400 | 24 / 140% | introduzioni |
-| Body | Inter Regular 400 | 20 / 160% | testo corrente |
-| Small | Inter Regular 400 | 16 / 150% | didascalie, link |
-| Small Medium | Inter Medium 500 | 16 / 150% | bottoni |
-| Label | Inter Medium 500, maiuscolo | 14 / 140% / +8% | categorie, anni |
+| Display | Fraunces Black 900 | 112 / 112 px / -2% | titolo della home |
+| H1 | Fraunces Black 900 | 80 / 84 px / -2% | titoli di pagina |
+| H2 | Fraunces Bold 700 | 56 / 64 px / -1,5% | titoli di sezione |
+| H3 | Fraunces SemiBold 600 | 40 / 44 px / -1% | sottosezioni |
+| H4 | Fraunces SemiBold 600 | 28 / 32 px / -0,5% | titolo di card |
+| H5 | Fraunces SemiBold 600 | 22 / 28 px | titolo di card piccola |
+| Lead | Inter Regular 400 | 24 / 32 px | introduzioni |
+| Body | Inter Regular 400 | 20 / 32 px | testo corrente |
+| Small | Inter Regular 400 | 16 / 24 px | didascalie, link |
+| Small Medium | Inter Medium 500 | 16 / 24 px | bottoni |
+| Label | Inter Medium 500, maiuscolo | 14 / 20 px / +8% | categorie, anni |
+
+**Griglia di base 4 px (regola del designer, 2026-11-25).** Interlinee, spaziature e dimensioni di box e controlli sono
+multipli di 4. Le interlinee sono espresse in px (non in percentuale) in Figma e in `rem` nel codice. Prima erano
+percentuali e davano valori fuori griglia (H1 82,4 · H2 60,5 · H3 44,8 · H4 33 · H5 27,5 · Lead 33,6 · Label 19,6); H1 e H2
+sono stati portati a 84 e 64 (non 80 e 60) per non stringere i titoli su più righe. **Eccezioni:** i corpi del carattere
+(14 e 22 restano), i bordi da 1 px, gli anelli di focus da 2 px e lo spessore del tratto delle icone (1,5 · 1,75 · 2 · 2,5).
 
 ### Token tipografici (Figma: collection `Typography`)
 
@@ -258,7 +264,7 @@ aggiornare*, nel tag e qui. (3) Un componente con stato *Da aggiornare* torna a 
 |---|---|---|---|---|---|
 | Button | sì | sì | `button.tsx` | Sviluppato | allineato a Figma il 2026-11-24; build verde e misure verificate sul sito pubblicato (altezze, padding, raggio, font, colori di Default/Hover/Pressed/Disabled, anello di focus, icone 16/20/24 con il loro spessore); pagina `App.tsx` per il confronto |
 | Icon Button | sì | sì | `icon-button.tsx` | Sviluppato | nuovo, stesse verifiche del Button; `aria-label` obbligatorio |
-| Icone | sì (40) | sì | `lucide-react` | Da aggiornare | modificato in Figma il 2026-11-25: aggiunte `plane`, `gamepad-2`, `clapperboard`, `pencil-ruler`, `code-xml` (sono in `lucide-react`, basta importarle). Prima: build verde; usate nel sito `ArrowRight`, `Expand`, `Plus`, `X`; `LayoutDashboard` e le altre non ancora usate da nessuna pagina |
+| Icone | sì (41) | sì | `lucide-react` | Da aggiornare | modificato in Figma il 2026-11-25 e 2026-11-26: aggiunte `plane`, `gamepad-2`, `clapperboard`, `pencil-ruler`, `code-xml`, `route-arrow-right` (sono in `lucide-react`, basta importarle; `route-arrow-right` richiede una versione recente, la 1.81.0 di `lucide-static` la contiene). Prima: build verde; usate nel sito `ArrowRight`, `Expand`, `Plus`, `X`; `LayoutDashboard` e le altre non ancora usate da nessuna pagina |
 | Tab, Tab List | sì | no | — | Da sviluppare | nuovo il 2026-11-25; Tab: 12 varianti (Selezionata × Stato × Tema); la tessera Tempo libero a schede è in `public/bozza/tempo-libero-schede.html` (prova) |
 | Toolbar | sì (con Riordina) | sì | — | Da sviluppare | |
 | Layer Item, Layers Panel, Section Header | sì | in parte | — | Da sviluppare | la bozza non ha ancora le sezioni comprimibili |
@@ -291,7 +297,7 @@ aggiornare*, nel tag e qui. (3) Un componente con stato *Da aggiornare* torna a 
 | Hero Frame, About Frame, Contact Frame | da creare | contenuti dei riquadri Home, Chi sono, Contatti (larghezze 720, 480, 420; il riquadro Chi sono (480 × 677, nodo 187:5449) è approvato dal designer il 2026-11-25). Il riquadro Chi sono ha il bottone **Espandi** (Button Outline md, icona `expand`), che apre la pagina in overlay (vedi sotto) | nodi 45:352, 45:357, 45:362 |
 | Esperienze (riquadro e pagina) | da creare | **Riquadro** (nodo 80:1084, 560 px, scelta C del 2026-11-25): niente fascia colorata; in cima il titolo "Esperienza attuale" (H4) con il tag **In corso** (chip `accent/subtle`, testo `accent/strong`, Text/Label, `radius/full`), poi la data "Marzo 2025 – Oggi" (Label), l'azienda (H5), ruolo e luogo (Small Medium), descrizione, "+ 3 esperienze precedenti" e il bottone Espandi. **Pagina** in overlay (nodo 81:1058): titolo H2 "Esperienze" con il bottone **Curriculum** (Button Outline md, icona `file-text`) a destra, poi **linea del tempo** a tre colonne (periodo e luogo · punto e filo · dettaglio) con le quattro esperienze tutte **identiche** (senza scheda): nome azienda H4, ruolo Small Medium, elenco puntato Small `text/secondary`; la corrente si distingue solo per il tag "In corso" sotto la data. Distanza tra le esperienze **64 px**; la linea è continua tra un punto e il successivo. Animazione all'apertura: le esperienze entrano una alla volta (ritardo 160 ms), il punto fa un piccolo "pop" e la linea si disegna dall'alto (solo bozza HTML). Contenuti dal curriculum PDF (bozza da rivedere; niente email né telefono) | nodi 80:1084, 81:1058 |
 | Layer Item | da creare | State=Default\|Hover\|Focus\|Pressed\|Selected; proprietà Label e Icon (sostituibile, di default `frame`). Selected: fondo `accent/subtle`, icona blu (modalità Link di `icon/color`). Focus: anello 2 px `accent/default` staccato di 2 px. Altezza `control/sm` (32) | nodo 8:55 |
-| Layers Panel | da creare | Figma (5 varianti): Panel=Open\|Closed, Sezioni=Expanded\|Collapsed, Progetti=Expanded\|Collapsed (il Closed mostra solo l'intestazione con nome e ruolo). Composto da Layer Item e Section Header; il pulsante in alto apre e chiude il pannello, quello accanto a ogni titolo di sezione comprime le sue voci. Home con icona `house`, progetti con `frame`, Chi sono con `user`, **Approccio con `brain-circuit`** (il cervello con i circuiti richiama il pensare insieme all'AI), Contatti con `mail` (voci del gruppo Sezioni: Home, Chi sono, Approccio, Contatti; **Esperienze** non c'è ancora); livello Elevation/2; navigazione del canvas (ogni voce porta al riquadro) | nodo 41:408 |
+| Layers Panel | da creare | Figma (5 varianti): Panel=Open\|Closed, Sezioni=Expanded\|Collapsed, Progetti=Expanded\|Collapsed (il Closed mostra solo l'intestazione con nome e ruolo). Composto da Layer Item e Section Header; il pulsante in alto apre e chiude il pannello, quello accanto a ogni titolo di sezione comprime le sue voci. **Intro** (prima Home) con icona `route-arrow-right`, progetti con `frame`, Chi sono con `user`, **Approccio con `brain-circuit`** (il cervello con i circuiti richiama il pensare insieme all'AI), Contatti con `mail` (voci del gruppo Sezioni: Intro, Chi sono, Approccio, Contatti; **Esperienze** non c'è ancora); livello Elevation/2; navigazione del canvas (ogni voce porta al riquadro) | nodo 41:408 |
 | Section Header | da creare | State=Expanded\|Collapsed; proprietà Label. Titolo + Icon Button Ghost sm: espansa = `list-chevrons-down-up` (comprime), compressa = `list-chevrons-up-down` (espande). Il pulsante in alto del pannello usa `panel-left-close` (aperto) e `panel-left-open` (chiuso) | nodo 41:217 |
 | Toolbar | da creare | composta da istanze di Icon Button (zoom − e +) e Button (Adatta, Riordina, Vista lista), tutti nella variante Ghost, taglia md; separatore e valore dello zoom; livello Elevation/2. **Riordina** (icona `layout-dashboard`) compare solo se un riquadro è stato spostato: nel componente è controllato dalla proprietà booleana `Mostra Riordina` (predefinita spenta), nel codice dal fatto che almeno un riquadro non sia nella posizione originale. Nel riquadro Componenti · Toolbar c'è anche un esempio con la proprietà accesa | nodo 8:82 |
 
@@ -308,7 +314,5 @@ Home a canvas: pagina `Home Canvas`, frame `Home · Canvas 1440` (nodo 10:76).
 - **Zoom nitido (2026-11-25):** il contenitore della lavagna **non deve avere `will-change: transform`**, altrimenti il browser disegna una volta sola e poi ingrandisce l'immagine: a 200% i testi risultano sgranati (visto in Chrome). Tenere `will-change` solo su elementi che non vengono ingranditi.
 - **Da fare solo a fine lavori (decisione del designer):** adattamento per schermi stretti; giro di ottimizzazione (font ospitati sul sito, mappa disegnata una volta sola, chip senza misure a ogni fotogramma, animazioni in pausa fuori schermo, immagini leggere e caricate in modo pigro) con misura Lighthouse sul sito pubblicato.
 
-Organizzazione in Figma: nella pagina `Components` ogni componente ha un riquadro `Componenti · <nome>` (Button, Icon
-Button, Toolbar, Layer Item, Layers Panel, Frame Label, Project Frame; il vecchio Toolbar Button è stato sostituito da
-Icon Button e Button Ghost) con titolo e varianti, come le Foundations; nella
-pagina `Icons` il riquadro `Componenti · Icone` raccoglie le 40 icone. Le proposte scartate stanno nella pagina `Archivio` (Chi sono A, B, C e la base iniziale, la panoramica delle larghezze, le prove di larghezza di Esperienze): non si cancellano finché possono servire. Sulla `Home Canvas` restano le cose approvate (Chi sono, Esperienze riquadro e pagina, bento) e le prove di lavoro in corso (Prova A e Prova B del bento). I riquadri di verifica con istanze sono stati rimossi.
+Organizzazione in Figma: nella pagina `Components` ogni componente ha un riquadro `Componenti · <nome>` con titolo e varianti, come le Foundations. Dal 2026-11-25 i componenti che ne compongono altri stanno **sotto lo stesso titolo**, in un riquadro tratteggiato `Gruppo · …`: `Gruppo · Pannello Livelli` (Layers Panel, Layer Item, Section Header) e `Gruppo · Riquadri della lavagna` (Board Frame, Frame Label, Project Frame, Hero Frame, About Frame, Contact Frame). Fuori dai gruppi, in una riga in alto: Button, Icon Button, Toolbar e Tab (con Tab List); in basso `Componenti · Stato sviluppo`. Un nuovo componente va nel gruppo del componente che lo contiene, oppure in un riquadro proprio nella riga in alto. Nella
+pagina `Icons` il riquadro `Componenti · Icone` raccoglie le 41 icone. Le proposte scartate stanno nella pagina `Archivio` (Chi sono A, B, C e la base iniziale, la panoramica delle larghezze, le prove di larghezza di Esperienze): non si cancellano finché possono servire. Sulla `Home Canvas` restano le cose approvate (Chi sono, Esperienze riquadro e pagina, bento) e le prove di lavoro in corso (Prova A e Prova B del bento). I riquadri di verifica con istanze sono stati rimossi.
