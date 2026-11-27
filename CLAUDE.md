@@ -27,6 +27,7 @@ eseguire la build o provare una modifica, **dillo chiaramente**: non dire che fu
    fondo `--accent-strong`, testo `--accent-on-strong`.
 5. Testo solo con le utility `type-*` (famiglia, peso, misura e interlinea della scala). Ombre solo con `shadow-e1` … `e4`.
    Spaziature solo dalla scala (4, 8, 12, 16, 20, 24, 32, 48 px).
+   **Griglia di base 4 px** (regola del designer, 2026-11-25): interlinee, spaziature e dimensioni di box e controlli sono multipli di 4; le interlinee si scrivono in px (non in percentuale né unitless). Eccezioni: corpi del carattere, bordi da 1 px, anelli di focus da 2 px, tratto delle icone.
 6. Contrasto minimo 4,5:1 per il testo e 3:1 per elementi grafici e controlli. Verifica ogni nuova coppia di colori.
 7. Tabella di traduzione Figma ↔ CSS ↔ Tailwind: in DESIGN-SYSTEM.md, sezione "Istruzioni per un'AI o uno script".
 

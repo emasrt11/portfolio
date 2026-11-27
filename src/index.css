@@ -178,16 +178,17 @@
   --font-heading: "Fraunces", ui-serif, Georgia, serif;
 
   /* scala tipografica (stessi valori degli stili Text/... in Figma) */
-  --text-display: 7rem;    --text-display--line-height: 1;
-  --text-h1: 5rem;         --text-h1--line-height: 1.03;
-  --text-h2: 3.5rem;       --text-h2--line-height: 1.08;
-  --text-h3: 2.5rem;       --text-h3--line-height: 1.12;
-  --text-h4: 1.75rem;      --text-h4--line-height: 1.18;
-  --text-h5: 1.375rem;     --text-h5--line-height: 1.25;
-  --text-lead: 1.5rem;     --text-lead--line-height: 1.4;
-  --text-body: 1.25rem;    --text-body--line-height: 1.6;
-  --text-small: 1rem;      --text-small--line-height: 1.5;
-  --text-label: 0.875rem;  --text-label--line-height: 1.4;
+  /* griglia di base 4 px: le interlinee sono multipli di 4, in px (non in percentuale). I corpi del carattere restano liberi (14 e 22 inclusi) */
+  --text-display: 7rem;    --text-display--line-height: 7rem;     /* 112 / 112 */
+  --text-h1: 5rem;         --text-h1--line-height: 5.25rem;       /* 80 / 84 */
+  --text-h2: 3.5rem;       --text-h2--line-height: 4rem;          /* 56 / 64 */
+  --text-h3: 2.5rem;       --text-h3--line-height: 2.75rem;       /* 40 / 44 */
+  --text-h4: 1.75rem;      --text-h4--line-height: 2rem;          /* 28 / 32 */
+  --text-h5: 1.375rem;     --text-h5--line-height: 1.75rem;       /* 22 / 28 */
+  --text-lead: 1.5rem;     --text-lead--line-height: 2rem;        /* 24 / 32 */
+  --text-body: 1.25rem;    --text-body--line-height: 2rem;        /* 20 / 32 */
+  --text-small: 1rem;      --text-small--line-height: 1.5rem;     /* 16 / 24 */
+  --text-label: 0.875rem;  --text-label--line-height: 1.25rem;    /* 14 / 20 */
 }
 
 @layer base {
