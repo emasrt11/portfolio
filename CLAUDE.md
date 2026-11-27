@@ -13,9 +13,7 @@ Componenti in `src/components/ui/`. Token e utility tipografiche in `src/index.c
 `.github/workflows/deploy.yml` a ogni push su `main`.
 
 ## Ambiente (importante)
-Sul PC del designer **non c'è Node né Git** e gli script sono bloccati. Sviluppo e anteprima si fanno in **GitHub Codespaces**:
-`npm install`, `npm run dev` (anteprima), `npm run build` (controllo tipi e build). Non presumere strumenti locali. Se non puoi
-eseguire la build o provare una modifica, **dillo chiaramente**: non dire che funziona senza averlo verificato.
+Dal 2026-11-27 sul PC del designer ci sono **Git e Node** (la cartella `C:\Git\portfolio` è una copia del repo `emasrt11/portfolio`): `npm.cmd install`, `npm.cmd run build` e i comandi Git funzionano da PowerShell (gli script `.ps1` restano bloccati). Il designer vuole spostare il lavoro in **GitHub Codespaces** per non tenere la cartella sul PC aziendale: lì `npm install`, `npm run dev` (anteprima) e `npm run build` sono già disponibili. Per pubblicare: ramo `claude/<nome>` → commit con Git → push → pull request (il merge lo fa il designer); non riscrivere i file con gli strumenti GitHub, costa troppi token. Se non puoi eseguire la build o provare una modifica, **dillo chiaramente**: non dire che funziona senza averlo verificato.
 
 ## Regole sui token (da rispettare sempre)
 1. Nei componenti usa solo i **token semantici** (via ruoli Tailwind o variabili CSS); i primitivi mai.
@@ -41,7 +39,7 @@ eseguire la build o provare una modifica, **dillo chiaramente**: non dire che fu
 - Zoom della lavagna: **mai `will-change: transform` sul contenitore che viene ingrandito** (il testo si sgrana a 200%, trovato il 2026-11-25).
 - Le animazioni a ciclo continuo partono solo quando il loro contenitore è aperto/visibile e si fermano alla chiusura.
 - Mobile e ottimizzazione delle prestazioni si fanno **a fine lavori** (decisione del designer): non anticiparli.
-- In `public/bozza/` solo `index.html` e `loghi.js` sono la bozza da pubblicare; gli altri file sono prove (cursore, ghiera, skill, basket, ai, box-*, tempo-libero*) e non vanno pubblicati.
+- In `public/bozza/` solo `index.html` e `loghi.js` sono la bozza da pubblicare; le prove (cursore, ghiera, skill, basket, ai, approccio, box-*, tempo-libero*) stanno in `prove/`, fuori da `public/`, e non vanno pubblicate.
 - Il mobile si decide per ultimo (orientamento: canvas con gesti). Non progettarlo prima.
 - Il sito è pubblico: **non inserire** email o altri dati personali nel codice, né contenuti di clienti o datori di lavoro
   (per esempio i case study di Opyn ed Emporium) senza conferma esplicita del designer.
