@@ -36,7 +36,7 @@ Aggiornata il 2026-11-25 con: bento "Cosa faccio" a incastro (Passione per il de
 una palette sobria (un solo fondo colorato), sezione "Cosa so fare", bottoni LinkedIn, Email e Curriculum in Chi sono e in
 Esperienze, animazioni dentro le pagine (cursore, orbite, chip, editor con i livelli, lavagna del basket, tessera a schede,
 linea del tempo), zoom nitido (senza `will-change` sul contenitore della lavagna). La pagina **Chi sono è approvata**.
-Le altre prove (cartella `public/bozza/`, file diversi da `index.html` e `loghi.js`) sono esperimenti da non pubblicare.
+Le altre prove stanno nella cartella `prove/` (fuori da `public/`, quindi non pubblicate): sono esperimenti.
 ## Da tenere d'occhio
 - **Accessibilità:** il canvas deve avere un'alternativa navigabile da tastiera e da screen reader (il pannello Livelli
   fa da indice; ogni riquadro raggiungibile con Tab; riquadri spostabili anche da tastiera).

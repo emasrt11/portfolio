@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tempo libero a schede</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-canvas:#f5f5f5;--bg-panel:#fff;--bg-raised:#ededed;--text-primary:#1e1e1e;--text-secondary:#6b6b6b;--border-default:#e3e3e3;
+--accent:#0b8fe8;--accent-strong:#0b6bc2;--sticky-blue:#a8daff;--sticky-purple:#cdb4ff;--sticky-yellow:#ffe066;--sticky-green:#a8f0c6;
+--radius-sm:4px;--radius-md:8px;--radius-full:999px;--font-heading:"Fraunces",Georgia,serif;--font-sans:"Inter",system-ui,sans-serif;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}body{margin:0;padding:32px;background:var(--bg-canvas);font:14px/1.4 var(--font-sans);color:var(--text-primary)}
+h1{font-size:18px;margin:0 0 4px}p.sub{margin:0 0 24px;color:var(--text-secondary);max-width:760px}
+.tile{width:720px;height:360px;border-radius:var(--radius-md);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px;transition:background .5s var(--ease),color .4s;background:var(--sticky-blue);color:var(--text-primary)}
+.tile[data-tab="games"]{background:#1e1e1e;color:#fff}
+.tile[data-tab="film"]{background:var(--sticky-purple)}
+.tabs{display:flex;gap:8px;position:relative;z-index:3}
+.tab{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--radius-full);border:1px solid currentColor;background:transparent;color:inherit;font:500 14px/1 var(--font-sans);cursor:pointer;opacity:.65;transition:opacity .2s,background .2s,color .2s}
+.tab svg{width:16px;height:16px}
+.tab:hover{opacity:1}
+.tab[aria-selected="true"]{opacity:1;background:var(--text-primary);color:#fff;border-color:var(--text-primary)}
+.tile[data-tab="games"] .tab[aria-selected="true"]{background:#fff;color:#1e1e1e;border-color:#fff}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panels{position:relative;flex:1;min-height:0}
+.panel{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .35s var(--ease),transform .45s var(--ease),visibility 0s .35s}
+.panel.on{opacity:1;visibility:visible;transform:none;transition:opacity .45s var(--ease) .1s,transform .5s var(--ease) .1s,visibility 0s}
+h3{font:600 22px/1.25 var(--font-heading);margin:0 0 4px}.cap{font:400 16px/1.5 var(--font-sans);margin:0}
+/* viaggi: mappa a tutta tessera, testo in una card sopra */
+.map{position:absolute;inset:0;background:#fff;border-radius:var(--radius-md);overflow:hidden}
+.map canvas{position:absolute;inset:0;width:100%;height:100%}
+.maptx{position:absolute;left:16px;top:16px;background:rgba(255,255,255,.92);border-radius:var(--radius-md);padding:12px 16px;box-shadow:0 1px 3px rgba(0,0,0,.1);max-width:260px;color:var(--text-primary)}
+.maptx .cap{color:var(--text-secondary);font-size:14px}
+/* videogiochi: testo a sinistra, carosello a destra */
+.games-l{display:grid;grid-template-columns:240px 1fr;gap:16px;align-items:center;height:100%}
+.games-l .cap{color:#c9c9c9}
+.cf{position:relative;height:100%;perspective:700px;display:grid;place-items:center}
+.cover{position:absolute;width:112px;height:150px;border-radius:8px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;font:600 15px/1.1 var(--font-heading);box-shadow:0 8px 24px rgba(0,0,0,.4);will-change:transform}
+.cover i{font:500 10px/1 var(--font-sans);letter-spacing:.1em;text-transform:uppercase;opacity:.8;font-style:normal}
+.cover span.px{display:block;width:26px;height:26px;background:rgba(255,255,255,.9);clip-path:polygon(0 40%,20% 40%,20% 20%,40% 20%,40% 0,60% 0,60% 20%,80% 20%,80% 40%,100% 40%,100% 60%,80% 60%,80% 80%,60% 80%,60% 100%,40% 100%,40% 80%,20% 80%,20% 60%,0 60%)}
+/* film: pellicola orizzontale che scorre, titolo sotto */
+.film{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.strip{position:relative;height:150px;background:#1e1e1e;border-radius:6px;overflow:hidden;margin:8px -24px 0}
+.strip:before,.strip:after{content:"";position:absolute;left:0;right:0;height:14px;background:repeating-linear-gradient(90deg,transparent 0 10px,#cdb4ff 10px 20px);background-size:30px 100%;opacity:.9;z-index:2}
+.strip:before{top:6px}.strip:after{bottom:6px}
+.fr{position:absolute;top:26px;width:150px;height:98px;border-radius:4px;display:flex;align-items:flex-end;padding:8px;color:#fff;font:500 11px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;will-change:transform}
+.film .tx{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.film .cap{color:#4a3a73}
+.now{font:600 22px/1.25 var(--font-heading)}
+</style></head><body>
+<h1>Tempo libero · tessera a schede</h1>
+<p class="sub">Una sola tessera con tre schede, ognuna con un layout diverso: Viaggi a tutta mappa, Videogiochi con carosello a lato, Film con la pellicola che scorre. Prova a cliccare. Le schede cambiano da sole finché non ne scegli una. I contenuti sono segnaposto.</p>
+<div class="tile" id="tile" data-tab="travel">
+ <div class="tabs" role="tablist" aria-label="Interessi">
+  <button class="tab" role="tab" id="tb-travel" aria-selected="true" aria-controls="p-travel" data-t="travel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Viaggi</button>
+  <button class="tab" role="tab" id="tb-games" aria-selected="false" aria-controls="p-games" data-t="games" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>Videogiochi</button>
+  <button class="tab" role="tab" id="tb-film" aria-selected="false" aria-controls="p-film" data-t="film" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>Film</button>
+ </div>
+ <div class="panels">
+  <section class="panel on" id="p-travel" role="tabpanel" aria-labelledby="tb-travel"><div class="map"><canvas id="map"></canvas><div class="maptx"><h3>Dove sono stato</h3><p class="cap">Un puntino per ogni posto che mi è rimasto dentro.</p></div></div></section>
+  <section class="panel" id="p-games" role="tabpanel" aria-labelledby="tb-games"><div class="games-l"><div><h3>I giochi che mi hanno segnato</h3><p class="cap">Le copertine che hanno fatto la storia di casa.</p></div><div class="cf" id="cf"></div></div></section>
+  <section class="panel" id="p-film" role="tabpanel" aria-labelledby="tb-film"><div class="film"><div class="strip" id="strip"></div><div class="tx"><div><h3>Una sera, un film</h3><p class="cap">Quelli che rivedo sempre volentieri.</p></div><div class="now" id="now"></div></div></div></section>
+ </div>
+</div>
+<script>
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const q=new URLSearchParams(location.search),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const tile=document.getElementById('tile'),tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelectorAll('.panel')];
+const ORDER=['travel','games','film'];let cur='travel',manual=false,auto=0;
+function select(k,byUser){cur=k;if(byUser)manual=true;tile.dataset.tab=k;tabs.forEach(b=>{const on=b.dataset.t===k;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});panels.forEach(p=>p.classList.toggle('on',p.id==='p-'+k));if(k==='travel')mapW=0}
+tabs.forEach(b=>{b.addEventListener('click',()=>select(b.dataset.t,true));b.addEventListener('keydown',e=>{const i=ORDER.indexOf(b.dataset.t);if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=ORDER[(i+(e.key==='ArrowRight'?1:2))%3];select(n,true);document.getElementById('tb-'+n).focus()}})});
+/* mappa */
+const cv=document.getElementById('map'),ctx=cv.getContext('2d');let mapW=0,mapH=0,dots=[];
+const POLY=[[[-165,62],[-140,70],[-110,72],[-85,70],[-62,58],[-55,47],[-70,42],[-76,35],[-81,25],[-90,29],[-97,26],[-105,22],[-96,16],[-86,12],[-80,8],[-92,16],[-106,24],[-117,32],[-124,40],[-125,49],[-135,58]],[[-80,8],[-62,10],[-50,0],[-35,-6],[-40,-22],[-58,-38],[-66,-55],[-73,-50],[-72,-30],[-76,-15],[-81,-5]],[[-10,36],[-9,43],[-2,48],[2,51],[8,55],[12,57],[25,60],[30,70],[40,66],[30,55],[40,47],[28,41],[24,36],[15,38],[8,44],[0,38]],[[-17,21],[-10,35],[10,37],[32,31],[43,12],[51,11],[40,-5],[35,-25],[20,-35],[12,-18],[9,4],[-8,5],[-17,14]],[[28,41],[40,47],[30,55],[40,66],[60,72],[100,77],[140,72],[180,68],[160,55],[142,46],[130,35],[122,30],[120,22],[108,10],[100,2],[95,18],[80,8],[72,20],[60,25],[50,28],[36,36]],[[113,-22],[130,-12],[142,-11],[153,-27],[146,-39],[130,-32],[115,-34]]];
+const inside=(x,y,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[a,b]=p[i],[d,e]=p[j];if((b>y)!==(e>y)&&x<(d-a)*(y-b)/(e-b)+a)c=!c}return c};
+const HOME=[9.2,45.5],PINS=[[-74,40.7],[139.7,35.7],[-0.1,51.5],[-43,-22.9],[151.2,-33.9],[-122.4,37.8]];
+const proj=(lo,la)=>[(lo+170)/350*mapW,(80-la)/138*mapH];
+function buildMap(){const r=cv.getBoundingClientRect();if(!r.width)return false;mapW=cv.width=r.width*2;mapH=cv.height=r.height*2;dots=[];const s=11;for(let y=s/2;y<mapH;y+=s)for(let x=s/2;x<mapW;x+=s){const lo=x/mapW*350-170,la=80-y/mapH*138;if(POLY.some(p=>inside(lo,la,p)))dots.push([x,y])}return true}
+function drawMap(t){if(!mapW&&!buildMap())return;ctx.clearRect(0,0,mapW,mapH);ctx.fillStyle='#cfd6dc';dots.forEach(d=>{ctx.beginPath();ctx.arc(d[0],d[1],2.2,0,7);ctx.fill()});
+ t=t%10;const h=proj(...HOME);PINS.forEach((p,i)=>{const a=1+i*1.1,k=ease(clamp((t-a)/1.2)),o=proj(...p),mx=(h[0]+o[0])/2,my=Math.min(h[1],o[1])-Math.abs(h[0]-o[0])*.25;
+  ctx.strokeStyle='#0b6bc2';ctx.lineWidth=2.5;ctx.setLineDash([8,8]);ctx.beginPath();for(let s=0;s<=40*k;s++){const u=s/40,x=(1-u)*(1-u)*h[0]+2*(1-u)*u*mx+u*u*o[0],y=(1-u)*(1-u)*h[1]+2*(1-u)*u*my+u*u*o[1];s?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();ctx.setLineDash([]);
+  const pk=clamp((t-a-1.1)/.3);if(pk>0){ctx.fillStyle='#0b6bc2';ctx.beginPath();ctx.arc(o[0],o[1],9*ease(pk),0,7);ctx.fill();ctx.strokeStyle='rgba(11,107,194,'+(.5*(1-((t*1.2+i)%1)))+')';ctx.lineWidth=2;ctx.beginPath();ctx.arc(o[0],o[1],9+((t*1.2+i)%1)*22,0,7);ctx.stroke()}});
+ ctx.fillStyle='#1e1e1e';ctx.beginPath();ctx.arc(h[0],h[1],11,0,7);ctx.fill();ctx.font='600 20px Inter,sans-serif';ctx.fillText('Milano',h[0]+16,h[1]-14)}
+/* carosello */
+const cf=document.getElementById('cf');const G=[['Titolo 01','Anno','#7c4dff'],['Titolo 02','Anno','#e5484d'],['Titolo 03','Anno','#0b8fe8'],['Titolo 04','Anno','#12a594'],['Titolo 05','Anno','#f5a524'],['Titolo 06','Anno','#d6409f']];
+const cs=G.map(([t,y,c])=>{const e=document.createElement('div');e.className='cover';e.style.background=`linear-gradient(160deg,${c},#1e1e1e 130%)`;e.innerHTML=`<i>${y}</i><span class="px"></span><span>${t}</span>`;cf.appendChild(e);return e});
+function drawGames(t){const pos=t/2.2;cs.forEach((e,i)=>{let d=((i-pos)%cs.length+cs.length)%cs.length;if(d>cs.length/2)d-=cs.length;const a=Math.abs(d),s=1-Math.min(a,2)*.16;e.style.transform=`translateX(${d*84}px) translateZ(${-a*60}px) rotateY(${-d*28}deg) scale(${s})`;e.style.opacity=clamp(1.6-a*.45);e.style.zIndex=10-Math.round(a)})}
+/* pellicola */
+const strip=document.getElementById('strip'),now=document.getElementById('now');const F=[['Titolo A','#7c4dff'],['Titolo B','#e5484d'],['Titolo C','#0b8fe8'],['Titolo D','#12a594'],['Titolo E','#f5a524'],['Titolo F','#d6409f'],['Titolo G','#6b6b6b']];
+const fs=F.map(([t,c])=>{const e=document.createElement('div');e.className='fr';e.style.background=`linear-gradient(150deg,${c},#2b2b2b 140%)`;e.textContent=t;strip.appendChild(e);return e});
+function drawFilm(t){const w=strip.clientWidth||720,step=170,pos=t/2.4,n=F.length;let best=0,bd=9;fs.forEach((e,i)=>{let d=((i-pos)%n+n)%n;if(d>n/2)d-=n;const x=w/2+d*step-75,a=Math.abs(d),s=1+Math.max(0,.18-a*.2);e.style.transform=`translateX(${x}px) scale(${s})`;e.style.opacity=clamp(1.3-a*.18);if(a<bd){bd=a;best=i}});now.textContent=F[best][0]}
+function frame(t){if(cur==='travel')drawMap(t);if(cur==='games')drawGames(t);if(cur==='film')drawFilm(t)}
+addEventListener('resize',()=>{mapW=0});
+if(q.has('tab'))select(q.get('tab'),true);
+if(q.has('t')||reduce){const t=+(q.get('t')||5);setTimeout(()=>frame(t),60);setTimeout(()=>frame(t),400)}
+else{const t0=performance.now();(function L(n){const t=(n-t0)/1000;if(!manual&&t>6*(auto+1)){auto++;select(ORDER[auto%3])}frame(t);requestAnimationFrame(L)})(t0)}
+</script></body></html>

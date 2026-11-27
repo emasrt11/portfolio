@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fuori dal canvas · lavagna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-canvas:#f5f5f5;--text-primary:#1e1e1e;--text-secondary:#6b6b6b;--sticky-purple:#cdb4ff;--radius-md:8px;--font-heading:"Fraunces",Georgia,serif;--font-sans:"Inter",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;padding:32px;background:var(--bg-canvas);font:14px/1.4 var(--font-sans);color:var(--text-primary)}
+h1{font-size:18px;margin:0 0 4px}p.sub{margin:0 0 24px;color:var(--text-secondary);max-width:820px}
+.row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start}.opt h2{font-size:14px;margin:0 0 8px}.opt h2 span{color:var(--text-secondary);font-weight:400}
+.tile{position:relative;background:var(--sticky-purple);border-radius:var(--radius-md);overflow:hidden}
+.tile.big{width:672px;height:380px}.tile.sm{width:464px;height:230px}
+.tile svg.court{position:absolute;inset:0;width:100%;height:100%}
+.tx{position:absolute;left:24px;top:24px;width:220px;z-index:2}
+.tx h3{font:600 22px/1.25 var(--font-heading);margin:0 0 12px}.tx p{font:400 16px/1.5 var(--font-sans);margin:0}
+.tile.sm .tx{width:200px}
+.court .lines *{vector-effect:none}
+.play{stroke:#1e1e1e;stroke-width:5.6;stroke-linecap:round;stroke-linejoin:round;fill:none}
+</style></head><body>
+<h1>Fuori dal canvas · la lavagna del coach</h1>
+<p class="sub">Il campo resta fermo; le X e le frecce di uno schema si disegnano una dopo l’altra e poi si cancellano, come su una lavagna. A sinistra la tessera grande (672 × 380, come il tuo SVG), a destra la misura del bento (464 × 230). Loop da 8 secondi; con <code>prefers-reduced-motion</code> resta lo schema completo, fermo.</p>
+<div class="row">
+ <div class="opt"><h2>Tessera grande <span>il tuo SVG, 672 × 380</span></h2><div class="tile big" id="big"></div></div>
+ <div class="opt"><h2>Proposta mia <span>lo stesso schema, ma il pallone segue le frecce e poi tira a canestro</span></h2><div class="tile big" id="ball"></div></div>
+ <div class="opt"><h2>Misura del bento <span>464 × 230, il campo ritagliato</span></h2><div class="tile sm" id="sm"></div></div>
+</div>
+<template id="tpl">
+ <div class="tx"><h3>Fuori dal canvas</h3><p>La mia passione più grande è il basket: da anni sono capitano di una squadra di serie B.</p></div>
+ <svg class="court" viewBox="0 0 672 380" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs><clipPath id="clipX__ID"><rect width="672" height="379.5"/></clipPath></defs>
+  <g clip-path="url(#clipX__ID)">
+   <!-- campo: fermo -->
+   <g class="lines" stroke="#fff" stroke-width="5.60494" opacity=".6">
+    <rect x="96.8025" y="29.8027" width="479.222" height="854.753" rx="13.9254"/>
+    <path d="M250.938 32.5V195.148C250.938 198.244 253.448 200.753 256.543 200.753H336.414H416.284C419.38 200.753 421.889 198.244 421.889 195.148V32.5"/>
+    <circle cx="340.617" cy="458.58" r="86.8766"/>
+    <circle cx="336.414" cy="207.76" r="82.6729"/>
+    <path d="M532.587 32.5V212.737C532.587 213.154 532.545 213.552 532.449 213.957C524.075 249.179 473.235 318.457 335.013 318.457C196.01 318.457 153.786 248.395 150.05 213.364V32.5"/>
+    <path d="M295.105 42.7549H379.44" stroke-linecap="round"/>
+    <circle cx="337.272" cy="59.9218" r="11.5622"/>
+   </g>
+   <!-- schema: si disegna e si cancella -->
+   <g class="plays">
+    <path class="play x1a" d="M161.259 306.257L184.67 329.667"/><path class="play x1b" d="M185.942 306.257L162.532 329.667"/>
+    <path class="play a1"  d="M173.1 293.2C169 232 193 168 253.2 143.4"/>
+    <path class="play h1"  d="M229.1 131.1L252.9 143.5L241.9 165.5"/>
+    <path class="play x2a" d="M533.986 230.59L557.397 254"/><path class="play x2b" d="M558.67 230.59L535.259 254"/>
+    <path class="play a2"  d="M539.7 264.5C516 308 452 356 386.8 339.4"/>
+    <path class="play h2"  d="M399.7 364.4L386.5 340.2L409.9 328.6"/>
+   </g>
+  </g>
+ </svg>
+</template>
+<script>
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const q=new URLSearchParams(location.search),FIX=q.has('t')?+q.get('t'):null,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const tpl=document.getElementById('tpl'),tiles=[];
+['big','sm','ball'].forEach((id,n)=>{const el=document.getElementById(id);el.innerHTML=tpl.innerHTML.replace('clipX__ID','clip'+n).replace('url(#clipX__ID)','url(#clip'+n+')');
+ const get=c=>el.querySelector('.'+c),P={};['x1a','x1b','a1','h1','x2a','x2b','a2','h2'].forEach(k=>{const p=get(k),L=p.getTotalLength();p.style.strokeDasharray=L;P[k]=[p,L]});if(id==='ball'){const g=get('plays');g.insertAdjacentHTML('beforeend','<circle class="pulse" cx="337.3" cy="59.9" r="12" stroke="#1e1e1e" stroke-width="4" fill="none" opacity="0"/><g class="bl" opacity="0"><circle r="18" fill="#EE8031" stroke="#1e1e1e" stroke-width="3"/><path d="M-18 0H18M0 -18V18" stroke="#1e1e1e" stroke-width="2.5" fill="none"/><path d="M-12.7 -12.7Q-4.5 0 -12.7 12.7M12.7 -12.7Q4.5 0 12.7 12.7" stroke="#1e1e1e" stroke-width="2.5" fill="none"/></g>');P.ball=[get('bl'),get('pulse')]}tiles.push(P)});
+// sequenza: [elemento, inizio, fine] — poi tutto si cancella in ordine inverso
+const SEQ=[['x1a',.3,.6],['x1b',.6,.9],['a1',.9,2],['h1',2,2.35],['x2a',2.5,2.8],['x2b',2.8,3.1],['a2',3.1,4.2],['h2',4.2,4.55]];
+const ERASE=[['h2',6.2,6.35],['a2',6.35,7],['x2b',7,7.15],['x2a',7.15,7.3],['h1',7.3,7.4],['a1',7.4,7.9],['x1b',7.9,8.0],['x1a',8.0,8.1]];
+const CYC=8.4;
+function frame(t){t=t%CYC;tiles.forEach(P=>{for(const[k,[p,L]]of Object.entries(P)){ if(k==='ball')continue;
+  const s=SEQ.find(a=>a[0]===k),e=ERASE.find(a=>a[0]===k);
+  const draw=ease(clamp((t-s[1])/(s[2]-s[1]))),erase=ease(clamp((t-e[1])/(e[2]-e[1])));
+  // disegno: 0 -> L visibile; cancellazione: la linea si "consuma" da dove e' partita
+  p.style.strokeDashoffset=(1-draw)*L+erase*L*-1;
+  p.style.opacity=(draw>0&&erase<1)?1:0;}
+  if(P.ball){const bl=P.ball[0],pu=P.ball[1];let x=0,y=0,o=0;const a1=P.a1,a2=P.a2;
+   const pt=function(pair,f){const q2=pair[0].getPointAtLength(clamp(f)*pair[1]);return [q2.x,q2.y]};
+   if(t>=0.9&&t<2.2){const r=pt(a1,ease(clamp((t-0.9)*0.909)));x=r[0];y=r[1];o=t<2?1:1-(t-2)*5}
+   else if(t>=3.1&&t<4.6){const r=pt(a2,ease(clamp((t-3.1)*0.909)));x=r[0];y=r[1];o=clamp((t-3.1)*6.7)}
+   else if(t>=4.6&&t<5.6){const v=t-4.6,sx=386.8,sy=339.4;x=sx+(337.3-sx)*v;y=sy+(59.9-sy)*v-70*4*v*(1-v);o=v<0.92?1:1-(v-0.92)*12.5}
+   bl.setAttribute('transform','translate('+x+' '+y+')');bl.style.opacity=o;
+   const pv=clamp((t-5.5)*1.667);pu.setAttribute('r',12+pv*22);pu.style.opacity=(pv>0&&pv<1)?0.7*(1-pv):0;}
+})}
+if(FIX!==null||reduce){frame(FIX??4.8)}else{const t0=performance.now();(function L(n){frame((n-t0)/1000);requestAnimationFrame(L)})(t0)}
+</script></body></html>

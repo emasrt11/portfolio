@@ -1,0 +1,202 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Il mio approccio · prove animate</title>
+<meta name="description" content="Due prove animate per il riquadro «Il mio approccio»: binario e cerchi, con gli agent AI dentro ogni passaggio.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@400;500&display=swap">
+<style>
+/* Prove animate di «Il mio approccio»: le due proposte approvate in Figma, sviluppate per vedere la resa sul web.
+   Token con gli stessi nomi del design system (DESIGN-SYSTEM.md). Pagina di prova, non ancora nel sito React. */
+:root{
+  --bg-canvas:#f5f5f5; --bg-panel:#ffffff; --bg-raised:#ededed;
+  --text-primary:#1e1e1e; --text-secondary:#6b6b6b;
+  --border-default:#e3e3e3; --border-strong:#8f8f8f;
+  --accent:#0b8fe8; --accent-strong:#0b6bc2; --accent-on-strong:#ffffff; --accent-link:#0b6bc2;
+  --sticky-purple:#cdb4ff;
+  --radius-sm:4px; --radius-md:8px;
+  --shadow-e2:0 1px 2px rgb(30 30 30 / .06),0 4px 12px rgb(30 30 30 / .12);
+  --font-heading:"Fraunces",Georgia,serif; --font-sans:"Inter",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{background:var(--bg-canvas)}
+body{margin:0;color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle,#b6b6b6 1px,transparent 1.3px);background-size:16px 16px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;color:inherit}
+.page{max-width:1040px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:72px}
+.intro h1{font:700 40px/1.12 var(--font-heading);letter-spacing:-.01em;margin:0 0 8px}
+.intro p{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0;max-width:62ch}
+.t-label{font:500 14px/1.4 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
+.pause{margin-top:16px;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;background:var(--bg-panel);border:1px solid var(--border-strong);border-radius:var(--radius-sm);font:500 14px/1 var(--font-sans);cursor:pointer}
+.pause:hover{background:var(--bg-raised)}
+/* riquadro della lavagna (Board Frame) */
+.proposal{display:flex;flex-direction:column;gap:12px}
+.fh{font:500 14px/1.4 var(--font-sans);color:var(--text-secondary)}
+.fh i{font-style:normal;opacity:.6;margin-left:8px}
+.fr{background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:24px;display:flex;flex-direction:column;gap:16px}
+.fr h2{font:600 40px/1.12 var(--font-heading);letter-spacing:-.01em;margin:0}
+.fr .lead{font:400 16px/1.5 var(--font-sans);color:var(--text-secondary);margin:0}
+.fr .note{font:400 14px/1.5 var(--font-sans);color:var(--text-secondary);margin:0;border-top:1px solid var(--border-default);padding-top:12px}
+.w960{max-width:960px}
+
+/* ===== proposta 2: cerchi ===== */
+.circles{display:grid;grid-template-columns:500px 1fr;gap:24px;align-items:start}
+.c-svg{width:100%;height:auto;display:block;overflow:visible}
+.c-svg .ring{fill:none;stroke:var(--border-strong);stroke-width:1.5;opacity:.55;transition:stroke .5s var(--ease),opacity .5s var(--ease),stroke-width .5s var(--ease)}
+.c-svg .ring.on{stroke:var(--accent-strong);stroke-width:2;opacity:1}
+.c-svg .lab text{text-anchor:middle;fill:var(--text-secondary);transition:fill .4s}
+.c-svg .lab .n{font:500 14px var(--font-sans);letter-spacing:.08em}
+.c-svg .lab .t{font:500 16px var(--font-sans)}
+.c-svg .lab.on text{fill:var(--text-primary)}
+.c-svg .lab{cursor:pointer}
+.c-svg .core-c{fill:var(--sticky-purple);stroke:var(--bg-panel);stroke-width:4}
+.c-svg .core-t{font:600 22px var(--font-heading);fill:var(--text-primary);text-anchor:middle}
+.c-svg .core.bump{animation:bump .7s var(--ease)}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.18)}100%{transform:scale(1)}}
+.c-svg .core{transform-box:fill-box;transform-origin:center}
+.rows{display:flex;flex-direction:column}
+.row{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--border-default);padding:12px 0;cursor:pointer}
+.row .hd{display:flex;align-items:center;gap:12px}
+.row .hd b{font:500 14px/1.4 var(--font-sans);letter-spacing:.08em;color:var(--text-secondary)}
+.row .hd span{font:600 22px/1.25 var(--font-heading);color:var(--text-secondary);transition:color .4s}
+.row[aria-expanded="true"] .hd span,.row[aria-expanded="true"] .hd b{color:var(--text-primary)}
+.row .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.row[aria-expanded="true"] .more{grid-template-rows:1fr}
+.row .more>div{overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.row .more>div>*:first-child{margin-top:8px}
+.row .io{font:400 16px/1.5 var(--font-sans);margin:0;color:var(--text-primary)}
+.row .ag{background:var(--sticky-purple);border-radius:var(--radius-sm);padding:12px;display:flex;flex-direction:column;gap:4px}
+.row .ag p{font:400 16px/1.5 var(--font-sans);margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags span{padding:4px 8px;border-radius:var(--radius-sm);background:var(--bg-raised);font:400 16px/1.5 var(--font-sans)}
+.tags span.ai{background:var(--sticky-purple)}
+.note a{color:var(--accent-link)}
+/* ===== proposte 6 e 7: replica del visual a cerchi (macchia SVG / macchia WebGL) ===== */
+.stage{position:relative;width:100%;aspect-ratio:500/470}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.sc-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sc-svg .ring{fill:none;stroke:var(--border-strong);stroke-width:1.5;opacity:.6;transition:stroke .5s var(--ease),opacity .5s var(--ease),stroke-width .5s var(--ease)}
+.sc-svg .ring:not(.on){filter:blur(1.5px)}
+.sc-svg .ring.on{stroke:var(--accent-strong);stroke-width:2;opacity:1}
+.sc-svg .ring.in{stroke:#fff;stroke-width:1.5;opacity:.5;filter:none}
+.sc-svg .lab.in text{fill:#fff;opacity:.8}
+.sc-svg .hit{fill:transparent;cursor:pointer}
+.sc-svg .lab{pointer-events:none}
+.sc-svg .lab text{text-anchor:middle;fill:var(--text-secondary);transition:fill .4s}
+.sc-svg .lab .n{font:500 14px var(--font-sans);letter-spacing:.08em}
+.sc-svg .lab .t{font:500 16px var(--font-sans)}
+.sc-svg .lab.on text{fill:var(--accent-on-strong)}
+.sc-svg .core-c{fill:var(--sticky-purple);stroke:var(--bg-panel);stroke-width:4}
+.sc-svg .core-t{font:600 22px var(--font-heading);fill:var(--text-primary);text-anchor:middle}
+.sc-svg .core{transform-box:fill-box;transform-origin:center}
+.sc-svg .core.bump{animation:bump .7s var(--ease)}
+.sc-svg .hit:focus-visible{outline:2px solid var(--accent)}
+/* voce selezionata in risalto, le altre piu' tenui (proposte 6 e 7) */
+.rows.emph .row{transition:opacity .45s var(--ease)}
+.rows.emph .row .hd span{transition:font-size .45s var(--ease),color .4s}
+.rows.emph.has-sel .row[aria-expanded="true"] .hd span{font-size:28px;color:var(--text-primary)}
+.rows.emph.has-sel .row:not([aria-expanded="true"]){opacity:.38}
+@media (max-width:900px){.circles{grid-template-columns:1fr}.lanes{grid-template-columns:1fr}.fr h2{font-size:32px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<main class="page">
+<header class="intro">
+  <span class="t-label">Prova animata</span>
+  <h1>Il mio approccio</h1>
+  <p>Il riquadro della lavagna sviluppato per il web: ogni passaggio tra le fasi passa dagli agent AI. Passa il mouse sulle righe a destra o sulle mezzelune dei cerchi (o usa Tab) per selezionare una fase; quando esci non resta nessuna fase selezionata.</p>
+  <button class="pause" id="pause" type="button" aria-pressed="false">Metti in pausa l'animazione</button>
+</header>
+
+<!-- ===== Il mio approccio: cerchi con macchia SVG (versione scelta) ===== -->
+<section class="proposal w960" aria-labelledby="p6t">
+  <div class="fh">Il mio approccio<i>✦</i><i>Sezione</i></div>
+  <div class="fr" id="p6">
+    <span class="t-label">Il mio approccio</span>
+    <h2 id="p6t">Ogni fase passa dall'AI.</h2>
+    <p class="lead">Design Thinking e Human-Centered Design: io guido le fasi con le persone, gli agent AI portano ogni fase alla successiva.</p>
+    <div class="circles"><div class="stage" id="p6stage"></div><div class="rows" id="p6rows"></div></div>
+    <p class="note">Tecnica: tracciato chiuso a curve di Bézier che si muove con un po' di rumore, gradiente che ruota, copia sfocata sotto come bagliore, cerchi non attivi sfocati di 1,5 px, aree sensibili a forma di mezzaluna. Reference: <a href="https://dev.to/georgedoescode/tutorial-build-a-smooth-animated-blob-using-svg-js-3pne" target="_blank" rel="noopener">Smooth animated blob con SVG e JS</a> e <a href="https://tympanus.net/codrops/?p=32314" target="_blank" rel="noopener">Organic SVG Shape Morph di Codrops</a>.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, paused=false;
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var NAMES=['Ricerca ed Empatia','Definizione del problema','Ideazione e Prototipazione','Test e Iterazione'];
+  var IO=['Interviste, questionari e analisi di mercato per capire bisogni e problemi reali.','Metto in ordine ciò che ho imparato e scelgo il problema da risolvere.','Esploro soluzioni con il pensiero divergente e le trasformo in prototipi interattivi.','Valido con le persone e miglioro in modo continuo, sulle esigenze reali.'];
+  var AG=['Sintetizzano trascrizioni e appunti e raggruppano i temi che tornano.','Confrontano le ipotesi e segnalano lacune o contraddizioni nei dati.','Propongono varianti di concept e di flussi e preparano prototipi con i componenti del design system.','Controllano i flussi e la coerenza con il design system prima di ogni test.'];
+  var TAGIO=[['Interviste','Questionari','Analisi di mercato'],['Problema da risolvere'],['Pensiero divergente','Prototipi'],['Test con le persone','Feedback']];
+  var TAGAI=[['Sintesi dei temi'],['Ipotesi a confronto'],['Varianti di concept','Prototipi con il design system'],['Controllo dei flussi']];
+  var NS='http://www.w3.org/2000/svg';
+  function lerp(a,b,k){return a+(b-a)*k}
+  var pb=$('#pause'); pb.addEventListener('click',function(){ paused=!paused; pb.setAttribute('aria-pressed',String(paused)); pb.textContent=paused?"Riprendi l'animazione":"Metti in pausa l'animazione"; });
+
+  function watch(el){ var o={v:true}; if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ o.v=es[0].isIntersecting; },{threshold:.1}).observe(el); } return o; }
+
+  function scene(id,mode){
+    var root=$('#'+id), stage=$('.stage',root), rowsEl=$('.rows',root), vis=watch(root);
+    var T={x:60,y:235}, R=[56,108,160,212], LX=[116,224,328,432];
+    function circ(cx,cy,r){ return 'M'+(cx-r)+' '+cy+' a'+r+' '+r+' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 '+(-2*r)+' 0'; }
+    var s='<defs><filter id="g'+id+'" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="14"/></filter><filter id="w'+id+'" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>'+
+      '<filter id="c'+id+'" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>'+
+      '<linearGradient id="l'+id+'" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#0b6bc2"/><stop offset=".55" stop-color="#7b4dd8"/><stop offset="1" stop-color="#cdb4ff"/></linearGradient></defs>';
+    s+='<g class="parts"></g>';
+    if(mode==='svg') s+='<g class="blobg"><path class="bg-glow" fill="#7b4dd8" opacity=".5" filter="url(#g'+id+')"/><path class="bg-body" fill="url(#l'+id+')"/><ellipse class="bg-warm" fill="#cdb4ff" opacity=".5" filter="url(#w'+id+')"/></g>';
+    for(var i=0;i<4;i++) s+='<circle class="ring" cx="'+(T.x+R[i])+'" cy="'+T.y+'" r="'+R[i]+'"/>';
+    s+='<g class="core"><ellipse cx="60" cy="235" rx="55" ry="55" fill="#cdb4ff" opacity=".5" filter="url(#c'+id+')"/><circle class="core-c" cx="60" cy="235" r="30"/><text class="core-t" x="60" y="243">AI</text></g>';
+    var SHORT=['Ricerca','Definizione','Ideazione','Test'];
+    for(var j=0;j<4;j++) s+='<g class="lab" data-i="'+j+'"><text class="n" x="'+LX[j]+'" y="228">0'+(j+1)+'</text><text class="t" x="'+LX[j]+'" y="248">'+SHORT[j]+'</text></g>';
+    for(var k=0;k<4;k++){ var d=circ(T.x+R[k],T.y,R[k]); if(k>0) d+=' '+circ(T.x+R[k-1],T.y,R[k-1]); s+='<path class="hit" data-i="'+k+'" tabindex="0" role="button" aria-label="Fase '+(k+1)+', '+SHORT[k]+'" fill-rule="evenodd" d="'+d+'"/>'; }
+    var svg=document.createElementNS(NS,'svg'); svg.setAttribute('class','sc-svg'); svg.setAttribute('viewBox','0 0 500 470'); svg.innerHTML=s; stage.appendChild(svg);
+    /* righe a destra: la voce selezionata si apre e le altre diventano tenui */
+    var rows=[];
+    NAMES.forEach(function(n,i){
+      var b=document.createElement('button'); b.type='button'; b.className='row'; b.setAttribute('aria-expanded','false'); b.dataset.i=i;
+      var tg=''; TAGIO[i].forEach(function(t){tg+='<span>'+t+'</span>'}); TAGAI[i].forEach(function(t){tg+='<span class="ai">'+t+'</span>'});
+      b.innerHTML='<div class="hd"><b>0'+(i+1)+'</b><span>'+n+'</span></div><div class="more"><div><p class="io">'+IO[i]+'</p><div class="ag"><span class="t-label" style="color:var(--text-primary)">Agent AI</span><p>'+AG[i]+'</p></div><div class="tags">'+tg+'</div></div></div>';
+      rowsEl.appendChild(b); rows.push(b); });
+    var rings=$$('.ring',svg), labs=$$('.lab',svg), hits=$$('.hit',svg), core=$('.core',svg), pg=$('.parts',svg);
+    var P=[]; var seed=11; function rnd(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
+    var cols=['#2B1F8F','#6B5BEF','#493BE3','#0b8fe8','#cdb4ff','#7b4dd8'];
+    for(var q=0;q<36;q++){ var c=document.createElementNS(NS,'circle'); var rr=.5+rnd()*.9; c.setAttribute('r',rr.toFixed(2)); c.setAttribute('fill',cols[Math.floor(rnd()*cols.length)]); c.setAttribute('opacity',(0.1+rnd()*.2).toFixed(2)); pg.appendChild(c); P.push({el:c,x:rnd()*500,y:rnd()*470,ph:rnd()*6.28,sp:.1+rnd()*.2,am:2+rnd()*4}); }
+    var bBody=$('.bg-body',svg), bGlow=$('.bg-glow',svg), bWarm=$('.bg-warm',svg), grad=$('#l'+id,svg), blobG=$('.blobg',svg);
+    var FILL=.94; /* la macchia occupa il 94% del cerchio: con il bordo appena mosso resta dentro l'anello */
+    var active=-1, gx=T.x, gw=0, leaveT=null; /* -1 = nessuna voce selezionata: nessun cerchio pieno */
+    rowsEl.classList.add('emph');
+    function paint(){ /* anelli e etichette: quelli dentro la macchia diventano chiari */
+      rings.forEach(function(r,j){ r.classList.toggle('on',j===active); r.classList.toggle('in',j<active); });
+      labs.forEach(function(l,j){ l.classList.toggle('on',j===active); l.classList.toggle('in',j<active); });
+      rowsEl.classList.toggle('has-sel',active>=0); }
+    function setActive(i){
+      if(i===active) return; var was=active; active=i; paint();
+      rows.forEach(function(r,j){ r.setAttribute('aria-expanded',String(j===i)); });
+      if(i>=0&&was<0){ core.classList.remove('bump'); void core.getBoundingClientRect(); if(!reduce) core.classList.add('bump'); }
+    }
+    function pick(i){ clearTimeout(leaveT); setActive(i); }
+    function release(){ clearTimeout(leaveT); leaveT=setTimeout(function(){ setActive(-1); },reduce?0:220); }
+    paint();
+    /* selezione: passando il mouse, con Tab o toccando; quando si esce non resta nessuna voce selezionata */
+    rows.forEach(function(r,i){ r.addEventListener('mouseenter',function(){pick(i);}); r.addEventListener('mouseleave',release); r.addEventListener('focus',function(){pick(i);}); r.addEventListener('blur',release); r.addEventListener('click',function(){pick(i);}); });
+    hits.forEach(function(h){ var i=+h.dataset.i; h.addEventListener('mouseenter',function(){pick(i);}); h.addEventListener('mouseleave',release); h.addEventListener('focus',function(){pick(i);}); h.addEventListener('blur',release); h.addEventListener('click',function(){pick(i);}); h.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(i); } }); });
+    function blobPath(cx,cy,rx,ry,t){ var N=8, pts=[], i;
+      for(i=0;i<N;i++){ var a=i/N*Math.PI*2, nz=1+.025*Math.sin(a*2+t*.9)+.018*Math.sin(a*3-t*1.2+1.3)+.012*Math.sin(a*5+t*.8); pts.push([cx+Math.cos(a)*rx*nz,cy+Math.sin(a)*ry*nz]); }
+      var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+      for(i=0;i<N;i++){ var p0=pts[(i-1+N)%N],p1=pts[i],p2=pts[(i+1)%N],p3=pts[(i+2)%N];
+        d+=' C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1); }
+      return d+'Z'; }
+    var last=performance.now(), t=0;
+    function loop(now){ var dt=Math.max(0,Math.min(.05,(now-last)/1000)); last=now; if(!paused&&vis.v&&!reduce) t+=dt; var k=reduce?1:1-Math.exp(-dt*4.5);
+      var tx=active<0?T.x:T.x+R[active], tw=active<0?0:R[active]*FILL; gx=lerp(gx,tx,k); gw=lerp(gw,tw,k); var on=gw>1;
+      if(blobG) blobG.style.display=on?'':'none';
+      if(on){ var dpath=blobPath(gx,T.y,gw,gw,t); bBody.setAttribute('d',dpath); bGlow.setAttribute('d',dpath);
+        var ang=t*.45; grad.setAttribute('x1',gx+Math.cos(ang)*gw); grad.setAttribute('y1',T.y+Math.sin(ang)*gw); grad.setAttribute('x2',gx-Math.cos(ang)*gw); grad.setAttribute('y2',T.y-Math.sin(ang)*gw);
+        bWarm.setAttribute('cx',gx-gw*.3+Math.sin(t*.9)*gw*.08); bWarm.setAttribute('cy',T.y-gw*.3+Math.cos(t*.7)*gw*.08); bWarm.setAttribute('rx',gw*.55); bWarm.setAttribute('ry',gw*.45); }
+      for(var m=0;m<P.length;m++){ var p=P[m]; p.el.setAttribute('cx',p.x+Math.sin(t*p.sp+p.ph)*p.am); p.el.setAttribute('cy',p.y+Math.cos(t*p.sp*.8+p.ph)*p.am); }
+      requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+  }
+  scene('p6','svg');
+})();
+</script>
+</body></html>

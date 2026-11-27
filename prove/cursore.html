@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prove · cursore animato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg-canvas:#f5f5f5;--bg-panel:#fff;--text-primary:#1e1e1e;--text-secondary:#6b6b6b;--border-default:#e3e3e3;
+--bg-raised:#ededed;--font-heading:"Fraunces",ui-serif,Georgia,serif;--font-sans:"Inter",ui-sans-serif,system-ui,sans-serif;--accent:#0b8fe8;--accent-strong:#0b6bc2;--accent-subtle:#e5f4ff;--sticky-blue:#a8daff;--sticky-purple:#cdb4ff;--sticky-yellow:#ffe066;--sticky-green:#a8f0c6}
+*{box-sizing:border-box}
+body{margin:0;padding:32px;background:var(--bg-canvas);font:14px/1.4 var(--font-sans);color:var(--text-primary)}
+h1{font-size:18px;margin:0 0 4px}p.sub{margin:0 0 24px;color:var(--text-secondary)}
+.row{display:flex;gap:32px;flex-wrap:wrap}
+.opt h2{font-size:14px;margin:0 0 8px}.opt h2 span{color:var(--text-secondary);font-weight:400}
+.stage{position:relative;width:480px;height:240px;border-radius:12px;background:#fafafa;border:1px solid var(--border-default);overflow:hidden;
+background-image:radial-gradient(#d4d4d4 1px,transparent 1.2px);background-size:16px 16px}
+.el{position:absolute;transition:none}
+.sel{position:absolute;border:1.5px solid var(--accent);pointer-events:none;opacity:0}
+.sel i{position:absolute;width:7px;height:7px;background:#fff;border:1.5px solid var(--accent);border-radius:1.5px}
+.sel i:nth-child(1){left:-4.5px;top:-4.5px}.sel i:nth-child(2){right:-4.5px;top:-4.5px}.sel i:nth-child(3){left:-4.5px;bottom:-4.5px}.sel i:nth-child(4){right:-4.5px;bottom:-4.5px}
+.tag{position:absolute;font-size:10px;font-weight:600;color:#fff;background:var(--accent);padding:2px 6px;border-radius:4px;white-space:nowrap;opacity:0}
+.cur{position:absolute;left:0;top:0;pointer-events:none;will-change:transform}
+.cur svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.cur b{position:absolute;left:14px;top:16px;font-size:11px;font-weight:600;color:#fff;background:var(--accent-strong);padding:3px 8px;border-radius:0 8px 8px 8px;white-space:nowrap}
+.rip{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;border:2px solid var(--accent);opacity:0;pointer-events:none}
+.serif{font-family:'DM Serif Display',Georgia,serif}
+.card{background:#fff;border:1px solid var(--border-default);border-radius:8px;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card small{display:block;color:var(--text-secondary);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.card strong{font:600 17px/1.2 var(--font-heading)}
+.btn{background:var(--accent-strong);color:#fff;border-radius:8px;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+.dot{border-radius:50%}
+.note{margin-top:24px;color:var(--text-secondary);max-width:720px}
+</style></head><body>
+<h1>Prove · cursore in stile Figma</h1>
+<p class="sub">Spazio 480 × 240 (la colonna di destra dell’introduzione). Le tre animazioni vanno in loop.</p>
+<div class="row">
+ <div class="opt"><h2>A · Esplora <span>il cursore vaga sulla tela</span></h2><div class="stage" id="A"></div></div>
+ <div class="opt"><h2>B · Disegna <span>crea un riquadro e lo sposta</span></h2><div class="stage" id="B"></div></div>
+ <div class="opt"><h2>C · Seleziona <span>passa da un elemento all’altro</span></h2><div class="stage" id="C"></div></div>
+</div>
+<p class="note">Nel sito reale: con <code>prefers-reduced-motion</code> resta un fotogramma fermo (cursore accanto al riquadro).</p>
+<script>
+const NAME='Emanuele';
+const CUR=`<svg width="18" height="20" viewBox="0 0 18 20"><path d="M1.5 1.2 16 8.6l-6.2 2L7.4 17.5 1.5 1.2Z" fill="#0b6bc2" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+// keys: [t,x,y] -> posizione con easing tra un punto e il successivo
+function path(keys,t){
+  if(t<=keys[0][0])return[keys[0][1],keys[0][2]];
+  for(let i=1;i<keys.length;i++){
+    if(t<=keys[i][0]){const a=keys[i-1],b=keys[i],k=ease((t-a[0])/(b[0]-a[0]));
+      // leggera curva: spostamento ortogonale
+      const dx=b[1]-a[1],dy=b[2]-a[2],c=Math.sin(k*Math.PI)*.08;
+      return[lerp(a[1],b[1],k)-dy*c,lerp(a[2],b[2],k)+dx*c];}
+  }
+  const l=keys[keys.length-1];return[l[1],l[2]];
+}
+function mk(stage,html){stage.insertAdjacentHTML('beforeend',html);return stage.lastElementChild}
+function cursor(stage){const c=mk(stage,`<div class="cur">${CUR}<b>${NAME}</b></div>`);const b=c.querySelector('b');return(x,y)=>{c.style.transform=`translate(${x}px,${y}px)`;const f=x>stage.clientWidth-96;b.style.left=f?'auto':'14px';b.style.right=f?'6px':'auto';b.style.borderRadius=f?'8px 0 8px 8px':'0 8px 8px 8px'}}
+function ripple(stage){const r=mk(stage,'<div class="rip"></div>');return(x,y,k)=>{r.style.left=x+'px';r.style.top=y+'px';r.style.opacity=k>0&&k<1?1-k:0;r.style.transform=`scale(${.4+k*1.4})`}}
+const sc=[];
+/* ---------- A ---------- */
+(()=>{const s=document.getElementById('A');
+ mk(s,`<div class="el card" style="left:36px;top:34px;width:150px"><small>Ricerca</small><strong>Capire</strong></div>`);
+ mk(s,`<div class="el card" style="left:290px;top:28px;width:150px"><small>Prototipo</small><strong>Disegnare</strong></div>`);
+ mk(s,`<div class="el" style="left:60px;top:150px;width:96px;height:64px;border-radius:8px;background:var(--sticky-yellow)"></div>`);
+ mk(s,`<div class="el dot" style="left:214px;top:104px;width:52px;height:52px;background:var(--sticky-purple)"></div>`);
+ mk(s,`<div class="el card" style="left:316px;top:150px;width:124px"><small>Codice</small><strong>Costruire</strong></div>`);
+ const set=cursor(s);const K=[[0,40,200],[1.2,150,70],[2.6,300,60],[3.6,400,110],[4.8,420,190],[6,250,150],[7.2,110,200],[8.4,100,120],[10,40,200]];
+ sc.push(t=>{const[x,y]=path(K,t%10);set(x,y)});})();
+/* ---------- B ---------- */
+(()=>{const s=document.getElementById('B');
+ const r=mk(s,`<div class="el" style="border-radius:10px;background:var(--bg-raised);color:var(--text-primary);opacity:0;display:flex;align-items:center;padding:0 20px;font:600 22px/1.25 var(--font-heading);overflow:hidden"></div>`);
+ const PH=['Scorri per conoscermi meglio ✌️'];let last=-1;
+ const sel=mk(s,`<div class="sel"><i></i><i></i><i></i><i></i></div>`);
+ const tag=mk(s,`<div class="tag"></div>`);
+ const set=cursor(s),rip=ripple(s);
+ const x0=80,y0=60,w=280,h=110;
+ sc.push(t=>{const ix=Math.floor(t/10)%PH.length;if(ix!==last){r.textContent=PH[ix];last=ix}t=t%10;let x,y,rx=x0,ry=y0,rw=0,rh=0,op=0,selOp=0,label='';
+  if(t<1.2){[x,y]=path([[0,380,200],[1.2,x0,y0]],t)}
+  else if(t<3){const k=ease((t-1.2)/1.8);rw=w*k;rh=h*k;op=1;x=x0+rw;y=y0+rh;selOp=1;label=`${Math.round(rw)} × ${Math.round(rh)}`}
+  else if(t<4){rw=w;rh=h;op=1;selOp=1;[x,y]=path([[3,x0+w,y0+h],[3.8,x0+w-40,y0+h-40],[4,x0+w-40,y0+h-40]],t);}
+  else if(t<6){rw=w;rh=h;op=1;selOp=1;const k=ease((t-4)/2);rx=x0+70*k;ry=y0+20*k;x=rx+w-40;y=ry+h-40;label='Riquadro'}
+  else if(t<8){rw=w;rh=h;op=1;rx=x0+70;ry=y0+20;const k=ease((t-6)/2);[x,y]=path([[6,rx+w-40,ry+h-40],[8,420,210]],t);selOp=1-clamp((t-6)/.4)}
+  else{rw=w;rh=h;op=1-clamp((t-8.6)/1);rx=x0+70;ry=y0+20;x=420;y=210}
+  Object.assign(r.style,{left:rx+'px',top:ry+'px',width:rw+'px',height:rh+'px',opacity:rw>20?op:0,fontSize:rw>=w-1?'22px':'0'});
+  Object.assign(sel.style,{left:rx+'px',top:ry+'px',width:rw+'px',height:rh+'px',opacity:selOp});
+  tag.textContent=label;Object.assign(tag.style,{left:(rx+rw/2-30)+'px',top:(ry+rh+8)+'px',opacity:label?1:0});
+  set(x,y);rip(x,y,clamp((t-3)/.8));});})();
+/* ---------- C ---------- */
+(()=>{const s=document.getElementById('C');
+ const E=[
+  {n:'Titolo',x:40,y:34,w:190,h:44,html:`<div class="el serif" style="left:40px;top:34px;width:190px;font:600 28px/44px var(--font-heading)">Capire.</div>`},
+  {n:'Card',x:270,y:40,w:160,h:70,html:`<div class="el card" style="left:270px;top:40px;width:160px;height:70px"><small>Ricerca</small><strong>Persone e dati</strong></div>`},
+  {n:'CTA',x:48,y:150,w:130,h:40,html:`<div class="el btn" style="left:48px;top:150px;width:130px;height:40px">Prototipo</div>`},
+  {n:'Cerchio',x:300,y:140,w:70,h:70,html:`<div class="el dot" style="left:300px;top:140px;width:70px;height:70px;background:var(--sticky-green)"></div>`}];
+ E.forEach(e=>mk(s,e.html));
+ const sel=mk(s,`<div class="sel"><i></i><i></i><i></i><i></i></div>`),tag=mk(s,`<div class="tag"></div>`);
+ const set=cursor(s),rip=ripple(s);
+ const order=[1,3,2,0];const T=2.4;
+ sc.push(t=>{const p=t%(T*order.length);const i=Math.floor(p/T),l=p-i*T;const e=E[order[i]],pe=E[order[(i+order.length-1)%order.length]];
+  const tx=e.x+e.w*.6,ty=e.y+e.h*.6,px=pe.x+pe.w*.6,py=pe.y+pe.h*.6;
+  const k=ease(clamp(l/1.1));const x=lerp(px+8,tx,k),y=lerp(py+8,ty,k)+Math.sin(k*Math.PI)*-18;
+  const sk=clamp((l-1.1)/.15);
+  // selezione sull'elemento corrente dopo l'arrivo; resta sul precedente fino al click
+  const show=l>1.1?e:pe, o=l>1.1?sk:1-clamp((l-.2)/.15);
+  Object.assign(sel.style,{left:show.x+'px',top:show.y+'px',width:show.w+'px',height:show.h+'px',opacity:o});
+  tag.textContent=show.n;Object.assign(tag.style,{left:show.x+'px',top:(show.y+show.h+8)+'px',opacity:o});
+  set(x,y);rip(tx,ty,clamp((l-1.1)/.6));});})();
+const fixed=new URLSearchParams(location.search).get('t');
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(fixed!==null||reduce){sc.forEach(f=>f(+(fixed||3)))}
+else{const t0=performance.now();(function loop(n){const t=(n-t0)/1000;sc.forEach(f=>f(t));requestAnimationFrame(loop)})(t0)}
+</script></body></html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Passione per il design · editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg-canvas:#f5f5f5;--bg-raised:#ededed;--text-primary:#1e1e1e;--text-secondary:#6b6b6b;--border-default:#e3e3e3;--canvas-dot:#b6b6b6;
+--accent:#0b8fe8;--accent-strong:#0b6bc2;--accent-subtle:#e5f4ff;--sticky-blue:#a8daff;--sticky-yellow:#ffe066;
+--radius-sm:4px;--radius-md:8px;--font-heading:"Fraunces",Georgia,serif;--font-sans:"Inter",system-ui,sans-serif;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}body{margin:0;padding:32px;background:var(--bg-canvas);font:14px/1.4 var(--font-sans);color:var(--text-primary)}
+h1{font-size:18px;margin:0 0 4px}p.sub{margin:0 0 24px;color:var(--text-secondary);max-width:860px}
+.grid{display:grid;grid-template-columns:repeat(2,720px);gap:32px}
+.opt h2{font-size:14px;margin:0 0 8px}.opt h2 span{color:var(--text-secondary);font-weight:400}
+.dt{position:relative;width:720px;height:576px;border-radius:var(--radius-md);background:var(--sticky-blue);padding:24px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.dt h3{font:600 22px/1.25 var(--font-heading);margin:0}.dt .s{font:400 16px/1.5 var(--font-sans);margin:0}
+.vis{position:relative;flex:1;min-height:0}
+.desc{min-height:92px}
+.desc .k{font:500 14px/1.4 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+.desc h4{font:600 22px/1.25 var(--font-heading);margin:2px 0 4px}.desc p{font:400 16px/1.5 var(--font-sans);margin:0;max-width:560px}
+.desc.fade{animation:fd .5s var(--ease)}@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tags{display:flex;gap:8px;margin-top:8px}.tags span{padding:4px 8px;background:#fff;border-radius:var(--radius-sm);font:400 14px/1.5 var(--font-sans)}
+.ed{position:absolute;inset:0;display:grid;grid-template-columns:210px 1fr;gap:12px}
+.lp{position:relative;background:#fff;border-radius:var(--radius-md);padding:8px;align-self:start;box-shadow:0 1px 3px rgba(0,0,0,.1);height:140px}
+.lp small{display:block;font:500 12px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);padding:8px 8px 6px;height:28px}
+.li{position:absolute;left:8px;right:8px;display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:var(--radius-sm);font:500 14px/1 var(--font-sans);background:#fff;transition:transform .5s var(--ease),background .25s,box-shadow .25s}
+.li svg{width:16px;height:16px;flex:none}.li .ey{margin-left:auto}.li.on{background:var(--accent-subtle);color:var(--accent-strong)}
+.li.lift{box-shadow:0 8px 20px rgba(0,0,0,.2);z-index:3;background:#fff}
+.li.off{opacity:.45}
+.cv{position:relative;border-radius:var(--radius-md);background-color:#fafafa;background-image:radial-gradient(circle,var(--canvas-dot) 1px,transparent 1.3px);background-size:16px 16px;overflow:hidden}
+.world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.pg{position:absolute;width:300px;height:244px;background:#fff;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);overflow:hidden}
+.rg{position:absolute;left:0;right:0;overflow:hidden;transition:transform .55s var(--ease),opacity .4s}
+.rg.a{height:78px;background:var(--sticky-yellow)}.rg.u{height:96px;background:#fff;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rg.u i{display:block;height:46px;border-radius:4px;background:var(--bg-raised)}.rg.u i.btn{grid-column:1/3;height:22px;width:90px;background:var(--accent-strong)}
+.rg.w{height:70px;background:#1e1e1e;padding:10px}.rg.w u{display:block;height:6px;border-radius:3px;margin-bottom:8px;text-decoration:none}
+.selb{position:absolute;border:1.5px solid var(--accent);pointer-events:none;transition:all .45s var(--ease);z-index:4}
+.selb i{position:absolute;width:7px;height:7px;background:#fff;border:1.5px solid var(--accent);border-radius:1.5px}
+.selb i:nth-child(1){left:-4.5px;top:-4.5px}.selb i:nth-child(2){right:-4.5px;top:-4.5px}.selb i:nth-child(3){left:-4.5px;bottom:-4.5px}.selb i:nth-child(4){right:-4.5px;bottom:-4.5px}
+.selb em{position:absolute;left:0;top:-22px;font:600 11px/1 var(--font-sans);font-style:normal;color:#fff;background:var(--accent);padding:4px 6px;border-radius:4px;white-space:nowrap}
+.prog{position:absolute;left:8px;right:8px;bottom:8px;height:3px;border-radius:2px;background:var(--bg-raised);overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--accent-strong)}
+.cm{position:absolute;z-index:6;display:flex;gap:8px;align-items:flex-start;transform-origin:0 0;transition:opacity .3s,transform .4s var(--ease)}
+.cm .av{flex:none;width:28px;height:28px;border-radius:50% 50% 50% 0;background:var(--accent-strong);color:#fff;display:grid;place-items:center;font:600 12px/1 var(--font-sans)}
+.cm .bb{background:#fff;border-radius:0 10px 10px 10px;padding:10px 12px;box-shadow:0 4px 16px rgba(0,0,0,.2);width:250px}
+.cm .bb b{display:block;font:600 14px/1.2 var(--font-heading);margin-bottom:3px}.cm .bb p{margin:0;font:400 13px/1.4 var(--font-sans);color:var(--text-secondary)}
+</style></head><body>
+<h1>Passione per il design · editor con livelli, senza il cursore</h1>
+<p class="sub">Stessa idea del mini editor (pannello Livelli a sinistra, tela a destra), ma il livello viene scelto in quattro modi diversi, nessuno con il cursore «Emanuele». Si può sempre cliccare una voce del pannello. Le animazioni vanno da sole; con <code>prefers-reduced-motion</code> restano ferme.</p>
+<div class="grid" id="grid"></div>
+<script>
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const q=new URLSearchParams(location.search),FIX=q.has('t')?+q.get('t'):null,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const IT={graphic:{k:'Grafica',n:'Graphic design',t:'Dove sono partito: impaginazione di magazine e brand identity.'},ux:{k:'Interfacce',n:'UX/UI Designer',t:'Mi appassiona creare esperienze digitali che hanno un impatto significativo sulla vita delle persone.'},web:{k:'Codice',n:'Web design',t:'Forti competenze di sviluppo: costruisco ciò che disegno, anche se non è il mio obiettivo principale.',tags:['HTML/CSS','CMS','React']}};
+const ICON={graphic:'<path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"/><path d="m8 6 2-2"/><path d="m18 16 2-2"/><path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',ux:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',web:'<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>',eye:'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',eyeoff:'<path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>',grip:'<circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/>'};
+const ic=(k)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+const COL=['#a8daff','#a8f0c6','#ffe066','#cdb4ff'];
+const descSet=el=>{let cur='';return k=>{if(!el||k===cur)return;cur=k;const i=IT[k];el.innerHTML=`<div class="k">${i.k}</div><h4>${i.n}</h4><p>${i.t}</p>${i.tags?'<div class="tags">'+i.tags.map(x=>'<span>'+x+'</span>').join('')+'</div>':''}`;el.classList.remove('fade');void el.offsetWidth;el.classList.add('fade')}};
+const PAGE=`<div class="rg a" data-k="graphic"><svg viewBox="0 0 300 78" style="position:absolute;inset:0"><circle cx="70" cy="40" r="26" fill="#cdb4ff" stroke="#1e1e1e" stroke-width="2"/><path d="M120 66L150 20L180 66Z" fill="#a8daff" stroke="#1e1e1e" stroke-width="2"/><rect x="200" y="30" width="70" height="8" rx="3" fill="#1e1e1e"/><rect x="200" y="46" width="44" height="6" rx="3" fill="#1e1e1e" opacity=".5"/></svg></div><div class="rg u" data-k="ux"><i></i><i></i><i class="btn"></i></div><div class="rg w" data-k="web">${[150,100,190,120].map((w,i)=>`<u style="width:${w}px;background:${COL[i]}"></u>`).join('')}</div>`;
+const H={graphic:78,ux:96,web:70};
+function tile(id,title,opts){const wrap=document.createElement('div');wrap.className='opt';
+ wrap.innerHTML=`<h2>${title}</h2><div class="dt"><div><h3>La mia passione per il design</h3><p class="s">Dalla grafica al codice, passando per le interfacce.</p></div><div class="vis"><div class="ed"><div class="lp"><small>Livelli</small></div><div class="cv"><div class="world"><div class="pg">${PAGE}</div></div></div></div></div>${opts.noDesc?'':'<div class="desc"></div>'}</div>`;
+ document.getElementById('grid').appendChild(wrap);const r=wrap.querySelector('.dt');
+ return{root:r,lp:r.querySelector('.lp'),cv:r.querySelector('.cv'),world:r.querySelector('.world'),pg:r.querySelector('.pg'),set:descSet(r.querySelector('.desc')),rg:{graphic:r.querySelector('[data-k=graphic]'),ux:r.querySelector('[data-k=ux]'),web:r.querySelector('[data-k=web]')}}}
+const loops=[];
+function items(T,order,extra){const els={};order.forEach(k=>{const e=document.createElement('div');e.className='li';e.dataset.k=k;e.innerHTML=ic(k)+IT[k].n+(extra?extra(k):'');T.lp.appendChild(e);els[k]=e});return els}
+function place(T,pos){/*pos: k -> y della voce*/Object.keys(pos).forEach(k=>{}) }
+/* ---- A · zoom alla selezione ---- */
+(()=>{const T=tile('A','A · Zoom alla selezione <span>la tela si avvicina al livello scelto, come il sito</span>',{});const order=['ux','web','graphic'],els=items(T,order);
+ order.forEach((k,i)=>els[k].style.top=(28+i*34)+'px');
+ const sel=document.createElement('div');sel.className='selb';sel.innerHTML='<em></em><i></i><i></i><i></i><i></i>';T.pg.appendChild(sel);
+ const tops={graphic:0,ux:78,web:174};let manual=null;
+ Object.values(els).forEach(e=>e.addEventListener('click',()=>{manual=e.dataset.k}));
+ T.pg.style.left='80px';T.pg.style.top='56px';
+ loops.push(t=>{const P=4.2,k=order[Math.floor(t/P)%3],u=t%P,act=manual||k;T.set(act);Object.values(els).forEach(e=>e.classList.toggle('on',e.dataset.k===act));
+  const cw=T.cv.clientWidth,ch=T.cv.clientHeight;
+  Object.keys(T.rg).forEach(kk=>{T.rg[kk].style.top=tops[kk]+'px'});
+  sel.style.cssText=`left:0;top:${tops[act]}px;width:300px;height:${H[act]}px`;sel.querySelector('em').textContent=IT[act].n;
+  // camera
+  const z=manual?1:(u<.7?0:u<1.5?ease((u-.7)/.8):u<3?1:ease(1-(u-3)/1.0)),s=1+.65*clamp(z);
+  const cx=80+150,cy=56+tops[act]+H[act]/2,pcx=80+150,pcy=56+122; // centro pagina e centro livello
+  const tx=cw/2-(pcx+(cx-pcx)*clamp(z))*s,ty=ch/2-(pcy+(cy-pcy)*clamp(z))*s;
+  T.world.style.transform=`translate(${tx}px,${ty}px) scale(${s})`})})();
+/* ---- B · occhio: accendi e spegni i livelli ---- */
+(()=>{const T=tile('B','B · Occhio dei livelli <span>i livelli si accendono e spengono, la pagina si compone</span>',{});const order=['ux','web','graphic'],els=items(T,order,k=>'<span class="ey"></span>');
+ order.forEach((k,i)=>els[k].style.top=(28+i*34)+'px');T.pg.style.left='80px';T.pg.style.top='56px';
+ const tops={graphic:0,ux:78,web:174};Object.keys(T.rg).forEach(k=>T.rg[k].style.top=tops[k]+'px');
+ const vis={ux:true,web:true,graphic:true};let manual=null;
+ Object.values(els).forEach(e=>e.addEventListener('click',()=>{manual=true;vis[e.dataset.k]=!vis[e.dataset.k]}));
+ // sequenza: spegne graphic, ux, web (a 1.2,2.4,3.6s), poi riaccende web, ux, graphic (6,7.2,8.4)
+ const SEQ=[['graphic',1.2,0],['ux',2.4,0],['web',3.6,0],['web',6,1],['ux',7.2,1],['graphic',8.4,1]];
+ let ev=null;
+ loops.push(t=>{t=t%10.5;if(!manual){vis.graphic=vis.ux=vis.web=true;SEQ.forEach(([k,at,on])=>{if(t>=at)vis[k]=!!on});const last=SEQ.filter(a=>t>=a[1]).pop();ev=last?last[0]:'ux'}else ev=ev||'ux';
+  T.set(ev);Object.keys(els).forEach(k=>{const e=els[k];e.classList.toggle('on',k===ev);e.classList.toggle('off',!vis[k]);e.querySelector('.ey').innerHTML=ic(vis[k]?'eye':'eyeoff')});
+  Object.keys(T.rg).forEach(k=>{T.rg[k].style.opacity=vis[k]?1:.06});
+  const cw=T.cv.clientWidth,ch=T.cv.clientHeight;T.world.style.transform=`translate(0,0)`;
+  T.pg.style.left=((cw-300)/2)+'px';T.pg.style.top=((ch-244)/2)+'px'})})();
+/* ---- C · trascinamento: i livelli cambiano ordine ---- */
+(()=>{const T=tile('C','C · Ordine dei livelli <span>una voce viene trascinata in cima e la pagina si riordina</span>',{});const base=['ux','web','graphic'],els=items(T,base,()=>'');
+ base.forEach(k=>{els[k].insertAdjacentHTML('beforeend',`<span style="margin-left:auto;opacity:.5">${ic('grip')}</span>`)});
+ T.pg.style.cssText+=';left:80px;top:56px';
+ const ROWH=34;let manual=null;
+ Object.values(els).forEach(e=>e.addEventListener('click',()=>{manual=e.dataset.k}));
+ const orders=[['graphic','ux','web'],['ux','web','graphic'],['web','graphic','ux']]; // ogni scatto porta in cima il prossimo
+ const heightsPos=order=>{let y=0,o={};order.forEach(k=>{o[k]=y;y+=H[k]});return o};
+ loops.push(t=>{const P=3.4,i=Math.floor(t/P)%3,u=t%P,ord=orders[i],prev=orders[(i+2)%3],act=manual||ord[0];T.set(act);
+  // transizione a 0.3-1.1
+  const e=ease(clamp((u-.3)/.8));const from=heightsPos(prev),to=heightsPos(ord);
+  Object.keys(T.rg).forEach(k=>{T.rg[k].style.transition='none';T.rg[k].style.transform='none';T.rg[k].style.top=(from[k]+(to[k]-from[k])*e)+'px'});
+  const fp={},tp={};prev.forEach((k,j)=>fp[k]=j);ord.forEach((k,j)=>tp[k]=j);
+  Object.keys(els).forEach(k=>{const el=els[k],y=28+(fp[k]+(tp[k]-fp[k])*e)*ROWH;el.style.top=y+'px';el.style.transition='background .25s,box-shadow .25s';el.classList.toggle('on',k===act);el.classList.toggle('lift',u>.2&&u<1.3&&k===ord[0]&&!manual);
+   el.style.transform=(u>.2&&u<1.3&&k===ord[0])?'scale(1.04)':'none'})})})();
+/* ---- D · commenti sulla tela ---- */
+(()=>{const T=tile('D','D · Commenti <span>un commento si apre sul livello scelto, come nelle revisioni di Figma</span>',{noDesc:1});const order=['ux','web','graphic'],els=items(T,order);
+ order.forEach((k,i)=>els[k].style.top=(28+i*34)+'px');T.pg.style.left='28px';T.pg.style.top='56px';
+ const tops={graphic:0,ux:78,web:174};Object.keys(T.rg).forEach(k=>T.rg[k].style.top=tops[k]+'px');
+ const sel=document.createElement('div');sel.className='selb';sel.innerHTML='<em></em><i></i><i></i><i></i><i></i>';T.pg.appendChild(sel);
+ const cm=document.createElement('div');cm.className='cm';cm.innerHTML='<div class="av">E</div><div class="bb"><b></b><p></p></div>';T.cv.appendChild(cm);
+ let manual=null;Object.values(els).forEach(e=>e.addEventListener('click',()=>{manual=e.dataset.k}));
+ const prog=document.createElement('div');prog.className='prog';prog.innerHTML='<i></i>';T.lp.appendChild(prog);
+ loops.push(t=>{const P=3.6,k=order[Math.floor(t/P)%3],u=t%P,act=manual||k;Object.values(els).forEach(e=>e.classList.toggle('on',e.dataset.k===act));
+  sel.style.cssText=`left:0;top:${tops[act]}px;width:300px;height:${H[act]}px`;sel.querySelector('em').textContent=IT[act].n;
+  cm.querySelector('b').textContent=IT[act].n;cm.querySelector('p').textContent=IT[act].t;
+  const vis=manual?1:clamp((u-.5)/.35)*(1-clamp((u-3.2)/.3));cm.style.opacity=vis;cm.style.transform=`scale(${.85+.15*vis})`;
+  cm.style.left=(28+30)+'px';cm.style.top=(act==='web'?56+tops[act]-112:56+tops[act]+H[act]+12)+'px';
+  prog.firstChild.style.width=(manual?0:(u/P*100))+'%'})})();
+let last=performance.now(),Tm=0;
+if(FIX!==null||reduce){loops.forEach(f=>f(FIX??1.6))}else(function L(n){Tm+=Math.min(.05,(n-last)/1000);last=n;loops.forEach(f=>f(Tm));requestAnimationFrame(L)})(last);
+</script></body></html>
