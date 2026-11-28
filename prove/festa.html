@@ -1,0 +1,137 @@
+<meta charset="utf-8">
+<title>Festa del Prato fiorito</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: a sinistra il pannello Prato fiorito nello stato "Vinto", a destra quattro modi di festeggiare; l'effetto parte dal pannello e copre la lavagna. */
+:root{--bg:#f4f4f4;--panel:#fff;--raised:#ececec;--fg:#1e1e1e;--fg2:#5c5c5c;--line:#dcdcdc;--line2:#9a9a9a;--accent:#0b6bc2;--accent-soft:#e1effa;--yellow:#ffe066;--purple:#cdb4ff;--green:#a8f0c6;--dot:#d3d3d3;
+--font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;--head:Fraunces,Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1b1d;--panel:#262628;--raised:#2f2f32;--fg:#f1f1f1;--fg2:#a8a8ad;--line:#3a3a3e;--line2:#6b6b72;--accent:#5eb0f5;--accent-soft:#16344d;--dot:#37373b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1b1d;--panel:#262628;--raised:#2f2f32;--fg:#f1f1f1;--fg2:#a8a8ad;--line:#3a3a3e;--line2:#6b6b72;--accent:#5eb0f5;--accent-soft:#16344d;--dot:#37373b;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px;color:var(--fg);font:400 16px/24px var(--font);padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.panel{width:320px;max-width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgb(0 0 0/.12);position:relative;z-index:5}
+.ph{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-bottom:1px solid var(--line)}
+.ph b{font:600 16px/24px var(--head);margin-right:auto}
+.ph i{font-style:normal;width:32px;height:32px;display:grid;place-items:center;font-size:20px;color:var(--fg2)}
+.pb{padding:16px;display:flex;flex-direction:column;gap:12px}
+.grid{display:grid;grid-template-columns:repeat(9,1fr);border:1px solid var(--line);width:100%;aspect-ratio:1}
+.c{display:grid;place-items:center;border:1px solid var(--line);background:var(--panel);font:600 16px/1 var(--font);min-width:0}
+.c.f{background:var(--panel)}
+.c svg{width:62%;height:62%}
+.n1{color:var(--accent)}.n3{color:var(--fg2)}
+.msg{margin:0;color:var(--fg2);font-size:14px;line-height:20px}.msg b{color:var(--fg)}
+.btn{font:500 14px/20px var(--font);height:32px;padding:0 12px;border:1px solid var(--line2);border-radius:4px;background:var(--panel);color:var(--fg);cursor:pointer}
+.btn:hover{background:var(--raised)}
+.btn:focus-visible,.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.side h1{font:600 32px/40px var(--head);margin:0;text-wrap:balance}
+.side p{margin:0;color:var(--fg2);max-width:52ch}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.opt{text-align:left;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.opt:hover{background:var(--raised);border-color:var(--line2)}
+.opt .k{font:500 13px/20px var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.opt b{font:600 18px/24px var(--head)}
+.opt span:last-child{color:var(--fg2);font-size:14px;line-height:20px}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.cur{position:fixed;left:0;top:0;z-index:60;pointer-events:none;will-change:transform}
+.cur svg{display:block}
+.cur b{position:absolute;left:14px;top:18px;padding:2px 8px;border-radius:4px;color:#fff;font:500 13px/20px var(--font);white-space:nowrap}
+.emo{position:fixed;z-index:61;pointer-events:none;font-size:26px;line-height:1}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:4px;font:500 14px/20px var(--font);max-width:calc(100vw - 32px)}
+@media (prefers-reduced-motion:reduce){.opt{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="panel" id="panel">
+    <div class="ph"><b>Prato fiorito</b><i aria-hidden="true">×</i></div>
+    <div class="pb">
+      <div class="grid" id="grid" role="img" aria-label="Griglia 9 per 9 con tutte le celle sicure aperte e i 10 bug segnati con una bandierina"></div>
+      <p class="msg"><b>Contrasto 7:1 ✓</b> Tutti i bug sono risolti.</p>
+      <div><button class="btn" id="again" type="button">Riprova</button></div>
+    </div>
+  </div>
+  <div class="side">
+    <h1>Quando qualcuno trova tutti i bug</h1>
+    <p>Quattro idee per il momento della vittoria. Premi una scheda: l’effetto parte dal pannello. Nel sito vero partirebbe da solo quando l’ultima cella sicura si apre.</p>
+    <div class="opts">
+      <button class="opt" type="button" data-fx="confetti"><span class="k">A</span><b>Coriandoli pixel</b><span>Quadratini nei colori dei post-it, sparati dal pannello e portati giù dalla gravità.</span></button>
+      <button class="opt" type="button" data-fx="fire"><span class="k">B</span><b>Fuochi d’artificio</b><span>Razzi a pixel che salgono sulla lavagna e scoppiano in quattro colori.</span></button>
+      <button class="opt" type="button" data-fx="flags"><span class="k">C</span><b>Pioggia di bandierine</b><span>Le bandierine blu del gioco cadono dall’alto mentre i bug, liberati, volano via.</span></button>
+      <button class="opt" type="button" data-fx="cursors"><span class="k">D</span><b>Cursori ospiti</b><span>Come in una sessione di Figma: arrivano cursori con nome e lasciano reazioni.</span></button>
+    </div>
+  </div>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var BUG='<svg viewBox="0 0 8 8" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">'+[[0,0],[7,0],[1,1],[3,1],[4,1],[6,1],[2,2],[3,2],[4,2],[5,2],[1,3],[2,3],[3,3],[4,3],[5,3],[6,3],[0,4],[1,4],[3,4],[4,4],[6,4],[7,4],[0,5],[1,5],[2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[0,7],[2,7],[5,7],[7,7]].map(function(p){return '<rect x="'+p[0]+'" y="'+p[1]+'" width="1" height="1"/>'}).join('')+'</svg>';
+var POLE=[[2,0],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6],[1,6],[3,6],[0,7],[1,7],[2,7],[3,7],[4,7]], FLG=[[3,0],[3,1],[4,1],[3,2],[4,2],[5,2],[3,3],[4,3],[3,4]];
+var BUGP=[[0,0],[7,0],[1,1],[3,1],[4,1],[6,1],[2,2],[3,2],[4,2],[5,2],[1,3],[2,3],[3,3],[4,3],[5,3],[6,3],[0,4],[1,4],[3,4],[4,4],[6,4],[7,4],[0,5],[1,5],[2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],[0,7],[2,7],[5,7],[7,7]];
+var FLAGSVG='<svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><g fill="var(--fg)">'+POLE.map(function(p){return '<rect x="'+p[0]+'" y="'+p[1]+'" width="1" height="1"/>'}).join('')+'</g><g fill="var(--accent)">'+FLG.map(function(p){return '<rect x="'+p[0]+'" y="'+p[1]+'" width="1" height="1"/>'}).join('')+'</g></svg>';
+/* griglia vinta: stesse 10 mine del disegno in Figma */
+var M=[[1,0],[6,1],[3,2],[8,3],[0,4],[5,5],[2,6],[7,6],[4,8],[8,8]];
+function isM(x,y){return M.some(function(m){return m[0]===x&&m[1]===y})}
+var g=document.getElementById('grid'),h='';
+for(var y=0;y<9;y++)for(var x=0;x<9;x++){var n=0;for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++)if((dx||dy)&&isM(x+dx,y+dy))n++;
+ h+=isM(x,y)?'<div class="c f">'+FLAGSVG+'</div>':'<div class="c'+(n===1?' n1':n===3?' n3':'')+'">'+(n||'')+'</div>';}
+g.innerHTML=h;
+
+var cv=document.getElementById('fx'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1,P=[],run=false,last=0;
+function size(){DPR=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.imageSmoothingEnabled=false}
+size();addEventListener('resize',size);
+var COL=['#0b6bc2','#0b8fe8','#7b4dd8','#cdb4ff','#ffe066','#a8f0c6','#a8daff','#ee8031'];
+function rnd(a,b){return a+Math.random()*(b-a)}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function origin(){var r=document.getElementById('panel').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,r:r}}
+function toast(t){var e=document.createElement('div');e.className='toast';e.setAttribute('role','status');e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove()},3200)}
+function loop(t){var dt=Math.min(.05,(t-last)/1000||.016);last=t;ctx.clearRect(0,0,W,H);
+ P=P.filter(function(p){return p.update(dt)});P.forEach(function(p){p.draw()});
+ if(P.length){requestAnimationFrame(loop)}else{run=false}}
+function add(p){P.push(p);if(!run){run=true;last=performance.now();requestAnimationFrame(loop)}}
+function px(x,y,s,c,a){ctx.globalAlpha=a==null?1:a;ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),s,s);ctx.globalAlpha=1}
+function sprite(cells,x,y,s,c,a){ctx.globalAlpha=a==null?1:a;ctx.fillStyle=c;cells.forEach(function(p){ctx.fillRect(Math.round(x+p[0]*s),Math.round(y+p[1]*s),s,s)});ctx.globalAlpha=1}
+
+/* A: coriandoli */
+function confetti(){var o=origin();
+ [[o.r.left+16,o.r.top+24,-1],[o.r.right-16,o.r.top+24,1]].forEach(function(c){
+  for(var i=0;i<110;i++){(function(){var a=-Math.PI/2+c[2]*rnd(.1,.9)*.9+rnd(-.25,.25),v=rnd(380,900),s=pick([6,8,10]),col=pick(COL),life=rnd(2.6,4),age=0;
+   var p={x:c[0],y:c[1],vx:Math.cos(a)*v,vy:Math.sin(a)*v,wob:rnd(0,6)};
+   add({update:function(dt){age+=dt;p.vy+=1100*dt;p.vx*=.985;p.vy*=.985;p.x+=p.vx*dt;p.y+=p.vy*dt;p.wob+=dt*8;return age<life&&p.y<H+20},
+    draw:function(){var w=Math.abs(Math.cos(p.wob))*s+2;ctx.globalAlpha=Math.min(1,(life-age)*1.5);ctx.fillStyle=col;ctx.fillRect(Math.round(p.x),Math.round(p.y),Math.round(w),s);ctx.globalAlpha=1}});})();}});}
+/* B: fuochi */
+function fire(){for(var k=0;k<6;k++)(function(k){setTimeout(function(){
+  var tx=rnd(W*.15,W*.85),ty=rnd(H*.12,H*.45),sx=tx+rnd(-60,60),col=[pick(COL),pick(COL)],y=H,x=sx,t=0,trail=[];
+  add({update:function(dt){t+=dt;var k2=Math.min(1,t/.9);x=sx+(tx-sx)*k2;y=H+(ty-H)*(1-Math.pow(1-k2,2));trail.push([x,y]);if(trail.length>8)trail.shift();
+    if(k2>=1){boom(tx,ty,col);return false}return true},
+   draw:function(){trail.forEach(function(p,i){px(p[0],p[1],4,'#ffe066',i/trail.length)})}});
+ },k*420)})(k)}
+function boom(cx,cy,col){var n=70;for(var i=0;i<n;i++)(function(i){var a=i/n*Math.PI*2+rnd(-.05,.05),v=rnd(90,260)*(i%2?1:.62),life=rnd(1.1,1.7),age=0,x=cx,y=cy,vx=Math.cos(a)*v,vy=Math.sin(a)*v,c=col[i%2],tr=[];
+  add({update:function(dt){age+=dt;vy+=170*dt;vx*=.985;vy*=.985;x+=vx*dt;y+=vy*dt;tr.push([x,y]);if(tr.length>4)tr.shift();return age<life},
+   draw:function(){var f=1-age/life;tr.forEach(function(p,j){px(p[0],p[1],4,c,f*(j+1)/tr.length*.7)});px(x,y,6,c,f)}});})(i)}
+/* C: bandierine + bug che volano via */
+function flags(){for(var i=0;i<46;i++)(function(i){var s=pick([3,4,5]),x=rnd(-10,W-8*s),y=rnd(-H*.7,-30),vy=rnd(90,190),ph=rnd(0,6),age=0;
+  setTimeout(function(){add({update:function(dt){age+=dt;y+=vy*dt;ph+=dt*2;return y<H+40},draw:function(){var xx=x+Math.sin(ph)*18;sprite(POLE,xx,y,s,'#1e1e1e',.9);sprite(FLG,xx,y,s,'#0b6bc2',1)}})},i*60)})(i);
+ var o=origin();for(var j=0;j<10;j++)(function(j){var s=4,x=o.r.left+rnd(20,o.r.width-52),y=o.r.top+rnd(40,o.r.height-60),vx=rnd(-60,60),age=0,ph=rnd(0,6);
+  add({update:function(dt){age+=dt;ph+=dt*9;y-=(120+age*160)*dt;x+=vx*dt+Math.sin(ph)*1.2;return y>-40},draw:function(){sprite(BUGP,x,y,s,'#1e1e1e',Math.max(0,1-age*.25))}})})(j)}
+/* D: cursori ospiti */
+var NAMES=[['Giulia','#7b4dd8'],['Marco','#0b8fe8'],['Sara','#e8590c'],['Claude','#c9792a'],['Luca','#2f9e6b']],EM=['🎉','👏','🔥','🐛','✨','🙌'];
+function cursors(){var o=origin();NAMES.forEach(function(n,i){setTimeout(function(){
+  var el=document.createElement('div');el.className='cur';el.innerHTML='<svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><path d="M1.5 1.2 16 8.6l-6.2 2L7.4 17.5 1.5 1.2Z" fill="'+n[1]+'" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg><b style="background:'+n[1]+'">'+n[0]+'</b>';document.body.appendChild(el);
+  var side=i%2?1:-1,sx=side>0?W+40:-80,sy=rnd(0,H),mx=o.x+rnd(-260,260),my=o.y+rnd(-200,160),t=0,dur=1.3,emoT=0,life=4.6;
+  (function step(ts){t+=.016;var k=Math.min(1,t/dur),e=1-Math.pow(1-k,3);var x=sx+(mx-sx)*e+(k>=1?Math.sin(t*3+i)*24:0),y=sy+(my-sy)*e+(k>=1?Math.cos(t*2.4+i)*18:0);
+   el.style.transform='translate('+x+'px,'+y+'px)';
+   if(k>=1){emoT+=.016;if(emoT>.55){emoT=0;react(x,y)}}
+   if(t<life)requestAnimationFrame(step);else{el.style.transition='opacity .4s';el.style.opacity=0;setTimeout(function(){el.remove()},400)}})();
+ },i*320)})}
+function react(x,y){var e=document.createElement('div');e.className='emo';e.textContent=pick(EM);e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);
+ e.animate([{transform:'translate(0,0) scale(.6)',opacity:0},{transform:'translate(0,-30px) scale(1.1)',opacity:1,offset:.25},{transform:'translate('+rnd(-30,30)+'px,-130px) scale(1)',opacity:0}],{duration:1500,easing:'ease-out'}).onfinish=function(){e.remove()}}
+var FX={confetti:confetti,fire:fire,flags:flags,cursors:cursors};
+function play(k){if(reduce){toast('Animazioni ridotte attive: nel sito vero comparirebbe solo il messaggio di vittoria.');return}FX[k]()}
+Array.prototype.forEach.call(document.querySelectorAll('.opt'),function(b){b.addEventListener('click',function(){play(b.dataset.fx)})});
+document.getElementById('again').addEventListener('click',function(){play('confetti')});
+window.__festa=play;
+})();
+</script>
