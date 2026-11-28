@@ -5,7 +5,7 @@
 /* Home a canvas: lavagna con griglia a punti, riquadri trascinabili, pannello Livelli e barra strumenti.
    Token con gli stessi nomi del design system (DESIGN-SYSTEM.md). Un solo tema, chiaro, per scelta. */
 :root{
-  --bg-canvas:#f5f5f5; --bg-panel:#ffffff; --bg-raised:#ededed;
+  --bg-canvas:#f5f5f5; --bg-panel:#ffffff; --bg-raised:#ededed; --bg-raised-hover:#e3e3e3;
   --text-primary:#1e1e1e; --text-secondary:#6b6b6b;
   --border-default:#e3e3e3; --border-strong:#8f8f8f;
   --accent:#0b8fe8; --accent-strong:#0b6bc2; --accent-on-strong:#ffffff; --accent-subtle:#e5f4ff; --accent-link:#0b6bc2;
@@ -45,23 +45,44 @@ button{font:inherit;color:inherit}
 .fh{position:absolute;left:0;bottom:100%;margin-bottom:6px;font:500 14px/20px var(--font-sans);color:var(--text-secondary);white-space:nowrap;cursor:grab}
 .fh i{font-style:normal;opacity:.6;margin-left:8px}
 
-.hero{width:720px;padding:48px;display:flex;flex-direction:column;gap:16px}
+.hero{width:784px;padding:48px;display:flex;flex-direction:column;gap:16px}
 .hero .t-h1 em{font-style:normal;color:var(--accent-strong)}
 .card{width:300px;padding:16px;display:flex;flex-direction:column;gap:8px}
 .card .th{height:140px;border-radius:var(--radius-sm)}
 .card:hover{box-shadow:var(--shadow-e2)}
 .card.sel:hover{box-shadow:0 0 0 2px var(--accent)}
 .card .btn{align-self:flex-start;margin-top:4px}
-.me{width:480px;padding:24px;display:flex;flex-direction:column;gap:16px}
+/* progetti: un riquadro per progetto, box di altezze diverse disposti a masonry */
+.fr.pf{width:588px;padding:0;background:none;border:0}
+.pbox{box-sizing:border-box;background:var(--bg-canvas);border:1px solid var(--border-default);border-radius:var(--radius-sm);padding:16px;display:flex;flex-direction:column;gap:16px}
+.pbox:hover{box-shadow:var(--shadow-e2)}
+.pbox .th{flex:1;min-height:80px;border-radius:var(--radius-sm)}
+.pbox-tx{display:flex;flex-direction:column;gap:8px}
+.pbox h2{font:600 22px/28px var(--font-heading);margin:0}
+.pbox.big h2{font:600 28px/32px var(--font-heading);letter-spacing:-.005em}
+.pbox p{font:400 16px/24px var(--font-sans);color:var(--text-secondary);margin:0}
+.pbox .btn{align-self:flex-start;margin-top:4px}
+.me{width:763px;padding:24px;display:flex;flex-direction:column;gap:16px}
 .me h2 em,.ov em{font-style:normal;color:var(--accent-link)}
 .me .btn{align-self:flex-start;margin-top:4px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;background:var(--bg-panel);border:1px solid var(--border-strong);border-radius:var(--radius-sm);font:500 14px/16px var(--font-sans);cursor:pointer;text-decoration:none;color:var(--text-primary);transition:background .15s}
 .btn:hover{background:var(--bg-raised)}
 .btn svg{width:20px;height:20px;flex:none}
-.contact{width:380px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.contact{width:720px;padding:24px;display:flex;flex-direction:column;gap:24px}
 .links{display:flex;flex-wrap:wrap}
 .links a{color:var(--accent-link);font:500 16px/24px var(--font-sans);text-decoration:none;padding:12px 8px;border-radius:var(--radius-sm)}
 .links a:hover{background:var(--bg-raised)}
+/* bookshelf: elenco tipografico di libri (titolo, autore, link alla scheda) */
+.bk{width:1059px;padding:24px;display:flex;flex-direction:column;gap:24px}
+.bk-head{display:flex;flex-direction:column;gap:8px}
+.bk-list{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);grid-auto-flow:column;column-gap:48px;margin:0;padding:0;list-style:none}
+.bk-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-default);text-decoration:none;color:var(--text-primary)}
+.bk-m{width:8px;height:8px;background:var(--text-secondary);flex:none}
+.bk-t{display:block;font:600 22px/28px var(--font-heading)}
+.bk-a{display:block;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}
+.bk-row svg{width:24px;height:24px}
+.bk-row:hover .bk-t,.bk-row:hover svg{color:var(--accent-link)}.bk-row:hover .bk-m{background:var(--accent-link)}
+.bk-row:focus-visible{outline-offset:-2px;border-radius:var(--radius-sm)}
 
 /* interfaccia fissa */
 .ui{position:fixed;z-index:30}
@@ -265,7 +286,7 @@ button{font:inherit;color:inherit}
 .tl-body{display:flex;flex-direction:column;gap:12px}
 /* animazione all'apertura: le esperienze compaiono una alla volta, con il punto e la linea che si disegna dall'alto */
 .tl-row{opacity:0;transform:translateY(14px);transition:opacity .2s ease-in,transform .2s ease-in}
-.tl-row:nth-child(1){--n:0}.tl-row:nth-child(2){--n:1}.tl-row:nth-child(3){--n:2}.tl-row:nth-child(4){--n:3}
+.tl-row:nth-child(1){--n:0}.tl-row:nth-child(2){--n:1}.tl-row:nth-child(3){--n:2}.tl-row:nth-child(4){--n:3}.tl-row:nth-child(5){--n:4}
 .ov.on .tl-row{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease);transition-delay:calc(250ms + var(--n,0) * 160ms)}
 .tl-mark i{transform:scale(0);transition:transform .2s ease-in}
 .ov.on .tl-mark i{transform:none;transition:transform .4s var(--ease);transition-delay:calc(350ms + var(--n,0) * 160ms)}
@@ -275,7 +296,7 @@ button{font:inherit;color:inherit}
 .tl-body h2{font:600 28px/32px var(--font-heading);letter-spacing:-.005em;margin:0}
 .tl-tag{align-self:flex-start;margin-top:8px;display:inline-block;padding:4px 12px;border-radius:var(--radius-full);background:var(--accent-subtle);color:var(--accent-strong);font:500 14px/20px var(--font-sans);letter-spacing:.08em;text-transform:uppercase}
 .tl-body h3{font:500 16px/24px var(--font-sans);margin:0}
-.tl-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}@media (max-width:900px){ .tl-row{grid-template-columns:1fr;gap:8px} .tl-mark{display:none} .exp{width:100%} }
+.tl-body p{margin:0;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}.tl-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}@media (max-width:900px){ .tl-row{grid-template-columns:1fr;gap:8px} .tl-mark{display:none} .exp{width:100%} }
 
 /* vista lista (telefono e chi preferisce scorrere) */
 body.list{overflow:auto}
@@ -287,69 +308,187 @@ body.list .layers,body.list .hint,body.list .zoomonly{display:none}
 body.list .hero{padding:24px}
 body.list .t-h1{font-size:clamp(2rem,9vw,4.5rem);overflow-wrap:break-word}
 body.list .fr{min-width:0}
+body.list .pbox{height:auto!important}
+body.list .pbox .th{flex:none;height:140px}
 body.list .hero .fh i{display:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+.tb[aria-pressed="true"]{background:var(--bg-raised-hover)}
+.dm.solo .dm-f,.dm.solo .dm-b>.dm-row:first-child{display:none}
+.nota{position:absolute;display:flex;gap:12px;width:522px;align-items:flex-start}
+.nota span{font:400 24px/32px var(--font-sans);color:var(--accent-strong);flex:none}
+.nota p{margin:0;width:489px;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}
+body.list .nota{position:static;width:auto;margin:0 auto}
+/* insetto sulla lavagna: invita a giocare a Prato fiorito */
+.egg-bug{position:absolute;display:flex;align-items:flex-start;gap:16px;width:300px;height:48px;padding:0;border:0;background:none;cursor:pointer;text-align:left;border-radius:var(--radius-sm)}
+.egg-bug svg{display:block;width:24px;height:24px;flex:none}
+.egg-bug:hover svg{animation:egg-hop .8s steps(1,end) infinite}
+.egg-note{width:260px;font:400 16px/24px var(--font-sans);color:var(--text-secondary)}
+@keyframes egg-hop{0%{transform:none}50%{transform:translateY(-4px)}}
+body.list .egg-bug{display:none}
+body.list .bk-list{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+/* riquadro Approccio (cerchi con macchia SVG): stili limitati a .ap */
+.fr.ap{width:960px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.ap .circles{display:grid;grid-template-columns:500px 1fr;gap:24px;align-items:start}
+.ap .rows{display:flex;flex-direction:column}
+.ap .row{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--border-default);padding:12px 0;cursor:pointer}
+.ap .row .hd{display:flex;align-items:center;gap:12px}
+.ap .row .hd b{font:500 14px/1.4 var(--font-sans);letter-spacing:.08em;color:var(--text-secondary)}
+.ap .row .hd span{font:600 22px/1.25 var(--font-heading);color:var(--text-secondary);transition:color .4s}
+.ap .row[aria-expanded="true"] .hd span,.ap .row[aria-expanded="true"] .hd b{color:var(--text-primary)}
+.ap .row .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.ap .row[aria-expanded="true"] .more{grid-template-rows:1fr}
+.ap .row .more>div{overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.ap .row .more>div>*:first-child{margin-top:8px}
+.ap .row .io{font:400 16px/1.5 var(--font-sans);margin:0;color:var(--text-primary)}
+.ap .row .ag{background:var(--sticky-purple);border-radius:var(--radius-sm);padding:12px;display:flex;flex-direction:column;gap:4px}
+.ap .row .ag p{font:400 16px/1.5 var(--font-sans);margin:0}
+.ap .tags{display:flex;flex-wrap:wrap;gap:8px}
+.ap .tags span{padding:4px 8px;border-radius:var(--radius-sm);background:var(--bg-raised);font:400 16px/1.5 var(--font-sans)}
+.ap .tags span.ai{background:var(--sticky-purple)}
+.ap .note a{color:var(--accent-link)}
+.ap .stage{position:relative;width:100%;aspect-ratio:500/470}
+.ap .stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ap .sc-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ap .sc-svg .ring{fill:none;stroke:var(--border-strong);stroke-width:1.5;opacity:.6;transition:stroke .5s var(--ease),opacity .5s var(--ease),stroke-width .5s var(--ease)}
+.ap .sc-svg .ring:not(.on){filter:blur(1.5px)}
+.ap .sc-svg .ring.on{stroke:var(--accent-strong);stroke-width:2;opacity:1}
+.ap .sc-svg .ring.in{stroke:#fff;stroke-width:1.5;opacity:.5;filter:none}
+.ap .sc-svg .lab.in text{fill:#fff;opacity:.8}
+.ap .sc-svg .hit{fill:transparent;cursor:pointer}
+.ap .sc-svg .lab{pointer-events:none}
+.ap .sc-svg .lab text{text-anchor:middle;fill:var(--text-secondary);transition:fill .4s}
+.ap .sc-svg .lab .n{font:500 14px var(--font-sans);letter-spacing:.08em}
+.ap .sc-svg .lab .t{font:500 16px var(--font-sans)}
+.ap .sc-svg .lab.on text{fill:var(--accent-on-strong)}
+.ap .sc-svg .core-c{fill:var(--sticky-purple);stroke:var(--bg-panel);stroke-width:4}
+.ap .sc-svg .core-t{font:600 22px var(--font-heading);fill:var(--text-primary);text-anchor:middle}
+.ap .sc-svg .core{transform-box:fill-box;transform-origin:center}
+.ap .sc-svg .core.bump{animation:bump .7s var(--ease)}
+.ap .sc-svg .hit:focus-visible{outline:2px solid var(--accent)}
+.ap .rows.emph .row{transition:opacity .45s var(--ease)}
+.ap .rows.emph .row .hd span{transition:font-size .45s var(--ease),color .4s}
+.ap .rows.emph.has-sel .row[aria-expanded="true"] .hd span{font-size:28px;color:var(--text-primary)}
+.ap .rows.emph.has-sel .row:not([aria-expanded="true"]){opacity:.38}
+body.list .ap .circles{grid-template-columns:1fr}
+/* Dev Mode segreto (easter egg): scrivi "dev" sulla lavagna */
+.dm{position:fixed;top:16px;right:16px;width:320px;max-height:calc(100vh - 32px);overflow:auto;box-sizing:border-box;z-index:70;background:var(--bg-panel);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:var(--shadow-e3);font:400 14px/20px var(--font-sans);color:var(--text-primary)}
+.dm[hidden],.dm-box[hidden]{display:none}
+.dm-h{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-bottom:1px solid var(--border-default)}
+.dm-h b{font:600 16px/24px var(--font-heading);margin-right:auto}
+.dm-x{width:32px;height:32px;border:0;background:none;border-radius:var(--radius-sm);cursor:pointer;font:400 20px/20px var(--font-sans)}
+.dm-x:hover{background:var(--bg-raised)}
+.dm-b{padding:16px;display:flex;flex-direction:column;gap:12px}
+.dm-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dm-k{color:var(--text-secondary);margin:0}
+.dm-ok{color:var(--accent-strong)}
+.dm-no{color:var(--text-secondary)}
+.dm-f{margin:0;padding:8px 16px 16px;color:var(--text-secondary);font:400 14px/20px var(--font-sans)}
+.dm-box{position:fixed;z-index:69;pointer-events:none;box-sizing:border-box;border:1.5px solid var(--accent);background:rgb(11 143 232 / .08)}
+.dm-box span{position:absolute;left:-1.5px;top:-24px;padding:2px 6px;border-radius:var(--radius-sm);background:var(--accent);color:var(--accent-text);font:500 14px/20px var(--font-sans);white-space:nowrap}
+body.devmode .fr{outline:1px dashed var(--accent);outline-offset:0}
+.dm-again{height:32px;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg-panel);cursor:pointer;font:500 14px/20px var(--font-sans)}
+.dm-again:hover{background:var(--bg-raised)}
+.dm-gt{font:600 16px/24px var(--font-heading)}
+.dm-grid{display:grid;width:max-content;border:1px solid var(--border-default)}
+.dm-c{display:grid;place-items:center;width:32px;height:32px;box-sizing:border-box;padding:0;border:1px solid var(--border-default);background:var(--bg-raised);cursor:pointer;font:600 16px/24px var(--font-sans);color:var(--text-primary)}
+.dm-c:hover:not(.open){background:var(--bg-raised-hover)}
+.dm-c.open{background:var(--bg-panel);cursor:default}
+.dm-c svg{width:20px;height:20px}
+.dm-c.flag{background:var(--bg-panel)}
+.dm-c.bug{color:var(--text-primary);background:var(--sticky-yellow)}
+.dm-c.hit{background:var(--sticky-purple)}
+.dm-c[data-n="1"]{color:var(--accent-strong)}.dm-c[data-n="3"]{color:var(--text-secondary)}
+@media (prefers-reduced-motion:reduce){.dm *{transition:none!important}}
 </style>
 
 <div class="vp" id="vp">
   <div class="world" id="world">
     <section class="fr hero" data-id="home" data-name="Intro" data-meta="1440 × 900" data-x="300" data-y="120" tabindex="0" aria-label="Intro">
       <span class="fh">Intro<i>1440 × 900</i></span>
-      <span class="t-label">UX/UI Designer</span>
       <h1 class="t-h1">Curioso, empatico, <em>appassionato.</em></h1>
-      <p class="t-lead">Progetto esperienze digitali con le esigenze degli utenti al centro, dal design system al codice.</p>
+      <p class="t-lead">Focalizzato sulla <b>progettazione di esperienze digitali</b> partendo dalle esigenze delle persone, con l’obiettivo di rendere prodotti e servizi più semplici da usare.</p>
     </section>
 
-    <section class="fr card proj" data-id="p1" data-name="Opyn Pay Later" data-meta="Case study" data-x="1090" data-y="92" tabindex="0" aria-label="Opyn Pay Later, case study">
+    <!-- Progetti: un riquadro per progetto, disposti come un masonry (vicini ma ognuno trascinabile). Le anteprime sono colori provvisori -->
+    <section class="fr pf" data-id="p1" data-name="Opyn Pay Later" data-meta="Case study" data-x="2493" data-y="120" tabindex="0" aria-label="Opyn Pay Later, case study">
       <span class="fh">Opyn Pay Later<i>Case study</i></span>
-      <div class="th" style="background:var(--sticky-blue)"></div>
-      <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">Opyn Pay Later</h2><p class="t-small">BNPL pensato per le aziende.</p>
+      <div class="pbox big" style="height:520px"><div class="th" style="background:var(--sticky-blue)"></div><div class="pbox-tx"><span class="t-label">UX/UI · 2022</span><h2>Opyn Pay Later</h2><p>BNPL pensato per le aziende.</p><button class="btn" type="button" data-open-proj="p1" aria-haspopup="dialog" aria-label="Espandi: apri il case study Opyn Pay Later">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button></div></div>
     </section>
 
-    <section class="fr card proj" data-id="p3" data-name="Emporium" data-meta="Case study" data-x="1090" data-y="456" tabindex="0" aria-label="Emporium, case study">
-      <span class="fh">Emporium<i>Case study</i></span>
-      <div class="th" style="background:var(--sticky-yellow)"></div>
-      <span class="t-label">UX Design · 2024</span><h2 class="t-h4">Emporium</h2><p class="t-small">Il Lending as a Service.</p>
-    </section>
-
-    <section class="fr card proj" data-id="p2" data-name="Design System" data-meta="Case study" data-x="640" data-y="1040" tabindex="0" aria-label="Design System, case study">
-      <span class="fh">Design System<i>Case study</i></span>
-      <div class="th" style="background:var(--sticky-purple)"></div>
-      <span class="t-label">DesignOps · 2024</span><h2 class="t-h4">Design System</h2><p class="t-small">Nuova vita al design system di Opyn.</p>
-    </section>
-
-    <section class="fr card proj" data-id="p4" data-name="TrainWithMe" data-meta="Case study" data-x="1090" data-y="830" tabindex="0" aria-label="TrainWithMe, case study">
+    <section class="fr pf" data-id="p4" data-name="TrainWithMe" data-meta="Case study" data-x="2493" data-y="728" tabindex="0" aria-label="TrainWithMe, case study">
       <span class="fh">TrainWithMe<i>Case study</i></span>
-      <div class="th" style="background:var(--sticky-green)"></div>
-      <span class="t-label">UX/UI · 2022</span><h2 class="t-h4">TrainWithMe</h2><p class="t-small">Allenati insieme a un amico.</p>
+      <div class="pbox" style="height:300px"><div class="th" style="background:var(--sticky-green)"></div><div class="pbox-tx"><span class="t-label">UX/UI · 2022</span><h2>TrainWithMe</h2><p>Allenati insieme a un amico.</p><button class="btn" type="button" data-open-proj="p4" aria-haspopup="dialog" aria-label="Espandi: apri il case study TrainWithMe">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button></div></div>
     </section>
 
-    <section class="fr me" data-id="me" data-name="Chi sono" data-meta="Pagina" data-x="115" data-y="666" tabindex="0" aria-label="Chi sono">
+    <section class="fr pf" data-id="p3" data-name="Emporium" data-meta="Case study" data-x="3129" data-y="120" tabindex="0" aria-label="Emporium, case study">
+      <span class="fh">Emporium<i>Case study</i></span>
+      <div class="pbox big" style="height:380px"><div class="th" style="background:var(--sticky-yellow)"></div><div class="pbox-tx"><span class="t-label">UX Design · 2024</span><h2>Emporium</h2><p>Il Lending as a Service.</p><button class="btn" type="button" data-open-proj="p3" aria-haspopup="dialog" aria-label="Espandi: apri il case study Emporium">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button></div></div>
+    </section>
+
+    <section class="fr pf" data-id="p2" data-name="Design System" data-meta="Case study" data-x="3129" data-y="588" tabindex="0" aria-label="Design System, case study">
+      <span class="fh">Design System<i>Case study</i></span>
+      <div class="pbox" style="height:440px"><div class="th" style="background:var(--sticky-purple)"></div><div class="pbox-tx"><span class="t-label">DesignOps · 2024</span><h2>Design System</h2><p>Nuova vita al design system di Opyn.</p><button class="btn" type="button" data-open-proj="p2" aria-haspopup="dialog" aria-label="Espandi: apri il case study Design System">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button></div></div>
+    </section>
+
+    <section class="fr me" data-id="me" data-name="Chi sono" data-meta="Pagina" data-x="4033" data-y="882" tabindex="0" aria-label="Chi sono">
       <span class="fh">Chi sono<i>Pagina</i></span>
       <span class="t-label">Chi sono</span>
-      <h2 class="t-h3">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI Designer</em>.</h2>
-      <p class="t-body">Vivo a Milano e da <b>oltre 10 anni</b> il mio ruolo è quello di progettare <b>soluzioni semplici</b> per <b>prodotti digitali complessi</b>.<br>Creo esperienze digitali chiare e <b>incentrate sulle persone</b>, basate su ricerche, dati e progettazione.</p>
-      <p class="t-body"><b>L'AI</b> è parte del mio metodo: mi aiuta a sintetizzare le ricerche, esplorare più direzioni e costruire in fretta <b>prototipi utili alla validazione</b>.</p>
+      <h2 class="t-h3">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI &amp; Product Designer</em>.</h2>
+      <p class="t-body">Vivo a Milano e da oltre dieci anni lavoro nel mondo del design. Mi occupo di progettare <b>flussi, interazioni e interfacce</b>, mettendo in relazione i bisogni degli utenti, gli obiettivi di business e le priorità di prodotto.</p>
+      <p class="t-body">L’AI è parte del mio metodo: mi aiuta a sintetizzare le ricerche, esplorare più direzioni e costruire prototipi utili alla validazione.</p>
       <button class="btn" type="button" data-open-ov="me" aria-haspopup="dialog">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button>
     </section>
 
+    <!-- Il mio approccio: riquadro della lavagna come gli altri (animazione a cerchi) -->
+    <section class="fr ap" id="ap" data-id="ap" data-name="Approccio" data-meta="Sezione" data-x="1180" data-y="740" tabindex="0" aria-label="Il mio approccio">
+      <span class="fh">Il mio approccio<i>Sezione</i></span>
+      <span class="t-label">Il mio approccio</span>
+      <h2 class="t-h3">Un processo centrato sulle persone, supportato dall’AI.</h2>
+      <p class="t-small"><b>Design Thinking e Human-Centered Design:</b> io guido le fasi con le persone, gli agent AI portano ogni fase alla successiva.</p>
+      <div class="circles"><div class="stage"></div><div class="rows"></div></div>
+    </section>
+
     <!-- Esperienze: contenuti dal curriculum (bozza, da rivedere). Posizione provvisoria: la disposizione della lavagna si decide a lavoro concluso -->
-    <section class="fr exp" data-id="es" data-name="Esperienze" data-meta="Pagina" data-x="1450" data-y="92" tabindex="0" aria-label="Esperienze">
+    <section class="fr exp" data-id="es" data-name="Esperienze" data-meta="Pagina" data-x="4496" data-y="197" tabindex="0" aria-label="Esperienze">
       <span class="fh">Esperienze<i>Pagina</i></span>
       <div class="exp-top"><h2 class="t-h4">Esperienza attuale</h2><span class="tl-tag">In corso</span></div>
       <div class="hd"><span class="t-label">Marzo 2025 – Oggi</span><h3 class="exp-co">Moltiply Group</h3></div>
       <p class="co">UX/UI Designer · Milano</p>
-      <p class="t-small">Riprogettazione UX e UI di una piattaforma SaaS per fondi d’investimento, con user research e collaborazione con il team di sviluppo.</p>
-      <span class="t-label">+ 3 esperienze precedenti</span>
+      <p class="t-small">Mi occupo della <b>progettazione UX/UI dei prodotti SaaS aziendali</b>, con un focus particolare sulla riprogettazione di una piattaforma per la gestione di fondi d’investimento, per conto di un cliente esterno.</p>
+      <p class="t-small">Seguo inoltre la <b>progettazione, manutenzione e governance</b> di un nuovo <b>Design System aziendale</b>, condiviso tra più prodotti e indipendente dagli stack tecnologici esistenti. Utilizzo <b>AI agents</b> a supporto delle diverse fasi del processo di design.</p>
+      <span class="t-label">+ 4 esperienze precedenti</span>
       <button class="btn" type="button" data-open-ov="es" aria-haspopup="dialog">Espandi<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg></button>
     </section>
 
-    <section class="fr contact" data-id="ct" data-name="Contatti" data-meta="Pagina" data-x="640" data-y="640" tabindex="0" aria-label="Contatti">
-      <span class="fh">Contatti<i>Pagina</i></span>
-      <span class="t-label">Contatti</span>
-      <h2 class="t-h4">Scrivimi, parliamone.</h2>
-      <div class="links"><a href="https://www.linkedin.com/in/sirtoriemanuele/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="#" data-todo>Email ↗</a><a href="#" data-todo>Curriculum ↗</a></div>
+    <!-- Bookshelf: titoli e autori segnaposto, collegamenti alle schede da inserire (data-todo) -->
+    <section class="fr bk" data-id="bk" data-name="Bookshelf" data-meta="Riquadro" data-x="5113" data-y="920" tabindex="0" aria-label="Bookshelf">
+      <span class="fh">Bookshelf<i>Riquadro</i></span>
+      <div class="bk-head"><h2 class="t-h4">Bookshelf</h2><p class="t-small">Quelli che mi sono serviti sul lavoro e quelli che mi hanno appassionato.</p></div>
+      <ul class="bk-list">
+        <li><a class="bk-row" href="#" data-todo aria-label="Don’t Make Me Think, di Steve Krug: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Don’t Make Me Think</span><span class="bk-a">Steve Krug</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        <li><a class="bk-row" href="#" data-todo aria-label="Inspired, di Marty Cagan: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Inspired</span><span class="bk-a">Marty Cagan</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        <li><a class="bk-row" href="#" data-todo aria-label="Atomic Design, di Brad Frost: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Atomic Design</span><span class="bk-a">Brad Frost</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        <li><a class="bk-row" href="#" data-todo aria-label="Sprint, di Jake Knapp: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Sprint</span><span class="bk-a">Jake Knapp</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        <li><a class="bk-row" href="#" data-todo aria-label="Hooked, di Nir Eyal: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Hooked</span><span class="bk-a">Nir Eyal</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        <li><a class="bk-row" href="#" data-todo aria-label="Thinking, Fast and Slow, di Daniel Kahneman: vai alla scheda"><span class="bk-m" aria-hidden="true"></span><span><span class="bk-t">Thinking, Fast and Slow</span><span class="bk-a">Daniel Kahneman</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+      </ul>
     </section>
+
+    <section class="fr contact" data-id="ct" data-name="Contatti" data-meta="Pagina" data-x="6172" data-y="294" tabindex="0" aria-label="Contatti">
+      <span class="fh">Contatti<i>Pagina</i></span>
+      <h2 class="t-h3">Se ti va di fare due chiacchiere, scrivimi.</h2>
+      <p class="t-lead">Per nuove opportunità o semplicemente per scambiare idee.</p>
+      <div class="ov-links">
+        <a class="btn" href="https://www.linkedin.com/in/sirtoriemanuele/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+        <a class="btn" href="#" data-todo><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email</a>
+        <a class="btn" href="#" data-todo><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Curriculum</a>
+      </div>
+    </section>
+
+    <!-- nota finale: libera sulla lavagna, non in un riquadro -->
+    <div class="nota" style="left:1327px;top:16px"><span aria-hidden="true">✦</span><p>Questo sito è stato progettato in Figma e costruito in React e Tailwind, con l’aiuto dell’AI per lo sviluppo.<br><br>Made with ❤️. © 2026 Emanuele Sirtori</p></div>
+    <!-- easter egg: un insetto sulla lavagna invita a giocare a Prato fiorito -->
+    <button class="egg-bug" type="button" style="left:3804px;top:724px" aria-label="Gioca a Prato fiorito: ci sono dei bug nascosti"><svg viewBox="0 0 8 8" fill="var(--text-secondary)" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="1" height="1"/><rect x="7" y="0" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="4" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/></svg><span class="egg-note">Hey… ci sono dei bug nascosti. Aiutami a trovarli!</span></button>
   </div>
 </div>
 
@@ -363,6 +502,7 @@ body.list .hero .fh i{display:none}
   <span class="sep zoomonly"></span>
   <button class="tb zoomonly" id="reset" type="button" hidden title="Riporta i riquadri nella disposizione originale" aria-label="Riordina: riporta i riquadri nella disposizione originale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Riordina</button>
   <span class="sep zoomonly" id="resetSep" hidden></span>
+  <button class="tb zoomonly" id="devBtn" type="button" aria-pressed="false" aria-label="Dev Mode" title="Dev Mode (si apre anche scrivendo “dev”)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></button>
   <button class="tb" id="mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg><span id="modeL">Vista lista</span></button>
 </div>
 <div class="detail" id="detail" role="dialog" aria-modal="true" aria-label="Dettaglio del progetto" aria-hidden="true"></div>
@@ -373,7 +513,7 @@ body.list .hero .fh i{display:none}
       <button class="ibtn ov-close" type="button" aria-label="Chiudi la pagina Chi sono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </header>
     <section class="ov-intro rv" style="--i:0">
-      <div class="ov-titles"><h1 class="t-h2" id="ovT">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI Designer</em>.</h1>
+      <div class="ov-titles"><h1 class="t-h2" id="ovT">Ciao, mi chiamo <em>Emanuele</em> e sono un <em>UX/UI &amp; Product Designer</em>.</h1>
         <div class="ov-links">
           <a class="btn" href="https://www.linkedin.com/in/sirtoriemanuele/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
           <a class="btn" href="#" data-todo><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email</a>
@@ -393,24 +533,24 @@ body.list .hero .fh i{display:none}
       <span class="t-label">Il mio percorso</span>
       <div class="ov-path">
         <div>
-          <h2 class="t-h4">Dalla carta al digitale</h2>
+          <h2 class="t-h4">Dalla carta al digitale.</h2>
           <div class="ov-story">
-            <p class="t-body">Il mio interesse per il design nasce tra i banchi di scuola, dove muovo i miei primi passi tra tipografia, colori, layout e tavole da disegno.<br>La mia carriera inizia in alcune grandi <b>case editrici milanesi</b>, dove ho l’opportunità di lavorare per diverse testate giornalistiche in <b>ambito finanziario</b>.</p>
-            <p class="t-body">Con il tempo, la mia <b>curiosità per il mondo digitale</b> cresce e mi spinge a esplorare i linguaggi HTML e CSS e i sistemi CMS. Questa scoperta mi introduce al mondo <b>dell’UI e dell’UX design</b>, un campo che mi affascina sin da subito per la sua capacità di risolvere i problemi delle persone in modo semplice e intuitivo.</p>
-            <p class="t-body">Oggi seguo <b>prodotti digitali complessi</b>, dalla ricerca all’interfaccia. Parto dalle persone, dai dati e dagli obiettivi del progetto, disegno flussi e prototipi che rendono semplice ciò che è complesso e curo il <b>design system</b> fino allo sviluppo. L’AI mi aiuta lungo tutto il percorso.</p>
+            <p class="t-body">Il mio interesse per il design nasce a scuola, tra tipografia, colori e impaginazione. Le prime esperienze professionali arrivano in alcune case editrici milanesi, dove mi occupo della progettazione grafica di diverse <b>testate giornalistiche</b> in ambito finanziario.</p>
+            <p class="t-body">Con il tempo, il mio interesse per il digitale mi porta ad approfondire i linguaggi <b>HTML e CSS</b> e a conoscere i sistemi CMS. Da lì inizio a occuparmi di <b>web design</b>, per poi avvicinarmi al design dell’esperienza utente e delle interfacce digitali, un ambito in cui posso unire sensibilità visiva e attenzione alle esigenze degli utenti.</p>
+            <p class="t-body">Oggi lavoro su <b>prodotti digitali complessi</b>, occupandomi di ricerca, flussi, interfacce e design system. Collaboro con i team di prodotto e sviluppo per portare le soluzioni dalla fase di esplorazione alla realizzazione, integrando l’AI come supporto al processo.</p>
           </div>
         </div>
         <div>
           <span class="t-label">I miei studi</span>
-          <div class="study now"><span class="t-label">2021 / 2022</span><h3>Talent Garden</h3><p class="t-small">UI Design Master.</p></div>
-          <div class="study"><span class="t-label">2016 / 2017</span><h3>IED Milano</h3><p class="t-small">Corso di specializzazione in progettazione web.</p></div>
-          <div class="study"><span class="t-label">Scuola</span><h3>Tra i banchi di scuola</h3><p class="t-small">Tipografia, colori, layout e tavole da disegno.</p></div>
+          <div class="study now"><span class="t-label">2021/2022</span><h3>Talent Garden</h3><p class="t-small">UI Design Master</p><p class="t-small">Approfondimento della progettazione di interfacce, dei principi di usabilità e della creazione di esperienze digitali.</p></div>
+          <div class="study"><span class="t-label">2016/2017</span><h3>IED Milano</h3><p class="t-small">Corso di specializzazione in progettazione web</p><p class="t-small">Studio dei principi di progettazione web, dalla struttura delle pagine alla loro organizzazione visiva.</p></div>
+          <div class="study"><span class="t-label">Scuola</span><h3>Salesiani Don Bosco - Milano</h3><p class="t-small">Formazione scolastica</p><p class="t-small">Prime basi di grafica: tipografia, colore, composizione e disegno.</p></div>
         </div>
       </div>
     </section>
     <section class="ov-sec rv" style="--i:2">
      <div class="sk-row">
-        <div><h3>Cosa so fare</h3><p>Le competenze che ho costruito e il modo in cui le uso.</p></div>
+        <div><h3>Competenze e attitudini</h3><p>Metodo, conoscenze tecniche e capacità trasversali che applico ogni giorno nel mio lavoro.</p></div>
         <div class="sk-chips" id="skChips"></div>
       </div>
     </section>
@@ -421,7 +561,7 @@ body.list .hero .fh i{display:none}
             <div class="ed2" id="ed2">
               <div class="lp2" id="lp2"><small>Livelli</small>
                 <div class="li2" data-k="graphic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"/><path d="m8 6 2-2"/><path d="m18 16 2-2"/><path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>Graphic design</div>
-                <div class="li2" data-k="ux"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>UX/UI Designer</div>
+                <div class="li2" data-k="ux"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>UX/UI design</div>
                 <div class="li2" data-k="web"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Web design</div>
               </div>
               <div class="cv2"><div class="pg2" id="pg2">
@@ -432,14 +572,14 @@ body.list .hero .fh i{display:none}
               </div></div>
             </div>
           </div>
-          <div class="bt white bn-orb"><h3>Gli strumenti del mestiere</h3><p>I programmi che uso ogni giorno e quelli che ho imparato strada facendo.</p><div class="orb" id="orb" role="img" aria-label="Gli strumenti che uso: Figma, Notion, Webflow, Photoshop, Illustrator, InDesign, Hotjar, WordPress, Claude e VS Code"></div></div>
+          <div class="bt white bn-orb"><h3>Gli strumenti del mestiere</h3><p>Gli strumenti che supportano le diverse fasi del processo, dalla ricerca alla progettazione, fino allo sviluppo.</p><div class="orb" id="orb" role="img" aria-label="Gli strumenti che uso: Figma, Notion, Webflow, Photoshop, Illustrator, InDesign, Hotjar, WordPress, Claude e VS Code"></div></div>
         </div>
         <div class="bn-row r2">
           <div class="bt white bn-bk">
             <svg class="court" viewBox="0 0 672 380" fill="none" aria-hidden="true"><g class="lines" stroke="#1e1e1e" stroke-width="5.6" opacity=".16"><rect x="96.8" y="29.8" width="479.2" height="854.8" rx="13.9"/><path d="M250.9 32.5V195.1C250.9 198.2 253.4 200.8 256.5 200.8H336.4H416.3C419.4 200.8 421.9 198.2 421.9 195.1V32.5"/><circle cx="340.6" cy="458.6" r="86.9"/><circle cx="336.4" cy="207.8" r="82.7"/><path d="M532.6 32.5V212.7C532.6 213.2 532.5 213.6 532.4 214C524.1 249.2 473.2 318.5 335 318.5C196 318.5 153.8 248.4 150.1 213.4V32.5"/><path d="M295.1 42.8H379.4" stroke-linecap="round"/><circle cx="337.3" cy="59.9" r="11.6"/></g>
               <g class="plays"><path class="play x1a" d="M161.3 306.3L184.7 329.7"/><path class="play x1b" d="M185.9 306.3L162.5 329.7"/><path class="play a1" d="M173.1 293.2C169 232 193 168 253.2 143.4"/><path class="play h1" d="M229.1 131.1L252.9 143.5L241.9 165.5"/><path class="play x2a" d="M534 230.6L557.4 254"/><path class="play x2b" d="M558.7 230.6L535.3 254"/><path class="play a2" d="M539.7 264.5C516 308 452 356 386.8 339.4"/><path class="play h2" d="M399.7 364.4L386.5 340.2L409.9 328.6"/>
                 <circle class="pulse" cx="337.3" cy="59.9" r="12" stroke="#1e1e1e" stroke-width="4" fill="none" opacity="0"/><g class="bl" opacity="0"><circle r="18" fill="#EE8031" stroke="#1e1e1e" stroke-width="3"/><path d="M-18 0H18M0 -18V18" stroke="#1e1e1e" stroke-width="2.5" fill="none"/><path d="M-12.7 -12.7Q-4.5 0 -12.7 12.7M12.7 -12.7Q4.5 0 12.7 12.7" stroke="#1e1e1e" stroke-width="2.5" fill="none"/></g></g></svg>
-            <div class="bk-tx"><h3>Fuori dal canvas</h3><p>La mia passione più grande è il basket: da anni sono capitano di una squadra di serie B.</p></div>
+            <div class="bk-tx"><h3>Fuori dal canvas</h3><p>La mia passione più grande è il <b>basket</b>: da anni sono capitano di una squadra di Serie B.</p></div>
           </div>
           <div class="tt" id="tt" data-tab="travel">
             <div class="tt-tabs" role="tablist" aria-label="Tempo libero">
@@ -471,23 +611,24 @@ body.list .hero .fh i{display:none}
     <section class="tl" style="--i:1">
       <article class="tl-row"><div class="tl-when"><span class="t-label">Marzo 2025 – Oggi</span><p>Milano</p><span class="tl-tag">In corso</span></div><div class="tl-mark"><i></i><b></b></div>
         <div class="tl-body"><h2>Moltiply Group</h2><h3>UX/UI Designer</h3><ul>
-          <li>Riprogettazione della UX e UI di una piattaforma SaaS per la gestione di fondi d’investimento</li>
-          <li>Conduzione di user interview e usability test per identificare criticità e opportunità di miglioramento</li>
-          <li>Ottimizzazione dei flussi utente e semplificazione della navigazione in contesti ad alta complessità</li>
-          <li>Collaborazione con team di prodotto e sviluppo per l’implementazione delle soluzioni</li>
-          <li>Sperimentazione e integrazione di AI agents a supporto del processo di discovery, per accelerare la fase di generazione di concepts e la validazione dei user flows progettati</li></ul></div></article>
+          <li>Riprogettazione della <b>UX e UI</b> di una piattaforma SaaS per la gestione di fondi d’investimento, per conto di un cliente esterno, con ottimizzazione dei flussi utente e semplificazione della navigazione in <b>contesti ad alta complessità</b>.</li>
+          <li>Conduzione di <b>user interview</b> e <b>usability test</b> per identificare criticità e opportunità di miglioramento e validare le soluzioni progettate.</li>
+          <li>Collaborazione con team di prodotto e sviluppo per l’implementazione delle soluzioni.</li>
+          <li><b>Progettazione, manutenzione e governance</b> di un nuovo <b>Design System aziendale</b>, condiviso tra più prodotti e indipendente dagli stack tecnologici esistenti, dalla revisione dei sistemi attuali alla definizione di foundations, token e principi comuni.</li>
+          <li>Utilizzo di <b>AI agents</b> a supporto del processo di design, dalla sintesi degli insight alla generazione di concepts, fino all’analisi e alla validazione dei user flows.</li></ul></div></article>
       <article class="tl-row"><div class="tl-when"><span class="t-label">Maggio 2022 – Dicembre 2024</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
         <div class="tl-body"><h2>Opyn</h2><h3>UX/UI Designer</h3><ul>
-          <li>Progettazione e sviluppo del design system utilizzato su più prodotti digitali</li>
-          <li>Partecipazione alla definizione della strategia di lancio di un nuovo prodotto fintech</li>
-          <li>Conduzione di attività di user research (interviste, usability test, session monitoring)</li>
-          <li>Progettazione di esperienze utente per web app, mobile e SaaS</li>
-          <li>Applicazione di metodologie di atomic design per garantire coerenza e scalabilità</li>
-          <li>Collaborazione cross-team con product manager e sviluppatori</li></ul></div></article>
+          <li>Progettazione e sviluppo del <b>Design System</b> utilizzato su più prodotti digitali, applicando i principi dell’<b>Atomic Design</b> per garantirne coerenza e scalabilità.</li>
+          <li>Partecipazione alla definizione della strategia di lancio di un nuovo prodotto <b>fintech</b>.</li>
+          <li>Conduzione di attività di <b>user research</b> (interviste, usability test e session monitoring).</li>
+          <li>Progettazione di esperienze utente per <b>web app, mobile e SaaS</b>.</li>
+          <li>Collaborazione cross-team con product manager e sviluppatori.</li></ul></div></article>
       <article class="tl-row"><div class="tl-when"><span class="t-label">Ottobre 2021 – Aprile 2022</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
-        <div class="tl-body"><h2>LC Publishing Group</h2><h3>Graphic Designer</h3></div></article>
+        <div class="tl-body"><h2>LC Publishing Group</h2><h3>Graphic Designer</h3><p>Impaginazione di riviste e realizzazione di grafiche per i social. Progettazione di visual e materiali per eventi, tra cui flyer, vele, premi, billboard e oggettistica coordinata.</p></div></article>
       <article class="tl-row"><div class="tl-when"><span class="t-label">Luglio 2014 – Settembre 2021</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
-        <div class="tl-body"><h2>Forbes - Gruppo BFC Media</h2><h3>Web &amp; Graphic Designer</h3></div></article>
+        <div class="tl-body"><h2>Forbes – Gruppo BFC Media</h2><h3>Web &amp; Graphic Designer</h3><p>Impaginazione di riviste, grafiche per i social e materiali visivi per eventi. Attività di <b>branding</b> e realizzazione di campagne pubblicitarie per la promozione di prodotti e servizi aziendali. Mi occupavo inoltre di <b>web design</b>, produzione di DEM, manutenzione della community e invio di email.</p></div></article>
+      <article class="tl-row"><div class="tl-when"><span class="t-label">Gennaio 2014 – Giugno 2014</span><p>Milano</p></div><div class="tl-mark"><i></i><b></b></div>
+        <div class="tl-body"><h2>Gruppo Mondadori</h2><h3>Ufficio tecnico</h3><p>Gestione delle commesse in ufficio tecnico.</p></div></article>
     </section>
   </div>
 </div>
@@ -525,11 +666,15 @@ body.list .hero .fh i{display:none}
   /* bottone Espandi nei riquadri dei progetti (lo stesso di "Chi sono") */
   var EXPAND_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></svg>';
   order.forEach(function(f){
-    if(!PROJ[f.id]) return;
+    if(!PROJ[f.id] || f.el.querySelector('[data-open-proj]')) return;
     var b=document.createElement('button'); b.type='button'; b.className='btn'; b.innerHTML='Espandi'+EXPAND_SVG;
     b.setAttribute('aria-haspopup','dialog'); b.setAttribute('aria-label','Espandi: apri il case study '+f.name);
     b.addEventListener('click',function(e){ e.stopPropagation(); select(f.id); openProject(f.id); });
     f.el.appendChild(b);
+  });
+  /* bottoni Espandi dei box dentro il riquadro Lavori */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-open-proj]'),function(b){
+    b.addEventListener('click',function(e){ e.stopPropagation(); select(b.dataset.openProj); openProject(b.dataset.openProj); });
   });
   var layerList=$('layerList');
   order.forEach(function(f){
@@ -662,7 +807,7 @@ body.list .hero .fh i{display:none}
 
   /* ---- zoom sul riquadro e pagina di dettaglio ---- */
   function openProject(id){
-    var p=PROJ[id], f=frames[id]; openId=id; prevView={x:st.x,y:st.y,s:st.s};
+    var p=PROJ[id], f=frames[id]||frames.lv; openId=id; prevView={x:st.x,y:st.y,s:st.s};
     detail.innerHTML='<button class="close" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Torna alla lavagna</button>'+
       '<article><span class="t-label">'+p.cat+'</span><h1></h1><div class="th" style="background:'+p.c+'"></div>'+
       '<div class="meta"><div><span class="t-label">Ruolo</span><b>'+p.role+'</b></div><div><span class="t-label">Anno</span><b>'+p.year+'</b></div></div>'+
@@ -674,7 +819,7 @@ body.list .hero .fh i{display:none}
     if(listMode) show(); else animateTo(fitRect(rectOf(f),24,0),550).then(show);
   }
   function closeProject(){
-    if(!openId) return; var f=frames[openId]; openId=null;
+    if(!openId) return; var f=frames[openId]||frames.lv; openId=null;
     detail.classList.remove('on'); detail.setAttribute('aria-hidden','true');
     if(!listMode&&prevView) animateTo(prevView,550);
     if(f) f.el.focus({preventScroll:true});
@@ -723,7 +868,7 @@ body.list .hero .fh i{display:none}
       orbItems.forEach(function(p){ var a=p.a0+p.o.dir*p.o.sp*tt; p.el.style.transform='translate('+(cx+Math.cos(a)*p.o.r-20)+'px,'+(cy+Math.sin(a)*p.o.r-20)+'px)'; });
     }
     /* 3) skill: chip che ondeggiano sul posto e si scansano al passaggio del mouse */
-    var SK=['Curiosità','Design system','Prototipazione','Empatia','Comunicazione efficace','HTML/CSS','Visual design','Creatività','Pensiero critico','Web design','Branding','Flessibilità','Wireframing','Problem solving','Interface design','Lavoro di squadra','Illustrazione','Innovazione','Adattabilità','Motion design'];
+    var SK=['Product Design','UX Design','User Research','Empatia','Design System','Prototipazione','Pensiero critico','UI Design','Usability Testing','Comunicazione efficace','Wireframing','HTML/CSS','Problem Solving','Interaction Design','Visual Design','Lavoro di squadra','Curiosità','Adattabilità'];
     var skBox=document.getElementById('skChips'), mouse={x:-999,y:-999}, chips=[];
     if(skBox){
       SK.forEach(function(s,i){ var c=document.createElement('span'); c.textContent=s; skBox.appendChild(c);
@@ -863,3 +1008,232 @@ body.list .hero .fh i{display:none}
 })();
 </script>
 </html>
+<script>
+/* Dev Mode segreto (easter egg): scrivi "dev" sulla lavagna.
+   Ispeziona: misure, token e stili di testo dell'elemento sotto il mouse.
+   Il Prato fiorito si apre solo dall'insetto sulla lavagna, non dal Dev Mode. Nessun contenuto del sito dipende da questo codice. */
+(function(){
+  var on=false, solo=false, tab='ins', stopGame=null, buf='';
+  var TOK_COLOR={'#f5f5f5':'bg/canvas','#ffffff':'bg/panel','#ededed':'bg/raised','#1e1e1e':'text/primary · bg/inverse','#6b6b6b':'text/secondary','#0b8fe8':'accent/default','#0b6bc2':'accent/strong','#e5f4ff':'accent/subtle','#e3e3e3':'border/default','#8f8f8f':'border/strong','#a8daff':'sticky/blue','#cdb4ff':'sticky/purple','#ffe066':'sticky/yellow','#a8f0c6':'sticky/green','#084a85':'accent/strong-pressed','#0a5aa3':'accent/strong-hover'};
+  var TOK_TEXT={'112/112':'Text/Display','80/84':'Text/H1','56/64':'Text/H2','40/44':'Text/H3','28/32':'Text/H4','22/28':'Text/H5','24/32':'Text/Lead','20/32':'Text/Body','16/24':'Text/Small','14/20':'Text/Label'};
+  var TOK_SPACE={4:'space/xs',8:'space/sm',12:'space/md',16:'space/lg',20:'space/xl',24:'space/2xl',32:'space/3xl',48:'space/4xl'};
+  function hex(c){
+    var m=/rgba?\(([^)]+)\)/.exec(c); if(!m) return null;
+    var p=m[1].split(/[ ,\/]+/).filter(Boolean); if(p.length>=4 && +p[3]===0) return null;
+    if(p.length>=4 && +p[3]<1) return null;
+    return '#'+[0,1,2].map(function(i){ var v=Math.round(+p[i]); return (v<16?'0':'')+v.toString(16); }).join('');
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  var root=document.documentElement;
+  function tok(name){ return getComputedStyle(root).getPropertyValue(name).trim(); }
+
+  /* ---- interfaccia ---- */
+  document.body.insertAdjacentHTML('beforeend',
+    '<aside class="dm" id="dm" role="dialog" aria-label="Dev Mode" hidden>'+
+      '<div class="dm-h"><b>Dev Mode</b><button type="button" class="dm-x" aria-label="Chiudi Dev Mode">&times;</button></div>'+
+      '<div class="dm-b" id="dmB"></div>'+
+      '<p class="dm-f">Esc per chiudere · scrivi “dev” per riaprire</p>'+
+    '</aside><div class="dm-box" id="dmBox" hidden><span></span></div>');
+  var dm=document.getElementById('dm'), body=document.getElementById('dmB'), box=document.getElementById('dmBox');
+
+  function setTab(t){
+    tab=t; if(stopGame){ stopGame(); stopGame=null; }
+    box.hidden=true;
+    body.innerHTML='<p class="dm-k">Passa il mouse su un elemento: vedi misure, stile di testo e colori, con i nomi dei token del design system.</p>';
+  }
+  function sync(){ var b=document.getElementById('devBtn'); if(b) b.setAttribute('aria-pressed',String(on&&!solo)); }
+  function open(){ on=true; solo=false; dm.classList.remove('solo'); dm.querySelector('.dm-h b').textContent='Dev Mode'; dm.hidden=false; document.body.classList.add('devmode'); setTab('ins'); sync(); }
+  function close(){ on=false; solo=false; if(stopGame){ stopGame(); stopGame=null; } dm.hidden=true; dm.classList.remove('solo'); dm.querySelector('.dm-h b').textContent='Dev Mode'; box.hidden=true; document.body.classList.remove('devmode'); sync(); }
+  /* il bug sulla lavagna apre solo il Prato fiorito, senza Dev Mode */
+  function openGame(){ close(); on=true; solo=true; dm.classList.add('solo'); dm.querySelector('.dm-h b').textContent='Prato fiorito'; dm.hidden=false; mines(); sync(); }
+  dm.querySelector('.dm-x').addEventListener('click',close);
+  var devBtn=document.getElementById('devBtn'); if(devBtn) devBtn.addEventListener('click',function(){ (on&&!solo)?close():open(); });
+  var egg=document.querySelector('.egg-bug'); if(egg){ egg.addEventListener('pointerdown',function(e){ e.stopPropagation(); }); egg.addEventListener('click',function(e){ e.stopPropagation(); solo&&on?close():openGame(); }); }
+
+  /* ---- attivazione: scrivere "dev" (non dentro un campo di testo) ---- */
+  window.addEventListener('keydown',function(e){
+    if(e.ctrlKey||e.metaKey||e.altKey||e.repeat) return;
+    var t=e.target; if(t&&(/^(input|textarea|select)$/i.test(t.tagName)||t.isContentEditable)) return;
+    if(e.key==='Escape' && on){ e.stopPropagation(); close(); return; }
+    if(e.key&&e.key.length===1){ buf=(buf+e.key.toLowerCase()).slice(-3); if(buf==='dev'){ buf=''; on?close():open(); } }
+  },true);
+  try{ console.log('%cTi piace guardare sotto il cofano?','font:600 16px Georgia,serif;color:#0b6bc2','\nSulla lavagna scrivi “dev”. Poi, se ti va, scrivimi.'); }catch(_){}
+
+  /* ---- scheda Ispeziona ---- */
+  function row(k,v){ return '<div class="dm-row"><span class="dm-k">'+k+'</span><span>'+v+'</span></div>'; }
+  function m4(n){ return n%4===0 ? '<span class="dm-ok">✓ 4 px</span>' : '<span class="dm-no">fuori griglia</span>'; }
+  function inspect(el){
+    var r=el.getBoundingClientRect(), cs=getComputedStyle(el);
+    box.hidden=false; box.style.left=r.left+'px'; box.style.top=r.top+'px'; box.style.width=r.width+'px'; box.style.height=r.height+'px';
+    var w=el.offsetWidth||Math.round(r.width), h=el.offsetHeight||Math.round(r.height);
+    box.firstChild.textContent=w+' × '+h;
+    var name=el.tagName.toLowerCase()+(el.className&&typeof el.className==='string'?'.'+el.className.trim().split(/\s+/)[0]:'');
+    var html=row('Elemento','<code>'+esc(name)+'</code>')+row('Larghezza',w+' px '+m4(w))+row('Altezza',h+' px '+m4(h));
+    var hasText=false; for(var i=0;i<el.childNodes.length;i++){ if(el.childNodes[i].nodeType===3&&el.childNodes[i].textContent.trim()){ hasText=true; break; } }
+    if(hasText){
+      var fs=parseFloat(cs.fontSize), lh=cs.lineHeight==='normal'?null:parseFloat(cs.lineHeight), key=Math.round(fs)+'/'+(lh?Math.round(lh):'');
+      var fam=/Fraunces/i.test(cs.fontFamily)?'Fraunces':/Inter/i.test(cs.fontFamily)?'Inter':cs.fontFamily.split(',')[0];
+      var style=TOK_TEXT[key]; if(style&&/^Text\/Small$/.test(style)&&+cs.fontWeight===500) style='Text/Small Medium';
+      html+=row('Testo',fam+' '+cs.fontWeight+' · '+Math.round(fs)+' / '+(lh?Math.round(lh):'auto')+' px')+row('Stile',style?style:'<span class="dm-no">fuori scala</span>')+(lh?row('Interlinea',m4(Math.round(lh))):'');
+      var c=hex(cs.color); if(c) html+=row('Colore',(TOK_COLOR[c]||c));
+    }
+    var bg=hex(cs.backgroundColor); if(bg) html+=row('Sfondo',TOK_COLOR[bg]||bg);
+    var pd=[cs.paddingTop,cs.paddingRight,cs.paddingBottom,cs.paddingLeft].map(function(v){ return Math.round(parseFloat(v)); });
+    if(pd.some(function(v){return v>0;})) html+=row('Padding',pd.join(' · ')+(pd.every(function(v){return !v||TOK_SPACE[v];})?' <span class="dm-ok">token</span>':''));
+    var gp=parseFloat(cs.rowGap)||0; if(gp>0) html+=row('Distanza',Math.round(gp)+' px '+(TOK_SPACE[Math.round(gp)]?'· '+TOK_SPACE[Math.round(gp)]:'<span class="dm-no">fuori scala</span>'));
+    var rd=parseFloat(cs.borderTopLeftRadius)||0; if(rd>0) html+=row('Raggio',Math.round(rd)+' px');
+    body.innerHTML=html;
+  }
+  document.addEventListener('mouseover',function(e){
+    if(!on||solo||tab!=='ins') return; var el=e.target;
+    if(!el||el.nodeType!==1||el.closest('.dm')||el.closest('.dm-box')||el===document.documentElement||el===document.body) return;
+    inspect(el);
+  });
+
+  function gameShell(title,hint){
+    body.innerHTML='<div class="dm-row"><b class="dm-gt">'+title+'</b></div><div id="dmG"></div><p class="dm-k" id="dmM">'+hint+'</p>';
+    return {g:document.getElementById('dmG'), m:document.getElementById('dmM')};
+  }
+
+  /* ---- Prato fiorito: 9 x 9, 10 bug ---- */
+  var BUG='<svg viewBox="0 0 8 8" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="1" height="1"/><rect x="7" y="0" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="4" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/></svg>';
+  var FLAG='<svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><g fill="var(--text-primary)"><rect x="2" y="0" width="1" height="1"/><rect x="2" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/></g><g fill="var(--accent-strong)"><rect x="3" y="0" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="4" y="1" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/></g></svg>';
+  /* ---- Coriandoli pixel alla vittoria: quadratini nei colori dei post-it, sparati dagli angoli del pannello ---- */
+  var fx=null, fxP=[], fxRun=false, fxLast=0;
+  function confetti(){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(!fx){ fx=document.createElement('canvas'); fx.setAttribute('aria-hidden','true'); fx.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:80'; document.body.appendChild(fx); }
+    var dpr=Math.min(2,window.devicePixelRatio||1), W=innerWidth, H=innerHeight; fx.width=W*dpr; fx.height=H*dpr;
+    var ctx=fx.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+    var r=dm.getBoundingClientRect(), cols=['#0b6bc2','#0b8fe8','#7b4dd8','#cdb4ff','#ffe066','#a8f0c6','#a8daff','#ee8031'], sizes=[6,8,10];
+    function rnd(a,b){ return a+Math.random()*(b-a); }
+    [[r.left+16,r.top+24,-1],[r.right-16,r.top+24,1]].forEach(function(c){
+      for(var i=0;i<100;i++){
+        var a=-Math.PI/2+c[2]*rnd(.1,.8)+rnd(-.25,.25), v=rnd(380,900);
+        fxP.push({x:c[0],y:c[1],vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:rnd(0,6),s:sizes[Math.floor(Math.random()*3)],c:cols[Math.floor(Math.random()*cols.length)],life:rnd(2.6,4),age:0});
+      }
+    });
+    function step(t){
+      var dt=Math.min(.05,(t-fxLast)/1000||.016); fxLast=t; ctx.clearRect(0,0,W,H);
+      fxP=fxP.filter(function(p){
+        p.age+=dt; p.vy+=1100*dt; p.vx*=.985; p.vy*=.985; p.x+=p.vx*dt; p.y+=p.vy*dt; p.w+=dt*8;
+        if(p.age>=p.life||p.y>H+20) return false;
+        ctx.globalAlpha=Math.min(1,(p.life-p.age)*1.5); ctx.fillStyle=p.c; ctx.fillRect(Math.round(p.x),Math.round(p.y),Math.round(Math.abs(Math.cos(p.w))*p.s+2),p.s); return true;
+      });
+      ctx.globalAlpha=1;
+      if(fxP.length) requestAnimationFrame(step); else { fxRun=false; ctx.clearRect(0,0,W,H); }
+    }
+    if(!fxRun){ fxRun=true; fxLast=performance.now(); requestAnimationFrame(step); }
+  }
+  function mines(){
+    var W=9,H=9,M=10, sh=gameShell('Prato fiorito','Clic per aprire, tasto destro per mettere una bandierina. Bug rimasti: <b id="dmN">'+M+'</b>'), g=sh.g;
+    var cells=[],first=true,over=false,safe=W*H-M,flags=0;
+    g.className='dm-grid'; g.style.gridTemplateColumns='repeat('+W+',32px)';
+    function at(x,y){ return x>=0&&y>=0&&x<W&&y<H?cells[y*W+x]:null; }
+    function around(c){ var a=[]; for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){ if(dx||dy){ var n=at(c.x+dx,c.y+dy); if(n) a.push(n); } } return a; }
+    for(var y=0;y<H;y++) for(var x=0;x<W;x++){
+      (function(x,y){
+        var b=document.createElement('button'); b.type='button'; b.className='dm-c'; b.setAttribute('aria-label','Cella '+(x+1)+','+(y+1));
+        var c={x:x,y:y,el:b,mine:false,open:false,flag:false,n:0}; cells.push(c); g.appendChild(b);
+        b.addEventListener('click',function(){ reveal(c,true); });
+        b.addEventListener('contextmenu',function(e){ e.preventDefault(); if(over||c.open) return; c.flag=!c.flag; flags+=c.flag?1:-1; b.innerHTML=c.flag?FLAG:''; b.classList.toggle('flag',c.flag); document.getElementById('dmN').textContent=M-flags; });
+      })(x,y);
+    }
+    function plant(skip){
+      var left=M; while(left){ var c=cells[Math.floor(Math.random()*cells.length)]; if(!c.mine&&c!==skip&&around(skip).indexOf(c)<0){ c.mine=true; left--; } }
+      cells.forEach(function(c){ c.n=around(c).filter(function(n){return n.mine;}).length; });
+    }
+    function reveal(c,user){
+      if(over||c.open||c.flag) return;
+      if(first){ first=false; plant(c); }
+      c.open=true; c.el.classList.add('open');
+      if(c.mine){ lose(c); return; }
+      safe--; if(c.n){ c.el.textContent=c.n; c.el.dataset.n=c.n; } else around(c).forEach(function(n){ reveal(n,false); });
+      if(safe===0&&user!==undefined) win();
+    }
+    function end(msg){ over=true; sh.m.innerHTML=msg+' <button type="button" class="dm-again">Riprova</button>'; sh.m.querySelector('.dm-again').addEventListener('click',mines); }
+    function win(){ if(over) return; end('<b>Contrasto 7:1 ✓</b> Tutti i bug sono risolti.'); confetti(); }
+    function lose(hit){ cells.forEach(function(c){ if(c.mine){ c.el.classList.add('open','bug'); c.el.innerHTML=BUG; } }); hit.el.classList.add('hit'); end('<b>Bug in produzione.</b> Ctrl+Z?'); }
+    stopGame=function(){};
+  }
+
+})();
+</script>
+<script>
+/* Riquadro "Il mio approccio": cerchi con macchia SVG (versione scelta, dalla prova prove/approccio.html).
+   Passa il mouse sulle righe o sulle mezzelune (o usa Tab) per selezionare una fase.
+   L'animazione gira solo quando il riquadro e' visibile e si ferma altrimenti. */
+(function(){
+  var root=document.getElementById('ap'); if(!root) return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var NAMES=['Ricerca ed Empatia','Definizione del problema','Ideazione e Prototipazione','Test e Iterazione'];
+  var IO=['La ricerca parte da interviste, questionari e analisi di mercato per comprendere bisogni e problemi reali. Gli agenti AI aiutano a sintetizzare trascrizioni e appunti e a individuare i temi ricorrenti.','Gli insight raccolti permettono di definire il problema da affrontare, mentre gli agenti AI supportano il confronto tra le ipotesi e fanno emergere eventuali lacune o contraddizioni nei dati.','Le idee vengono esplorate in più direzioni e tradotte in prototipi interattivi, con il supporto degli agenti AI nella generazione di varianti di concept e flussi e nell’utilizzo dei componenti del design system.','Gli agenti AI aiutano a individuare possibili criticità nei flussi prima dei test, mentre il confronto con le persone permette di validare le soluzioni e migliorarle sulla base dei feedback.'];
+  var TAGIO=[['Interviste','Questionari','Analisi di mercato'],['Problema da risolvere'],['Pensiero divergente','Prototipi'],['Test con le persone','Feedback']];
+  var TAGAI=[['Sintesi dei temi'],['Ipotesi a confronto'],['Varianti di concept','Prototipi con il design system'],['Controllo dei flussi']];
+  var NS='http://www.w3.org/2000/svg', id='ap';
+  function lerp(a,b,k){return a+(b-a)*k}
+  var stage=$('.stage',root), rowsEl=$('.rows',root), vis=true, running=false, loopFn=null;
+  var T={x:60,y:235}, R=[56,108,160,212], LX=[116,224,328,432];
+  function circ(cx,cy,r){ return 'M'+(cx-r)+' '+cy+' a'+r+' '+r+' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 '+(-2*r)+' 0'; }
+  var s='<defs><filter id="g'+id+'" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="14"/></filter><filter id="w'+id+'" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>'+
+    '<filter id="c'+id+'" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>'+
+    '<linearGradient id="l'+id+'" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#0b6bc2"/><stop offset=".55" stop-color="#7b4dd8"/><stop offset="1" stop-color="#cdb4ff"/></linearGradient></defs>';
+  s+='<g class="parts"></g>';
+  s+='<g class="blobg"><path class="bg-glow" fill="#7b4dd8" opacity=".5" filter="url(#g'+id+')"/><path class="bg-body" fill="url(#l'+id+')"/><ellipse class="bg-warm" fill="#cdb4ff" opacity=".5" filter="url(#w'+id+')"/></g>';
+  for(var i=0;i<4;i++) s+='<circle class="ring" cx="'+(T.x+R[i])+'" cy="'+T.y+'" r="'+R[i]+'"/>';
+  s+='<g class="core"><ellipse cx="60" cy="235" rx="55" ry="55" fill="#cdb4ff" opacity=".5" filter="url(#c'+id+')"/><circle class="core-c" cx="60" cy="235" r="30"/><text class="core-t" x="60" y="243">AI</text></g>';
+  var SHORT=['Ricerca','Definizione','Ideazione','Test'];
+  for(var j=0;j<4;j++) s+='<g class="lab" data-i="'+j+'"><text class="n" x="'+LX[j]+'" y="228">0'+(j+1)+'</text><text class="t" x="'+LX[j]+'" y="248">'+SHORT[j]+'</text></g>';
+  for(var k=0;k<4;k++){ var d=circ(T.x+R[k],T.y,R[k]); if(k>0) d+=' '+circ(T.x+R[k-1],T.y,R[k-1]); s+='<path class="hit" data-i="'+k+'" tabindex="0" role="button" aria-label="Fase '+(k+1)+', '+SHORT[k]+'" fill-rule="evenodd" d="'+d+'"/>'; }
+  var svg=document.createElementNS(NS,'svg'); svg.setAttribute('class','sc-svg'); svg.setAttribute('viewBox','0 0 500 470'); svg.innerHTML=s; stage.appendChild(svg);
+  var rows=[];
+  NAMES.forEach(function(n,i){
+    var b=document.createElement('button'); b.type='button'; b.className='row'; b.setAttribute('aria-expanded','false'); b.dataset.i=i;
+    var tg=''; TAGIO[i].forEach(function(t){tg+='<span>'+t+'</span>'}); TAGAI[i].forEach(function(t){tg+='<span class="ai">'+t+'</span>'});
+    b.innerHTML='<div class="hd"><b>0'+(i+1)+'</b><span>'+n+'</span></div><div class="more"><div><p class="io">'+IO[i]+'</p><div class="tags">'+tg+'</div></div></div>';
+    rowsEl.appendChild(b); rows.push(b); });
+  var rings=$$('.ring',svg), labs=$$('.lab',svg), hits=$$('.hit',svg), core=$('.core',svg), pg=$('.parts',svg);
+  var P=[]; var seed=11; function rnd(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
+  var cols=['#2B1F8F','#6B5BEF','#493BE3','#0b8fe8','#cdb4ff','#7b4dd8'];
+  for(var q=0;q<36;q++){ var c=document.createElementNS(NS,'circle'); var rr=.5+rnd()*.9; c.setAttribute('r',rr.toFixed(2)); c.setAttribute('fill',cols[Math.floor(rnd()*cols.length)]); c.setAttribute('opacity',(0.1+rnd()*.2).toFixed(2)); pg.appendChild(c); P.push({el:c,x:rnd()*500,y:rnd()*470,ph:rnd()*6.28,sp:.1+rnd()*.2,am:2+rnd()*4}); }
+  var bBody=$('.bg-body',svg), bGlow=$('.bg-glow',svg), bWarm=$('.bg-warm',svg), grad=$('#l'+id,svg), blobG=$('.blobg',svg);
+  var FILL=.94, active=-1, gx=T.x, gw=0, leaveT=null;
+  rowsEl.classList.add('emph');
+  function paint(){
+    rings.forEach(function(r,j){ r.classList.toggle('on',j===active); r.classList.toggle('in',j<active); });
+    labs.forEach(function(l,j){ l.classList.toggle('on',j===active); l.classList.toggle('in',j<active); });
+    rowsEl.classList.toggle('has-sel',active>=0); }
+  function setActive(i){
+    if(i===active) return; var was=active; active=i; paint();
+    rows.forEach(function(r,j){ r.setAttribute('aria-expanded',String(j===i)); });
+    if(i>=0&&was<0){ core.classList.remove('bump'); void core.getBoundingClientRect(); if(!reduce) core.classList.add('bump'); }
+    start();
+  }
+  function pick(i){ clearTimeout(leaveT); setActive(i); }
+  function release(){ clearTimeout(leaveT); leaveT=setTimeout(function(){ setActive(-1); },reduce?0:220); }
+  paint();
+  rows.forEach(function(r,i){ r.addEventListener('mouseenter',function(){pick(i);}); r.addEventListener('mouseleave',release); r.addEventListener('focus',function(){pick(i);}); r.addEventListener('blur',release); r.addEventListener('click',function(){pick(i);}); });
+  hits.forEach(function(h){ var i=+h.dataset.i; h.addEventListener('mouseenter',function(){pick(i);}); h.addEventListener('mouseleave',release); h.addEventListener('focus',function(){pick(i);}); h.addEventListener('blur',release); h.addEventListener('click',function(){pick(i);}); h.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(i); } }); });
+  function blobPath(cx,cy,rx,ry,t){ var N=8, pts=[], i;
+    for(i=0;i<N;i++){ var a=i/N*Math.PI*2, nz=1+.025*Math.sin(a*2+t*.9)+.018*Math.sin(a*3-t*1.2+1.3)+.012*Math.sin(a*5+t*.8); pts.push([cx+Math.cos(a)*rx*nz,cy+Math.sin(a)*ry*nz]); }
+    var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+    for(i=0;i<N;i++){ var p0=pts[(i-1+N)%N],p1=pts[i],p2=pts[(i+1)%N],p3=pts[(i+2)%N];
+      d+=' C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1); }
+    return d+'Z'; }
+  var last=performance.now(), t=0;
+  function frame(now){
+    var dt=Math.max(0,Math.min(.05,(now-last)/1000)); last=now; if(!reduce) t+=dt; var k=reduce?1:1-Math.exp(-dt*4.5);
+    var tx=active<0?T.x:T.x+R[active], tw=active<0?0:R[active]*FILL; gx=lerp(gx,tx,k); gw=lerp(gw,tw,k); var on=gw>1;
+    if(blobG) blobG.style.display=on?'':'none';
+    if(on){ var dpath=blobPath(gx,T.y,gw,gw,t); bBody.setAttribute('d',dpath); bGlow.setAttribute('d',dpath);
+      var ang=t*.45; grad.setAttribute('x1',gx+Math.cos(ang)*gw); grad.setAttribute('y1',T.y+Math.sin(ang)*gw); grad.setAttribute('x2',gx-Math.cos(ang)*gw); grad.setAttribute('y2',T.y-Math.sin(ang)*gw);
+      bWarm.setAttribute('cx',gx-gw*.3+Math.sin(t*.9)*gw*.08); bWarm.setAttribute('cy',T.y-gw*.3+Math.cos(t*.7)*gw*.08); bWarm.setAttribute('rx',gw*.55); bWarm.setAttribute('ry',gw*.45); }
+    for(var m=0;m<P.length;m++){ var p=P[m]; p.el.setAttribute('cx',p.x+Math.sin(t*p.sp+p.ph)*p.am); p.el.setAttribute('cy',p.y+Math.cos(t*p.sp*.8+p.ph)*p.am); }
+    if(vis&&!reduce) requestAnimationFrame(frame); else running=false;
+  }
+  function start(){ if(running) return; running=true; last=performance.now(); requestAnimationFrame(frame); }
+  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ vis=es[0].isIntersecting; if(vis) start(); },{threshold:.05}).observe(root); }
+  start();
+})();
+</script>
